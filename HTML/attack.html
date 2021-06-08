@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="//code.createjs.com/easeljs-0.8.1.min.js"></script>
+    <script type="text/javascript" src="//code.createjs.com/preloadjs-0.6.1.min.js"></script>
+
+    <title>SEN-KENアタッカー向け打ち方分析</title>
+    <style>
+        video {
+            width: 1000px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="plotdiv">
+        <canvas id="board" width="1000" height="1000"></canvas>
+    </div>
+
+    <div id="videodiv">
+        <video id="mv" autobuffer autoplay loop muted controls poster="../00.jpg">
+            <source src="" id="video" controls muted autoplay playinline loop>
+            <img id=ppp src="../00.jpg" />
+        </video>
+    </div>
+
+    <div id="buttondiv">
+        <button onclick="plot()">プロット画面に戻る</button>
+    </div>
+
+
+
+    <button onclick="history.back()">ホームに戻る</button>
+
+    <!-- <div class="main">
+        <div id="x" class="alert alert-primary" role="alert">
+            x座標 :
+        </div>
+        <div id="y" class="alert alert-secondary" role="alert">
+            y座標 :
+        </div> -->
+    <script src="../Javascript/attack.js"></script>
+</body>
+
+</html>
