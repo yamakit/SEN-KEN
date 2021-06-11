@@ -2,9 +2,35 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache">
+    <script src="http://code.jquery.com/jquery-1.6.1.min.js"> </script>
+    <script type="text/javascript">
+
+        $(function () {
+            $('#Click01').click(function () {
+                $.ajax({
+                    type: 'GET',
+                    //呼び出すファイルパスを指定
+                    //今回はPHPの実行結果を表示
+                    url: 'conn.php',
+                    dataType: 'html',
+                    success: function (data) {
+                        //pタグ(id=dispEnv)の箇所に外部ファイルの情報を表示
+                        $('#dispEnv').html(data);
+                        //情報を追記させたい場合はappend or prependを使用
+                        //$('#dispEnv').append(data);　
+                        //$('#dispEnv').prepend(data);
+                    },
+                    //エラー時処理
+                    error: function () {
+                        alert('Error!');
+                    }
+                });
+            });
+        });
+    </script>
 
     <title>SEN-KENホームページ</title>
 
@@ -12,6 +38,8 @@
 
 <body>
     <h1>SEN-KEN </h1>
+    <button type="button" id="Click01">正解率分布図</button>
+    <p id="dispEnv"> </p>
     <a href="./index.html">
         <button type="button">レシーバー向け予想クイズ</button>
     </a>
