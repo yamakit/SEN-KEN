@@ -7,6 +7,9 @@ from pandas.io.json import json_normalize
 import mysql.connector as mydb
 import glob as gb
 
+ball_id = 1 # バレー:1 バド:2 テニス:3
+player_id = 1 # DBを参照
+ 
 folder = gb.glob("./graphs/*.json")
 rep_chk = 0
 
@@ -80,7 +83,6 @@ for file in folder:
 
         data.loc[i,'sabun_y'] = float(diff_y)
         
-
         if(data.loc[i,'sabun_y'] == 0):
             renzoku = 1
             cnt += 1
@@ -108,12 +110,12 @@ for file in folder:
     ax = data[:].plot('frame_id', 'sabun_y', c = 'red')
     #data[:].plot('frame_id', 'sabun_x', c = 'blue', ax = ax)
     data[:].plot('frame_id', 'vartex_point', c = 'black', ax = ax)
-    plt.show()
+    #plt.show()
 
     #---こっからDB関連---
 
     # コネクションの作成
-    conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='quiz_mov_info')
+    conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='hikaku_test_db')
 
     # コネクションが切れた時に再接続してくれるよう設定
     #conn.ping(reconnect=True)
@@ -123,7 +125,7 @@ for file in folder:
     # DB操作用にカーソルを作成
     cur = conn.cursor(buffered=True)
 
-    cur.execute("INSERT INTO yolo_video_table VALUES (%(id)s, %(frame1)s, %(frame2)s, %(ball_id)s, %(player_id)s, %(ans_id)s, %(x_coordinate)s, %(y_coordinate)s, %(video_path)s)", {'id':None, 'frame1':frame1, 'frame2':frame1 + 20, 'ball_id':1, 'player_id':1, 'ans_id':1, 'x_coordinate':float(data.loc[frame1, 'center_x']), 'y_coordinate':float(data.loc[frame1, 'center_y']), 'video_path':file})
+    cur.execute(cur.execute(f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {data.loc[frame1,'center_x']}, y_coordinate = {data.loc[frame1,'center_y']}, yolo_flag = {1}"))
 
     cur.close()
     conn.commit()
