@@ -1,8 +1,8 @@
 import glob as gb
 import mysql.connector as mydb
 
-files = gb.glob('./SEN-KEN_players/*/*')
-conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='hikaku_test_db')
+files = gb.glob('D:\\2021SEN_KEN\\volleyball\\*\\*.MOV')
+conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
 
 # DB操作用にカーソルを作成
 cur = conn.cursor(buffered=True)

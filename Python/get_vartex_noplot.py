@@ -10,8 +10,16 @@ import glob as gb
 ball_id = 1 # バレー:1 バド:2 テニス:3
 player_id = 1 # DBを参照
 
-folder = gb.glob("./graphs/*.json")
+folder = gb.glob("D:\\2021SEN_KEN\\volleyball\\*\\*.json")
 rep_chk = 0
+print(folder)
+
+# # paths = gb.glob("D:/2021SEN_KEN/volleyball/*/*.MOV")
+
+# for path in paths:
+#     with open(path, encoding="utf-8") as f:
+#         data_lines = f.read()
+    
 
 for file in folder:
     print(file + 'を処理中...')
@@ -116,7 +124,7 @@ for file in folder:
     #---こっからDB関連---
 
     # コネクションの作成
-    conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='hikaku_test_db')
+    conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
 
     # コネクションが切れた時に再接続してくれるよう設定
     #conn.ping(reconnect=True)
