@@ -1,5 +1,6 @@
 #import json as j
 from decimal import Decimal
+from re import T
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,12 +11,20 @@ import glob as gb
 ball_id = 1 # バレー:1 バド:2 テニス:3
 player_id = 1 # DBを参照
 
-folder = gb.glob("./graphs/*.json")
+folder = gb.glob("D:\\2021SEN_KEN\\volleyball\\*\\*.json")
 rep_chk = 0
+print(folder)
 
-for file in folder:
-    print(file + 'を処理中...')
-    with open(file, encoding="utf-8") as f:
+# # paths = gb.glob("D:/2021SEN_KEN/volleyball/*/*.MOV")
+
+# for path in paths:
+#     with open(path, encoding="utf-8") as f:
+#         data_lines = f.read()
+    
+
+for fl in folder:
+    print(fl + 'を処理中...')
+    with open(fl, encoding="utf-8") as f:
         data_lines = f.read()
     chr_list = list(data_lines)
     for c in chr_list:
@@ -24,13 +33,13 @@ for file in folder:
         elif(rep_chk == 1):
             if(c != "\\"):
                 data_lines = data_lines.replace("\\","\\\\")
-                with open(file, encoding="utf-8", mode="w") as f:
+                with open(fl, encoding="utf-8", mode="w") as f:
                     f.write(data_lines)
             break
 
     rep_chk = 0
-    json_path = file #頂点を取得するjsonファイル
-    csv_path = file.replace('json','csv')
+    json_path = fl #頂点を取得するjsonファイル
+    csv_path = fl.replace('json','csv')
 
     #変換したいJSONファイルを読み込む
     df = pd.read_json(json_path)
@@ -118,15 +127,32 @@ for file in folder:
     # コネクションの作成
     conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='hikaku_test_db')
 
-    # コネクションが切れた時に再接続してくれるよう設定
+    # コネクションが切れた時に再接続してくれるよう設
     #conn.ping(reconnect=True)
     # 接続できているかどうか確認
     #print(conn.is_connected())
 
+    fl = fl.replace("\\", "/")
+    print(f"{frame1}")
     # DB操作用にカーソルを作成
     cur = conn.cursor(buffered=True)
-    cur.execute(f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {data.loc[frame1,'center_x']}, y_coordinate = {data.loc[frame1,'center_y']}, yolo_flag = {1}")
+    #video
+    # cur.execute(f"SELECT video_path FROM yolo_video_table WHERE yolo_flag = 0 and video_path = {file}") 
+    # cur.execute(f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {data.loc[frame1,'center_x']}, y_coordinate = {data.loc[frame1,'center_y']}, yolo_flag = {1}")
+    print(fl)
+    fl = fl.replace(".json", ".MOV")
+    fl = fl.replace("ffmpeg", "IMG")
+    x_coordinate = data.loc[frame1,'center_x']
+    y_coordinate = data.loc[frame1,'center_y']
+    # x_coordinate = 0.1
+    # y_coordinate = 0.1
 
+    # print(f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {data.loc[frame1,'center_x']}, y_coordinate = {data.loc[frame1,'center_y']}, yolo_flag = {1} WHERE video_path = '{file}'")
+    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {float(data.loc[frame1,'center_x'])}, y_coordinate = {float(data.loc[frame1,'center_y'])}, yolo_flag = {1} WHERE video_path = '{fl}';"
+    # print(stmt)
+    #stmt = "UPDATE yolo_video_table SET frame1 = %s, frame2 = %s, x_coordinate = %s, y_coordinate = %s, yolo_flag = 1 WHERE video_path = '%s'" % (frame1, frame1+20, float(x_coordinate), float(y_coordinate), fl)
+    print(stmt) 
+    cur.execute(stmt)
     cur.close()
     conn.commit()
     conn.close()
