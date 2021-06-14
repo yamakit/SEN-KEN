@@ -1,5 +1,6 @@
 #import json as j
 from decimal import Decimal
+from re import T
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,7 +11,7 @@ import glob as gb
 ball_id = 1 # バレー:1 バド:2 テニス:3
 player_id = 1 # DBを参照
 
-folder = gb.glob("D:\\2021SEN_KEN\\volleyball\\*\\*.json")
+folder = gb.glob("D:/2021SEN_KEN/volleyball/*/*.json")
 rep_chk = 0
 print(folder)
 
@@ -126,15 +127,32 @@ for file in folder:
     # コネクションの作成
     conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
 
-    # コネクションが切れた時に再接続してくれるよう設定
+    # コネクションが切れた時に再接続してくれるよう設
     #conn.ping(reconnect=True)
     # 接続できているかどうか確認
     #print(conn.is_connected())
 
+    file = file.replace("\\", "/")
+    print(f"{frame1}")
     # DB操作用にカーソルを作成
     cur = conn.cursor(buffered=True)
-    cur.execute(f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {data.loc[frame1,'center_x']}, y_coordinate = {data.loc[frame1,'center_y']}, yolo_flag = {1}")
+    #video
+    # cur.execute(f"SELECT video_path FROM yolo_video_table WHERE yolo_flag = 0 and video_path = {file}") 
+    # cur.execute(f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {data.loc[frame1,'center_x']}, y_coordinate = {data.loc[frame1,'center_y']}, yolo_flag = {1}")
+    print(file)
+    file = file.replace(".json", ".MOV")
+    file = file.replace("ffmpeg", "IMG")
+    x_coordinate = {data.loc[frame1,'center_x']}
+    y_coordinate = {data.loc[frame1,'center_y']}
+    # x_coordinate = 0.1
+    # y_coordinate = 0.1
 
+    # print(f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {data.loc[frame1,'center_x']}, y_coordinate = {data.loc[frame1,'center_y']}, yolo_flag = {1} WHERE video_path = '{file}'")
+    # stmt = f'''UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {data.loc[frame1,'center_x']}, y_coordinate = {data.loc[frame1,'center_y']}, yolo_flag = {1} WHERE video_path = '{file}' '''
+    # print(stmt)
+    stmt = "UPDATE yolo_video_table SET frame1 = %s, frame2 = %s, x_coordinate = %s, y_coordinate = %s, yolo_flag = 1 WHERE video_path = '%s'" % (frame1, frame1+20, x_coordinate, y_coordinate, file)
+    print(stmt) 
+    cur.execute(stmt)
     cur.close()
     conn.commit()
     conn.close()
