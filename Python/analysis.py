@@ -1,4 +1,3 @@
-#import json as j
 from decimal import Decimal
 from re import T
 import pandas as pd
@@ -14,13 +13,6 @@ player_id = 1 # DBを参照
 folder = gb.glob("D:\\2021SEN_KEN\\volleyball\\*\\*.json")
 rep_chk = 0
 print(folder)
-
-# # paths = gb.glob("D:/2021SEN_KEN/volleyball/*/*.MOV")
-
-# for path in paths:
-#     with open(path, encoding="utf-8") as f:
-#         data_lines = f.read()
-    
 
 for fl in folder:
     print(fl + 'を処理中...')
@@ -57,7 +49,7 @@ for fl in folder:
     frame1 = 0
     Zlist = []
 
-    for i in range(0,len(data) - 1):
+    for i in range(1,len(data) - 1):
         triple = '''{}'''.format(data.loc[i,'objects'])
         obj_list = eval(triple)
         if obj_list:
@@ -77,13 +69,6 @@ for fl in folder:
         first_y = Decimal(str(data.loc[i,'MedFilTemp_y']))
         second_y = Decimal(str(data.loc[i + 1,'MedFilTemp_y']))
         diff_y = second_y - first_y
-
-        # if(diff_y > Decimal('0')):
-        #     diff_y = 1
-        # elif(diff_y < Decimal('0')):
-        #     diff_y = -1
-        # elif(diff_y == Decimal('0')):
-        #     diff_y = 0
 
         if(diff_y > Decimal('0.0075')):
             diff_y = 0.0075
@@ -112,14 +97,6 @@ for fl in folder:
         second_x = Decimal(str(data.loc[i + 1,'MedFilTemp_x']))
         diff_x = second_x - first_x
         data.loc[i,'sabun_x'] = float(diff_x)
-        #print(i,data.loc[i,'sabun_x'])
-
-    # for i in range(1,len(data) - 1):
-    #     print(data.loc[i, 'vartex_point'])
-
-    #ax = data[:].plot('frame_id', 'sabun_y', c = 'red')
-    #data[:].plot('frame_id', 'sabun_x', c = 'blue', ax = ax)
-    #data[:].plot('frame_id', 'vartex_point', c = 'black', ax = ax)
     plt.show()
 
     #---こっからDB関連---
@@ -127,31 +104,17 @@ for fl in folder:
     # コネクションの作成
     conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
 
-    # コネクションが切れた時に再接続してくれるよう設
-    #conn.ping(reconnect=True)
-    # 接続できているかどうか確認
-    #print(conn.is_connected())
-
     fl = fl.replace("\\", "/")
-    print(f"{frame1}")
     # DB操作用にカーソルを作成
     cur = conn.cursor(buffered=True)
-    #video
-    # cur.execute(f"SELECT video_path FROM yolo_video_table WHERE yolo_flag = 0 and video_path = {file}") 
-    # cur.execute(f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {data.loc[frame1,'center_x']}, y_coordinate = {data.loc[frame1,'center_y']}, yolo_flag = {1}")
     print(fl)
     fl = fl.replace(".json", ".MOV")
     fl = fl.replace("ffmpeg", "IMG")
-    x_coordinate = data.loc[frame1,'center_x']
-    y_coordinate = data.loc[frame1,'center_y']
-    # x_coordinate = 0.1
-    # y_coordinate = 0.1
-
-    # print(f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {data.loc[frame1,'center_x']}, y_coordinate = {data.loc[frame1,'center_y']}, yolo_flag = {1} WHERE video_path = '{file}'")
+    x_coordinate = float(data.loc[frame1,'center_x'])
+    y_coordinate = float(data.loc[frame1,'center_y'])
     stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {float(data.loc[frame1,'center_x'])}, y_coordinate = {float(data.loc[frame1,'center_y'])}, yolo_flag = {1} WHERE video_path = '{fl}';"
-    # print(stmt)
-    #stmt = "UPDATE yolo_video_table SET frame1 = %s, frame2 = %s, x_coordinate = %s, y_coordinate = %s, yolo_flag = 1 WHERE video_path = '%s'" % (frame1, frame1+20, float(x_coordinate), float(y_coordinate), fl)
-    print(stmt) 
+    # stmt = "UPDATE yolo_video_table SET frame1 = %s, frame2 = %s, x_coordinate = %s, y_coordinate = %s, yolo_flag = 1 WHERE video_path = '%s'" % (frame1, frame1+20, x_coordinate, y_coordinate, fl)
+    # print(stmt) 
     cur.execute(stmt)
     cur.close()
     conn.commit()
