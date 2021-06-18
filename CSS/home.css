@@ -1,0 +1,55 @@
+.title{
+    margin: 0px;
+    font-size: 5vh;
+}
+.line{
+    font-size: 10vh;
+    padding: 0px;
+    border-bottom: 3px solid #2979FF;
+    margin: 0px 0 5px;
+}
+.img{
+    position: fixed;
+    right: 0px;
+    top: 0px;
+}
+.pic{
+    width: calc(100% / 5);
+    font-size: 20px;
+    color: white;
+    background-color: #2979FF;
+    margin-left: 2%;
+}
+.graph{
+    width: calc(100% / 5);
+    font-size: 20px;
+    color: white;
+    background-color: #2979FF;
+    margin-left: 2%;
+}
+.new{
+    width: calc(100% / 5);
+    font-size: 20px;
+    color: white;
+    background-color: #2979FF;
+    margin-left: 2%;
+}
+.button button{
+    width: calc(100% / 4);
+    height: calc(100% / 4);
+    font-size:20%;
+    color:#FFFFFF;
+    background:#2979FF;
+    border-radius: 10px;
+    margin: 2%;
+    float: right;
+}
+.quiz{
+   position: absolute;
+   right: 0px;
+}
+.date{
+    position: absolute;
+    right: 0px;
+    top: 60%;
+}

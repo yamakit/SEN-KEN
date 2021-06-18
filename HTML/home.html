@@ -5,21 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache">
-
+    <link rel="stylesheet" href="../CSS/home.css">
     <title>SEN-KENホームページ</title>
-
 </head>
 
 <body>
-    <h1>SEN-KEN </h1>
-    <a href="./index.html">
-        <button type="button">レシーバー向け予想クイズ</button>
-    </a>
-    <a href="./attack.html">
-        <button type="button">アタッカー向け打ち方分析</button>
-    </a>
-
-
+    <h2 class="title">スポーツの予知能力をクイズで向上させる</h2>
+    <h1 class="line">SEN-KEN </h1>
+    <img class='img' src="MV/volleyball.png">
+    <button class="pic">正解率分布図</button>
+    <button class="graph">正解率推移</button>
+    <select class="new"> 
+        <optgroup>直近</optgroup>
+        <option>500問</option>
+        <option>100問</option>
+    </select>
+    <div class="button">
+        <button type="button" class='quiz' onclick="location.href='/index.html'">レシーバー向け予想クイズ</button>
+        <button class='date' onclick="location.href='./attack.html'">アタッカー向け打ち方分析</button>
+    </div>
 </body>
-
+<!-- ボタンを右に寄せる　グラフ入ってない URL先張り直し　-->
 </html>

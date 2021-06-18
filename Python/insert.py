@@ -7,10 +7,10 @@ from pandas.io.json import json_normalize
 import mysql.connector as mydb
 import glob as gb
 
-ball_id = 2 # バレー:1 バド:2 テニス:3
+ball_id = 1 # バレー:1 バド:2 テニス:3
 player_id = 1 # DBを参照
 
-folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\badminton\\1\\*.json")
+folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*.json")
 rep_chk = 0
 print(folder)
 
@@ -86,7 +86,7 @@ for fl in folder:
             renzoku = 0
             if(cnt >= 4):
                 vartex_cnt += 1
-                if vartex_cnt == 2:
+                if vartex_cnt == 9:
                     frame1 = Zlist[0]
                     for n in Zlist:
                         data.loc[n,'vartex_point'] = 0
@@ -102,11 +102,7 @@ for fl in folder:
     #---こっからDB関連---
 
     # コネクションの作成
-<<<<<<< HEAD
-    conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='hikaku_test_db')
-=======
     conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
->>>>>>> 543be354babdfa1f73cf0d3d32950c7520f4517a
 
     fl = fl.replace("\\", "/")
     # DB操作用にカーソルを作成
@@ -117,17 +113,8 @@ for fl in folder:
     print(fl)
     x_coordinate = float(data.loc[frame1,'center_x'])
     y_coordinate = float(data.loc[frame1,'center_y'])
-<<<<<<< HEAD
-    #print(data.loc[frame1,'center_y'],data.loc[frame1,'center_x'])
-    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {float(data.loc[frame1,'center_x'])}, y_coordinate = {float(data.loc[frame1,'center_y'])}, yolo_flag = 2 WHERE video_path = '{fl}';"
-    # stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = 0.13444, y_coordinate = 0.4353, yolo_flag = 2 WHERE video_path = '{fl}';"
-    # stmt = "UPDATE yolo_video_table SET frame1 = %s, frame2 = %s, x_coordinate = %s, y_coordinate = %s, yolo_flag = 2 WHERE video_path = '%s'" % (frame1, frame1+20, x_coordinate, y_coordinate, fl)
-=======
-    # stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {float(data.loc[frame1,'center_x'])}, y_coordinate = {float(data.loc[frame1,'center_y'])}, yolo_flag = 2 WHERE video_path = '{fl}';"
-    # stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = 0.13444, y_coordinate = 0.4353, yolo_flag = 2 WHERE video_path = '{fl}';"
-    stmt = "UPDATE yolo_video_table SET frame1 = %s, frame2 = %s, x_coordinate = %s, y_coordinate = %s, yolo_flag = 2 WHERE video_path = '%s'" % (frame1, frame1+20, x_coordinate, y_coordinate, fl)
->>>>>>> 543be354babdfa1f73cf0d3d32950c7520f4517a
-    # print(stmt) 
+    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {float(data.loc[frame1,'center_x'])}, y_coordinate = {float(data.loc[frame1,'center_y'])}, yolo_flag = {1} WHERE video_path = '{fl}';"
+    # stmt = "UPDATE yolo_video_table SET frame1 = %s, frame2 = %s, x_coordinate = %s, y_coordinate = %s, yolo_flag = 1 WHERE video_path = '%s'" % (frame1, frame1+20, x_coordinate, y_coordinate, fl)
     cur.execute(stmt)
     cur.close()
     conn.commit()
