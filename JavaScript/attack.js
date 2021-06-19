@@ -15,16 +15,6 @@ board.addEventListener("click", (e) => {
 const chara = new Image();
 chara.src = "../valley.png";  // 画像のURLを指定
 
-
-// window.addEventListener("click", function (event) {
-//     var x = event.pageX;
-//     var y = event.pageY;
-//     document.getElementById('x').textContent = "x座標 : " + x;
-//     document.getElementById('y').textContent = "y座標 : " + y;
-//     console.log(x);
-//     console.log(y);
-// });
-
 var zahyo_x;
 var zahyo_y;
 var path;
@@ -37,6 +27,7 @@ var counter;
 // var number_y;
 var number_r;
 var r = [];
+var text;
 
 setTimeout("change()", 100);
 function change() {
@@ -101,8 +92,8 @@ function wille() {
 
 
 function execute() {
-    // zahyo_x = zahyo_x * 1000;
-    // zahyo_y = zahyo_y * 1000;
+    zahyo_x = zahyo_x * 1600;
+    zahyo_y = zahyo_y * 1000;
     ctx.drawImage(chara, zahyo_x, zahyo_y, 20, 20);
     judge = false;
 
@@ -150,12 +141,14 @@ function hikaku() {
     console.log(index);
     number_r = index;
 
-
+    text = array[number_r]["path"];
+    console.log(array[number_r]["path"]);
+    location.href = "http://localhost/HTML/view.html?data=" + text;
     // if (number_r) {
-    mv.setAttribute("src", array[number_r]["path"]);
-    plotdiv.style.display = "none";
-    videodiv.style.display = "block";
-    buttondiv.style.display = "block";
+    // mv.setAttribute("src", array[number_r]["path"]);
+    // plotdiv.style.display = "none";
+    // videodiv.style.display = "block";
+    // buttondiv.style.display = "block";
 
     // } else {
     //     console.log("これじゃあ動画は再生できないね！！")
@@ -164,11 +157,13 @@ function hikaku() {
 
 }
 
-function plot() {
-    plotdiv.style.display = "block";
-    videodiv.style.display = "none";
+    // var text = document.getElementById("sendText").value;
 
-}
+// function plot() {
+//     plotdiv.style.display = "block";
+//     videodiv.style.display = "none";
+
+// }
  // i = 0;
         // console.log(array);
         // var value = x;

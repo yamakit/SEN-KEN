@@ -2,7 +2,7 @@
     include 'db_config.php';
 
     
-$dsn = 'mysql:dbname=yolo_video_table;host=localhost';
+$dsn = 'mysql:dbname=sen-ken;host=localhost';
 $user = 'root';
 $password = '';
 $result = array();

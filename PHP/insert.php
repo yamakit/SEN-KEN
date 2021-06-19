@@ -8,7 +8,7 @@ if(!empty($_GET)){
     $button_id = $_GET['button_id'];
     $judge = $_GET['judge'];
     
-    $dsn = 'mysql:dbname=yolo_video_table;host=localhost';
+    $dsn = 'mysql:dbname=sen-ken;host=localhost';
     $user = 'root';
     $password = '';
     $result = array();
