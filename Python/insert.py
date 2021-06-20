@@ -113,8 +113,31 @@ for fl in folder:
     print(fl)
     x_coordinate = float(data.loc[frame1,'center_x'])
     y_coordinate = float(data.loc[frame1,'center_y'])
-    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, x_coordinate = {float(data.loc[frame1,'center_x'])}, y_coordinate = {float(data.loc[frame1,'center_y'])}, yolo_flag = {1} WHERE video_path = '{fl}';"
+    #ans_idの判定
+    if(0 <= x_coordinate <= 0.333):
+        if(0 <= y_coordinate <= 0.333):
+            ans_id = 1
+        elif(0.333 < y_coordinate <= 0.666):
+            ans_id = 4
+        else:
+            ans_id = 7
+    elif(0.333 <= x_coordinate <= 0.666):
+        if(0 <= y_coordinate <= 0.333):
+            ans_id = 2
+        elif(0.333 < y_coordinate <= 0.666):
+            ans_id = 5
+        else:
+            ans_id = 8
+    else:
+        if(0 <= y_coordinate <= 0.333):
+            ans_id = 3
+        elif(0.333 < y_coordinate <= 0.666):
+            ans_id = 6
+        else:
+            ans_id = 9
+    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, ans_id = {ans_id}, x_coordinate = {float(data.loc[frame1,'center_x'])}, y_coordinate = {float(data.loc[frame1,'center_y'])}, yolo_flag = {2} WHERE video_path = '{fl}';"
     # stmt = "UPDATE yolo_video_table SET frame1 = %s, frame2 = %s, x_coordinate = %s, y_coordinate = %s, yolo_flag = 1 WHERE video_path = '%s'" % (frame1, frame1+20, x_coordinate, y_coordinate, fl)
+    print(stmt)
     cur.execute(stmt)
     cur.close()
     conn.commit()

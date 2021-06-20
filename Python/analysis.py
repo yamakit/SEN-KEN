@@ -11,7 +11,7 @@ import subprocess
 
 conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
 cur = conn.cursor(buffered=True)
-cur.execute("SELECT video_path FROM yolo_video_table WHERE yolo_flag = 0")
+cur.execute("SELECT video_path FROM yolo_video_table WHERE ball_id = 1 and yolo_flag = 0")
 rows = cur.fetchall()
 folder = []
 print(rows)
