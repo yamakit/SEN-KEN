@@ -12,7 +12,7 @@ var i = 0;
 var x = 0;
 var pop;
 var quiet;
-var user_id;
+// var user_id;
 var button_id = 0;
 var video_id;
 var correct;
@@ -36,16 +36,16 @@ function sent() {
             console.log('DONE', data);
             console.log("通信が成功しました!!!");
             frame1 = data[i]['frame1'];
-            frame2 = data[i]['frame2'];
+            // frame2 = data[i]['frame2'];
             video_path = data[i]['video_path'];
             video_id = data[i]['video_id'];
-            user_id = data[i]['player_id'];
-            correct = data[i]['button_id'];
+            // user_id = data[i]['player_id'];
+            correct = data[i]['ans_id'];
             console.log('DONE', frame1);
-            console.log('DONE', frame2);
+            // console.log('DONE', frame2);
             console.log('DONE', video_path);
             console.log('DONE', video_id);
-            console.log('DONE', user_id);
+            // console.log('DONE', user_id);
             console.log('DONE', correct);
             mv.setAttribute("src", video_path);
             i = i + 1;
@@ -87,12 +87,12 @@ function wille() {
 
     console.log(x);
     frame1 = x[i]['frame1'];
-    frame2 = x[i]['frame2'];
+    // frame2 = x[i]['frame2'];
     video_path = x[i]['video_path'];
     video_id = x[i]['video_id'];
     correct = x[i]['button_id'];
     console.log('DONE', frame1);
-    console.log('DONE', frame2);
+    // console.log('DONE', frame2);
     console.log('DONE', video_path);
     console.log('DONE', video_id);
     console.log('DONE', correct);
@@ -103,9 +103,11 @@ function wille() {
 
 
 function apple() {
-    frame2 = frame2 / 29.97;
-    frame2 = frame2 * 1000;
-    console.log(frame2);
+    // frame2 = frame2 / 29.97;
+    // frame2 = frame2 * 1000;
+    // console.log(frame2);
+    // setTimeout(movplay, frame2);
+    frame2 = 2000;
     setTimeout(movplay, frame2);
     // pop = frame2;
     // pop = pop + 3000;
