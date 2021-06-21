@@ -1,7 +1,7 @@
 var x;
 var y;
-videodiv.style.display = "none";
-buttondiv.style.display = "none";
+// videodiv.style.display = "none";
+// buttondiv.style.display = "none";
 // canvas準備
 const board = document.querySelector("#board");  //getElementById()等でも可。オブジェクトが取れれば良い。
 const ctx = board.getContext("2d");
@@ -29,17 +29,18 @@ var number_r;
 var r = [];
 var text;
 
-setTimeout("change()", 100);
-function change() {
+// setTimeout("change()", 100);
+// function change() {
 
-    if (i == 10) {
-    }
-    else {
+//     if (i == 10) {
+//     }
+//     else {
 
-        setTimeout("sent()", 100);
-    }
-}
+//         setTimeout("sent()", 100);
+//     }
+// }
 
+window.onload = sent();
 function sent() {
     $.ajax({
         type: "GET",
@@ -125,8 +126,8 @@ function hikaku() {
     //     console.log(r[i]);
     // }
 
-
     var value = Math.sqrt(x * x + y * y);
+    console.log(value);
     var diff = [];
     var index = 0;
     i = 0;

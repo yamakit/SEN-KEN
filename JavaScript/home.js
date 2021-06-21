@@ -10,7 +10,7 @@ window.onload = function () {
     console.log(more);
 }
 
-function reserve() {
+function receive() {
     location.href = "http://localhost/HTML/index.html?data=" + more;
 }
 

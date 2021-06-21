@@ -1,6 +1,5 @@
 <?php
     include 'db_config.php';
-   
 
 if(!empty($_GET)){
     $video_id = $_GET['video_id'];
@@ -18,9 +17,8 @@ if(!empty($_GET)){
         
         // echo "<p>DB接続に成功しました。</p>";
 
-          $sql = "INSERT INTO `answer_table`(`ball_id`, `yolo_video_id`, `user_id`, `ans_X_coordinate`, `ans_Y_coordinate`, `button_id`, `judge`, `datetime`) VALUES (1, $video_id, $user_id, 1, 1, $button_id, $judge, NOW())";
-          
-          $dbh->exec($sql);
+        $sql = "INSERT INTO `answer_table`(`ball_id`, `yolo_video_id`, `user_id`, `button_id`, `judge`, `datetime`) VALUES (1, $video_id, $user_id, $button_id, $judge, NOW())";
+        $dbh->exec($sql);
     } catch (Exception $e) {
         // echo "<p>DB接続エラー</p>";
         echo $e->getMessage();
