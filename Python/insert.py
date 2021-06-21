@@ -136,7 +136,6 @@ for fl in folder:
         else:
             ans_id = 9
     stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, ans_id = {ans_id}, x_coordinate = {float(data.loc[frame1,'center_x'])}, y_coordinate = {float(data.loc[frame1,'center_y'])}, yolo_flag = {2} WHERE video_path = '{fl}';"
-    # stmt = "UPDATE yolo_video_table SET frame1 = %s, frame2 = %s, x_coordinate = %s, y_coordinate = %s, yolo_flag = 1 WHERE video_path = '%s'" % (frame1, frame1+20, x_coordinate, y_coordinate, fl)
     print(stmt)
     cur.execute(stmt)
     cur.close()
