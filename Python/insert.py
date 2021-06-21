@@ -1,5 +1,6 @@
 from decimal import Decimal
 from re import T
+from numpy.core.numeric import NaN
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,11 +11,23 @@ import glob as gb
 ball_id = 1 # バレー:1 バド:2 テニス:3
 player_id = 1 # DBを参照
 
-folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*.json")
+conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
+cur = conn.cursor(buffered=True)
+cur.execute("SELECT video_path FROM yolo_video_table WHERE yolo_flag = 1")
+rows = cur.fetchall()
+folder = []
+for row in rows:
+    folder.append(row[0])
+cur.close
+conn.commit()
+conn.close()
+
 rep_chk = 0
 print(folder)
 
 for fl in folder:
+    fl = fl.replace('IMG','ffmpeg')
+    fl = fl.replace('MOV','json')
     print(fl + 'を処理中...')
     with open(fl, encoding="utf-8") as f:
         data_lines = f.read()
@@ -111,31 +124,39 @@ for fl in folder:
     fl = fl.replace("ffmpeg", "IMG")
     fl = fl.replace("D:/htdocs/", "../")
     print(fl)
+    if(np.isnan(data.loc[frame1, 'center_x'])):
+        data.loc[frame1, 'center_x'] = -1
+    if(np.isnan(data.loc[frame1, 'center_y'])):
+        data.loc[frame1, 'center_y'] = -1
+    frame2 = frame1 + 5
     x_coordinate = float(data.loc[frame1,'center_x'])
+    x_coordinate2 = float(data.loc[frame2,'center_x'])
     y_coordinate = float(data.loc[frame1,'center_y'])
+    y_coordinate2 = float(data.loc[frame2,'center_y'])
+  
     #ans_idの判定
-    if(0 <= x_coordinate <= 0.333):
-        if(0 <= y_coordinate <= 0.333):
+    if(0 <= x_coordinate2 <= 0.333):
+        if(0 <= y_coordinate2 <= 0.333):
             ans_id = 1
-        elif(0.333 < y_coordinate <= 0.666):
+        elif(0.333 < y_coordinate2 <= 0.666):
             ans_id = 4
         else:
             ans_id = 7
-    elif(0.333 <= x_coordinate <= 0.666):
-        if(0 <= y_coordinate <= 0.333):
+    elif(0.333 <= x_coordinate2 <= 0.666):
+        if(0 <= y_coordinate2 <= 0.333):
             ans_id = 2
-        elif(0.333 < y_coordinate <= 0.666):
+        elif(0.333 < y_coordinate2 <= 0.666):
             ans_id = 5
         else:
             ans_id = 8
     else:
-        if(0 <= y_coordinate <= 0.333):
+        if(0 <= y_coordinate2 <= 0.333):
             ans_id = 3
-        elif(0.333 < y_coordinate <= 0.666):
+        elif(0.333 < y_coordinate2 <= 0.666):
             ans_id = 6
         else:
             ans_id = 9
-    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, ans_id = {ans_id}, x_coordinate = {float(data.loc[frame1,'center_x'])}, y_coordinate = {float(data.loc[frame1,'center_y'])}, yolo_flag = {2} WHERE video_path = '{fl}';"
+    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, ans_id = {ans_id}, x_coordinate = {x_coordinate}, y_coordinate = {y_coordinate}, yolo_flag = {2} WHERE video_path = '{fl}';"
     print(stmt)
     cur.execute(stmt)
     cur.close()
