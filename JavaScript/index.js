@@ -1,4 +1,3 @@
-window.onload = sent();
 function drawVideo() {
     var video = document.getElementById("mv");
     var canvas = document.getElementById("c");
@@ -17,6 +16,7 @@ var button_id = 0;
 var video_id;
 var correct;
 let judge = 0;
+var more;
 
 function getId(ele) {
     button_id = ele.getAttribute("id"); // input要素のid属性の値を取得
@@ -24,6 +24,15 @@ function getId(ele) {
 }
 
 
+setTimeout(cut(), 1);
+
+function cut() {
+    var data = location.href.split("?")[1];
+    more = data.split("=")[1];
+    console.log(more);
+}
+
+setTimeout(sent(), 100);
 function sent() {
     $.ajax({
         type: "GET",
@@ -46,7 +55,7 @@ function sent() {
             console.log('DONE', video_path);
             console.log('DONE', video_id);
             // console.log('DONE', user_id);
-            console.log('DONE', correct);
+            console.log('正解のボタン番号', correct);
             mv.setAttribute("src", video_path);
             i = i + 1;
             console.log(i);
@@ -155,7 +164,7 @@ function send() {
         data: {
             "video_id": video_id,
             "button_id": button_id,
-            "user_id": 1,
+            "user_id": more,
             "judge": judge
         },
     })
