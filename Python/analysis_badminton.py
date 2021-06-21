@@ -26,7 +26,6 @@ cmd_file = 'C:\\Users\\procon\\Desktop\\2021SEN-KEN\\YOLOv3_badminton1.bat'
 ball_id = 1 # バレー:1 バド:2 テニス:3
 player_id = 1 # DBを参照
 
-# folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*.json")
 rep_chk = 0
 print(folder)
 
