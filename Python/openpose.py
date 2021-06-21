@@ -1,5 +1,4 @@
 from decimal import Decimal
-from re import T
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
