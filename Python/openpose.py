@@ -23,7 +23,6 @@ conn.close()
 
 ball_id = 1 # バレー:1 バド:2 テニス:3
 player_id = 1 # DBを参照
-
 rep_chk = 0
 print(folder)
 
