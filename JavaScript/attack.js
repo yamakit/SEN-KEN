@@ -19,112 +19,84 @@ var zahyo_x;
 var zahyo_y;
 var path;
 var judge = false;
-var i = 0;
-var f = 0;
-array = [];
+var array = [];
 var counter;
 // var number_x;
 // var number_y;
 var number_r;
 var r = [];
 var text;
+var more;
 
-// setTimeout("change()", 100);
-// function change() {
+setTimeout(cut(), 1);
 
-//     if (i == 10) {
-//     }
-//     else {
+function cut() {
+    var data = location.href.split("?")[1];
+    more = data.split("=")[1];
+    console.log(more);
+}
 
-//         setTimeout("sent()", 100);
-//     }
-// }
-
-window.onload = sent();
+setTimeout(sent(), 100);
+// window.onload = sent(); window.onloadを二つ使うのはダメ
 function sent() {
     $.ajax({
         type: "GET",
         url: "../PHP/attack.php",
         dataType: "json",
-        data: { 'yolo_video_table': 0 },
+        data: { 'player_id': more },
     })
         .done(function (data) {
             console.log('DONE', data);
             console.log("通信が成功しました!!!");
-            zahyo_x = data[i]['x_coordinate'];
-            zahyo_y = data[i]['y_coordinate'];
-            path = data[i]['video_path'];
-            console.log('DONE', zahyo_x);
-            console.log('DONE', zahyo_y);
-            console.log('DONE', path);
-            judge = true;
-            i = i + 1;
+            // zahyo_x = data[i]['x_coordinate'];
+            // zahyo_y = data[i]['y_coordinate'];
+            // path = data[i]['video_path'];
+            // console.log('DONE', zahyo_x);
+            // console.log('DONE', zahyo_y);
+            // console.log('DONE', path);
+            // judge = true;
+            // i = i + 1;
             counter = data;
-
+            push();
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log('通信に失敗しました');
             console.log("XMLHttpRequest : " + XMLHttpRequest.status);
             console.log("textStatus     : " + textStatus);
             console.log("errorThrown    : " + errorThrown.message);
         });
-}
-
-
-window.onload = observe();
-function observe() {
-    if (judge == false) {
-        setInterval(observe, 100);
-    } else {
-        execute();
-    }
-};
-
-function wille() {
-
-    zahyo_x = counter[i]['x_coordinate'];
-    zahyo_y = counter[i]['y_coordinate'];
-    path = counter[i]['video_path'];
-    console.log('DONE', zahyo_x);
-    console.log('DONE', zahyo_y);
-    console.log('DONE', path);
-    judge = true;
-    i = i + 1;
-}
-
-
-function execute() {
-    zahyo_x = zahyo_x * 1600;
-    zahyo_y = zahyo_y * 1000;
-    ctx.drawImage(chara, zahyo_x, zahyo_y, 20, 20);
-    judge = false;
-
-    setTimeout("push()", 1);
-    setTimeout("wille()", 100);
 
 }
+
 
 function push() {
 
+    for (i = 0; i < 4; i++) {
+        zahyo_x = counter[i]['x_coordinate'];
+        zahyo_y = counter[i]['y_coordinate'];
+        path = counter[i]['video_path'];
+        console.log(zahyo_x);
+        console.log(zahyo_y);
+        console.log(path);
 
-    array.push(
-        {
-            "x": zahyo_x,
-            "y": zahyo_y,
-            "path": path
-        }
-    );
+        zahyo_x = zahyo_x * 1600;
+        zahyo_y = zahyo_y * 1000;
+        ctx.drawImage(chara, zahyo_x, zahyo_y, 20, 20);
 
-    r[f] = Math.sqrt(array[f]["x"] * array[f]["x"] + array[f]["y"] * array[f]["y"]);
-    console.log(r[f]);
-    f = f + 1;
+
+        array.push(
+            {
+                "x": zahyo_x,
+                "y": zahyo_y,
+                "path": path
+            }
+        );
+
+        r[i] = Math.sqrt(array[i]["x"] * array[i]["x"] + array[i]["y"] * array[i]["y"]);
+        console.log(r[i]);
+    }
 }
 
 function hikaku() {
-
-    // for (i = 0; i < array.length; i++) {
-    //     r[i] = Math.sqrt(array[i]["x"] * array[i]["x"] + array[i]["y"] * array[i]["y"]);
-    //     console.log(r[i]);
-    // }
 
     var value = Math.sqrt(x * x + y * y);
     console.log(value);
