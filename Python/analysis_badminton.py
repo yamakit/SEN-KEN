@@ -21,11 +21,8 @@ cur.close
 conn.commit()
 conn.close()
 
-cmd_file = 'C:\\Users\\procon\\Desktop\\2021SEN-KEN\\YOLOv3_badminton1.bat'
-
 ball_id = 1 # バレー:1 バド:2 テニス:3
 player_id = 1 # DBを参照
-
 rep_chk = 0
 print(folder)
 
@@ -35,8 +32,7 @@ for fl in folder:
     file_name = fl.replace(".MOV","")
     video_num = file_name[-4:]
     print(video_num)
-    command = cmd_file + " " + video_num
-    resutl = subprocess.run(['C:/Users/procon/Desktop/2021SEN-KEN/YOLOv3_badminton1.bat', video_num], shell=True)
+    result = subprocess.run(['"C:\\Users\\procon\\Desktop\\main\\SEN-KEN\\batfile\\YOLOv3_badminton.bat"', video_num], shell=True)
     conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
     cur = conn.cursor(buffered=True)
     cur.execute(f"UPDATE yolo_video_table SET yolo_flag = 1 WHERE video_path = '{fl}'")
