@@ -13,7 +13,7 @@ player_id = 1 # DBを参照
 
 conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
 cur = conn.cursor(buffered=True)
-cur.execute("SELECT video_path FROM yolo_video_table WHERE yolo_flag = 1")
+cur.execute("SELECT video_path FROM yolo_video_table WHERE yolo_flag = 1 and ball_id = 1")
 rows = cur.fetchall()
 folder = []
 for row in rows:

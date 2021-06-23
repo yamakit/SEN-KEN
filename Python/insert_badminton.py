@@ -16,14 +16,15 @@ cur.execute("SELECT video_path FROM yolo_video_table WHERE yolo_flag = 1 and bal
 rows = cur.fetchall()
 folder = []
 for row in rows:
-    row[0] = row[0].replace('IMG','ffmpeg')
-    row[0] = row[0].replace('MOV','json')
     folder.append(row[0])
 cur.close
 conn.commit()
 conn.close()
+rep_chk = 0
 
 for fl in folder:
+    fl = fl.replace('IMG', 'ffmpeg')
+    fl = fl.replace('MOV', 'json')
     print(fl + 'を処理中...')
     with open(fl, encoding="utf-8") as f:
         data_lines = f.read()
