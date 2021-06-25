@@ -8,10 +8,14 @@
     border-bottom: 3px solid #2979FF;
     margin: 0px 0 5px;
 }
+.line span{
+    color: #2979FF;
+}
 .img{
     position: fixed;
     right: 0px;
     top: 0px;
+    height: 25%;
 }
 .pic{
     width: calc(100% / 5);
@@ -29,18 +33,31 @@
 }
 .new{
     width: calc(100% / 5);
+    height: calc(100%/10);
     font-size: 20px;
     color: white;
     background-color: #2979FF;
     margin-left: 2%;
 }
+.math{
+    position: absolute;
+    font-size: 180%;
+    height: 60%;
+    margin: 1%;
+    width: 70%;
+}
+.math td{
+    border: solid 2px black;
+    border-radius: 3%;
+    text-align: center;
+}
 .button button{
     width: calc(100% / 4);
     height: calc(100% / 4);
-    font-size:20%;
+    font-size:3vh;
     color:#FFFFFF;
     background:#2979FF;
-    border-radius: 10px;
+    border-radius: 3%;
     margin: 2%;
     float: right;
 }
