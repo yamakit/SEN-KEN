@@ -1,3 +1,4 @@
+<!-- quiz本体 -->
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -5,19 +6,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache">
-    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="../CSS/index.css">
     <title>SEN-KENレシーバー向け予想クイズ</title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="../Javascript/index.js"></script>
-    <style>
-        video {
-            width: 1000px;
-            height: auto;
-        }
-    </style>
+    <script src="../Javascript/sample.js"></script>
 </head>
 
 <body>
+    <a>ボールの予測地点を選んでください</a>
+    <button class="home" onclick="location.href='./home.html'">ホーム画面へ</button>
+    <video id="video" autobuffer autoplay loop muted controls poster="MV/画像 -20210611-061000-241c5b65.png">
+        <source src="MV/IMG_0298.MOV"controls muted autoplay playinline loop >
+    </video>
+    <div class="content"> 
+        <div class="inner">
+            <button class = "btn1">1</button>
+            <button class = "btn2">2</button>
+            <button class = "btn3">3</button>
+            <button class = "btn4">4</button>
+            <button class = "btn5">5</button>
+            <button class = "btn6">6</button>
+            <button class = "btn7">7</button>
+            <button class = "btn8">8</button>
+            <button class = "btn9">9</button>
+        </div>
+    </div>
+</body>
+<!-- <body>
     <div class="example">
         <video id="mv" autobuffer autoplay loop muted controls poster="../00.jpg">
             <source src="" id="video" controls muted autoplay playinline loop>
@@ -32,8 +47,8 @@
             <button id="2" type="button" onclick="movplay(0); getId(this); apple()">2</button>
             <button id="3" type="button" onclick="movplay(0); getId(this); apple()">3</button>
             <button id="4" type="button" onclick="movplay(0); getId(this); apple()">4</button>
-            <!-- <button type="button" onclick="change();">動画切り替え</button> -->
-            <!-- <button type="button" onclick="movplay(1)">一時停止</button> -->
+             <button type="button" onclick="change();">動画切り替え</button> 
+             <button type="button" onclick="movplay(1)">一時停止</button>
         </form>
     </div>
     <a href="./home.html">
@@ -42,8 +57,6 @@
 
 
     <canvas id="c" width="480px" height="270px"></canvas>
-
-
-</body>
+</body>  -->
 
 </html>

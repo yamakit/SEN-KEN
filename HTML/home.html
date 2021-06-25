@@ -1,64 +1,48 @@
 <!-- home画面　ここからattackとindexへ -->
+<!-- test -->
 <!DOCTYPE html>
 <html lang="ja">
 
 <head>
-    <link rel="stylesheet" href="../CSS/home.css">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache">
-    <script src="correct.js"></script>
-    <script src="http://code.jquery.com/jquery-1.6.1.min.js"> </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link rel="stylesheet" href="../CSS/home.css">
     <title>SEN-KENホームページ</title>
-
 </head>
 
 <body>
     <h2 class="title">スポーツの予知能力をクイズで向上させる</h2>
     <h1 class="line">S<span>E</span>N-KEN</h1>
     <img class='img' src="MV/volleyball.png">
-
-
-    <!-- 
-    <form action="conn.php" method="post">
-        <button class="pic" type="submit" name="distribution">正解率分布図</button>
-        <button class="graph" type="submit" name="transition">正解率推移</button>
-    </form> -->
-    <input class="pic" type="button" value="正解率分布図" onclick="select()">
-    <input class="graph" type="button" value="正解率推移" onclick="chart()">
-
-    <form name=form1>
-        <select class="new" name='pull' onchange="select()">
-            <option value=10>直近10問</option>
-            <option value=50>直近50問</option>
-            <option value=100>直近100問</option>
-            <option value=300>直近300問</option>
-        </select>
-    </form>
+    <button class="pic">正解率分布図</button>
+    <button class="graph">正解率推移</button>
+    <select class="new"> 
+        <optgroup></optgroup>
+        <option>500問</option>
+        <option>100問</option>
+    </select>
     <table class="math">
         <tr>
-            <td id="td1"></td>
-            <td id="td2"></td>
-            <td id="td3"></td>
+            <td>60</td>
+            <td>70</td>
+            <td>80</td>
         </tr>
         <tr>
-            <td id="td4"></td>
-            <td id="td5"></td>
-            <td id="td6"></td>
+            <td>60</td>
+            <td>70</td>
+            <td>80</td>
         </tr>
         <tr>
-            <td id="td7"></td>
-            <td id="td8"></td>
-            <td id="td9"></td>
+            <td>60</td>
+            <td>70</td>
+            <td>80</td>
         </tr>
     </table>
     <div class="button">
         <button type="button" class='quiz' onclick="location.href='./index.html'">レシーバー向け予想クイズ</button>
         <button class='date' onclick="location.href='./attack.html'">アタッカー向け打ち方分析</button>
     </div>
-
 </body>
 <!-- ボタンを右に寄せる　グラフ入ってない URL先張り直し　-->
-
 </html>
