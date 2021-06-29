@@ -14,6 +14,18 @@
 </head>
 
 <body>
+
+    <script>
+        function test() {
+
+        var elm = document.getElementById('test_line');
+
+        elm.textContent = 'test change';
+        elm.style.background = '#ffcccc';
+
+        }
+    </script>
+
     <h2 class="title">スポーツの予知能力をクイズで向上させる</h2>
     <h1 class="line">S<span>E</span>N-KEN</h1>
     <img class='img' src="/2021SEN_KEN/volleyball.png">
@@ -33,23 +45,30 @@
             <option value=300>直近300問</option>
         </select>
     </form>
-    <table class="math">
-        <tr>
-            <td id="td1"></td>
-            <td id="td2"></td>
-            <td id="td3"></td>
-        </tr>
-        <tr>
-            <td id="td4"></td>
-            <td id="td5"></td>
-            <td id="td6"></td>
-        </tr>
-        <tr>
-            <td id="td7"></td>
-            <td id="td8"></td>
-            <td id="td9"></td>
-        </tr>
-    </table>
+    <div id="text">
+        <table class="math">
+            <tr>
+                <td id="td1"></td>
+                <td id="td2"></td>
+                <td id="td3"></td>
+            </tr>
+            <tr>
+                <td id="td4"></td>
+                <td id="td5"></td>
+                <td id="td6"></td>
+            </tr>
+            <tr>
+                <td id="td7"></td>
+                <td id="td8"></td>
+                <td id="td9"></td>
+            </tr>
+        </table>
+        <!-- <div id="linegraph">
+            <canvas id="mylinechart"></canvas>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+        </div> -->
+        
+    </div>
     <div class="button">
         <button type="button" class='quiz' onclick="location.href='./index.html'">レシーバー向け予想クイズ</button>
         <button class='date' onclick="location.href='./attack.html'">アタッカー向け打ち方分析</button>
