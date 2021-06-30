@@ -1,4 +1,3 @@
-
 var more;
 
 window.onload = function () {
