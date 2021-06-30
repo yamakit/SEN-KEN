@@ -18,6 +18,40 @@ var correct;
 let judge = 0;
 var more;
 
+// window.addEventListener('DOMContentLoaded', function () {
+function dofy() {
+
+    const videoElement = document.querySelector("video");
+    const btn_slow = document.getElementById("btn_slow");
+    const btn_normal = document.getElementById("btn_normal");
+    const btn_fast = document.getElementById("btn_fast");
+    const btn_veryfast = document.getElementById("btn_veryfast");
+
+    btn_slow.addEventListener("click", (e) => {
+        videoElement.playbackRate = 0.5;
+    });
+
+    btn_normal.addEventListener("click", (e) => {
+        videoElement.playbackRate = 1.0;
+    });
+
+    btn_fast.addEventListener("click", (e) => {
+        videoElement.playbackRate = 5.0;
+    });
+
+    btn_veryfast.addEventListener("click", (e) => {
+        videoElement.playbackRate = 10.0;
+    });
+    // });
+}
+
+function seeked() {
+
+    frame1.addEventListener('seeked', (event) => {
+        console.log('動画が探していた再生位置を見つけました。');
+        movplay();
+    });
+}
 function getId(ele) {
     button_id = ele.getAttribute("id"); // input要素のid属性の値を取得
     console.log(button_id);
@@ -57,6 +91,8 @@ function sent() {
             // console.log('DONE', user_id);
             console.log('正解のボタン番号', correct);
             mv.setAttribute("src", video_path);
+            dofy();
+            seeked();
             i = i + 1;
             console.log(i);
             x = data;
