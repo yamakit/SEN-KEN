@@ -31,20 +31,24 @@
     background-color: #2979FF;
     margin-left: 2%;
 }
+form{
+    display: inline;
+}
 .new{
     width: calc(100% / 5);
-    height: calc(100%/10);
+    height: calc(100% / 10);
     font-size: 20px;
     color: white;
     background-color: #2979FF;
     margin-left: 2%;
 }
-.math{
+.math{     /*ここ変更*/
     position: absolute;
     font-size: 180%;
     height: 60%;
     margin: 1%;
     width: 70%;
+    table-layout: fixed;
 }
 .math td{
     border: solid 2px black;
