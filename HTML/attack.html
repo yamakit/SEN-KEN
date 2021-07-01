@@ -8,31 +8,21 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="//code.createjs.com/easeljs-0.8.1.min.js"></script>
     <script type="text/javascript" src="//code.createjs.com/preloadjs-0.6.1.min.js"></script>
-    <link rel="stylesheet" href="../CSS/attack.css">
+
     <title>SEN-KENアタッカー向け打ち方分析</title>
+    <style>
+        video {
+            width: 1000px;
+            height: auto;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- <div id="plotdiv">
-        <canvas id="board" width="1600" height="1000"></canvas>
-    </div> -->
-    <a>アタッカー向け打ち分け分布</a>
-    <button class="home" onclick="location.href='./home.html'">ホーム画面へ</button>
-
     <div id="plotdiv">
-        <canvas id="board" width="1000" height="1000"></canvas>
+        <canvas id="board" width="1600" height="1000"></canvas>
     </div>
 
-    <div id="videodiv">
-        <video id="mv" autobuffer autoplay loop muted controls poster="../00.jpg">
-            <source src="" id="video" controls muted autoplay playinline loop>
-            <img id=ppp src="../00.jpg" />
-        </video>
-    </div>
-
-    <div id="buttondiv">
-        <button onclick="plot()">プロット画面に戻る</button>
-    </div>
     <!-- <div id="videodiv">
         <video id="mv" autobuffer autoplay loop muted controls poster="../00.jpg">
             <source src="" id="video" controls muted autoplay playinline loop>
@@ -43,6 +33,9 @@
     <!-- <div id="buttondiv">
         <button onclick="plot()">プロット画面に戻る</button>
     </div> -->
+
+    <button onclick="history.back()">ホームに戻る</button>
+
     <script src="../Javascript/attack.js"></script>
 </body>
 

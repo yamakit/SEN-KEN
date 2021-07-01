@@ -1,3 +1,4 @@
+var videoElement;
 function drawVideo() {
     var video = document.getElementById("mv");
     var canvas = document.getElementById("c");
@@ -17,11 +18,11 @@ var video_id;
 var correct;
 let judge = 0;
 var more;
+var nowTime;
 
-// window.addEventListener('DOMContentLoaded', function () {
 function dofy() {
 
-    const videoElement = document.querySelector("video");
+    videoElement = document.querySelector("video");
     const btn_slow = document.getElementById("btn_slow");
     const btn_normal = document.getElementById("btn_normal");
     const btn_fast = document.getElementById("btn_fast");
@@ -42,16 +43,11 @@ function dofy() {
     btn_veryfast.addEventListener("click", (e) => {
         videoElement.playbackRate = 10.0;
     });
-    // });
+
 }
 
-function seeked() {
 
-    frame1.addEventListener('seeked', (event) => {
-        console.log('動画が探していた再生位置を見つけました。');
-        movplay();
-    });
-}
+
 function getId(ele) {
     button_id = ele.getAttribute("id"); // input要素のid属性の値を取得
     console.log(button_id);
@@ -92,7 +88,7 @@ function sent() {
             console.log('正解のボタン番号', correct);
             mv.setAttribute("src", video_path);
             dofy();
-            seeked();
+            a();
             i = i + 1;
             console.log(i);
             x = data;
@@ -105,17 +101,34 @@ function sent() {
         });
 }
 
-window.setTimeout("view()", 1000);
+// window.setTimeout("view()", 1000);
 
 
-function view() {
+// function view() {
+//     frame1 = frame1 / 29.97;
+//     frame1 = frame1 * 1000;
+//     frame1 = frame1 - 1000;
+//     console.log(frame1);
+//     setTimeout(movplay, frame1);
+// }
+
+function a() {
     frame1 = frame1 / 29.97;
     frame1 = frame1 * 1000;
     frame1 = frame1 - 1000;
     console.log(frame1);
-    setTimeout(movplay, frame1);
+    videoElement.addEventListener("timeupdate", function () {
+        var submit = videoElement.currentTime * 1000;
+        // console.log(videoElement.currentTime)
+        console.log(frame1 - submit)
+        if (frame1 - submit < 1500) {
+            videoElement.playbackRate = 1.0;
+            var hold = frame1 - submit;
+            setTimeout("movplay()", hold);
+            console.log("セットタイムアウト呼び出しまで" + hold);
+        }
+    });
 }
-
 function change() {
 
     if (i === 10) {
@@ -124,7 +137,7 @@ function change() {
     else {
 
         setTimeout("wille()", 100);
-        setTimeout("view()", 1000);
+        // setTimeout("view()", 1000);
     }
 }
 
@@ -148,12 +161,11 @@ function wille() {
 
 
 function apple() {
-    // frame2 = frame2 / 29.97;
-    // frame2 = frame2 * 1000;
-    // console.log(frame2);
-    // setTimeout(movplay, frame2);
-    frame2 = 2000;
-    setTimeout(movplay, frame2);
+    frame2 = frame2 / 29.97;
+    frame2 = frame2 * 1000;
+    console.log(frame2);
+    // frame2 = 2000;
+    setTimeout("movplay()", frame2);
     // pop = frame2;
     // pop = pop + 3000;
 
