@@ -21,4 +21,4 @@ rem darknetを動かすフォルダへの移動
 cd C:\darknet\build\darknet\x64
 
 rem darknetの実行
-darknet detector test "C:\darknet\build\darknet\x64\cfg\volleyballdetect.data" "C:\darknet\build\darknet\x64\cfg\yolov3-spp_volleyballdetect.cfg" "C:\darknet\build\darknet\x64\data\volleyballdetect\yolov3-spp_volleyballdetect_best.weights" < "D:\htdocs\2021SEN_KEN\volleyball\1\ffmpeg_%1.txt" -dont_show -thresh 0.8 -ext_output -out "D:\htdocs\2021SEN_KEN\volleyball\1\ffmpeg_%1.json
+darknet detector test "C:\darknet\build\darknet\x64\cfg\volleyballdetect.data" "C:\darknet\build\darknet\x64\cfg\yolov3-spp_volleyballdetect.cfg" "C:\darknet\build\darknet\x64\data\volleyballdetect\yolov3-spp_volleyballdetect_best.weights" < "D:\htdocs\2021SEN_KEN\volleyball\1\ffmpeg_%1.txt" -dont_show -thresh 0.9 -ext_output -out "D:\htdocs\2021SEN_KEN\volleyball\1\ffmpeg_%1.json
