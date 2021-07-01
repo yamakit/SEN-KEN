@@ -101,20 +101,20 @@ for lap,fl in enumerate(folder):
         #     print(None)
         #     print(None)
         # print("-------------------------------")
-
-        for n,obj in enumerate(obj_list):
-            diff_tmp_y = obj['relative_coordinates']['center_y'] - data.loc[i-stack,'center_y']
-            diff_tmp_x = obj['relative_coordinates']['center_x'] - data.loc[i-stack,'center_x']
-            if(diff_tmp > m.sqrt(diff_tmp_x**2 + diff_tmp_y**2) or n == 0):
-                obj_n = n
-            diff_tmp = m.sqrt(diff_tmp_x**2 + diff_tmp_y**2)
-            y_points.append([i,obj['relative_coordinates']['center_y']])
-            ans.append([i,obj_list[obj_n]['relative_coordinates']['center_y']])
         if(obj_list):
-            coor_list.append([obj_list[obj_n]['relative_coordinates']['center_y'],obj_list[obj_n]['relative_coordinates']['center_x']])
-        else:
-            coor_list.append([np.nan,np.nan])
-            y_points.append([i,obj_list[obj_n]['relative_coordinates']['center_y']])
+            for n,obj in enumerate(obj_list):
+                diff_tmp_y = obj['relative_coordinates']['center_y'] - data.loc[i-stack,'center_y']
+                diff_tmp_x = obj['relative_coordinates']['center_x'] - data.loc[i-stack,'center_x']
+                if(diff_tmp > m.sqrt(diff_tmp_x**2 + diff_tmp_y**2) or n == 0):
+                    obj_n = n
+                diff_tmp = m.sqrt(diff_tmp_x**2 + diff_tmp_y**2)
+                y_points.append([i,obj['relative_coordinates']['center_y']])
+                ans.append([i,obj_list[obj_n]['relative_coordinates']['center_y']])
+            if(obj_list):
+                coor_list.append([obj_list[obj_n]['relative_coordinates']['center_y'],obj_list[obj_n]['relative_coordinates']['center_x']])
+            else:
+                coor_list.append([np.nan,np.nan])
+                y_points.append([i,obj_list[obj_n]['relative_coordinates']['center_y']])
 
     for f in range(0,len(coor_list)):
         data.loc[f,'original_y'] = coor_list[f][0]
