@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache">
+    <link rel="stylesheet" href="../CSS/home.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
     <title>SEN-KENホームページ</title>
@@ -12,15 +13,42 @@
 
 <body>
     <h1>SEN-KEN </h1>
-    <!-- <a href="./index.html">
-        <button type="button">レシーバー向け予想クイズ</button>
-    </a>
-    <a href="./attack.html">
-        <button type="button">アタッカー向け打ち方分析</button>
-    </a> -->
 
-    <button type="button" onclick="receive()">レシーバー向け予想クイズ</button>
-    <button type="button" onclick="attack()">アタッカー向け打ち方分析</button>
+    <h2 class="title">スポーツの予知能力をクイズで向上させる</h2>
+    <h1 class="line">SEN-KEN </h1>
+    <img class='img' src="../volleyball.png">
+    <button class="pic">正解率分布図</button>
+    <button class="graph">正解率推移</button>
+    <select class="new">
+        <optgroup></optgroup>
+        <option>500問</option>
+        <option>100問</option>
+    </select>
+
+    <table class="math">
+        <tr>
+            <td>60</td>
+            <td>70</td>
+            <td>80</td>
+        </tr>
+        <tr>
+            <td>60</td>
+            <td>70</td>
+            <td>80</td>
+        </tr>
+        <tr>
+            <td>60</td>
+            <td>70</td>
+            <td>80</td>
+        </tr>
+    </table>
+
+    <div class="button">
+        <button type="button" class='quiz' onclick="receive()">レシーバー向け予想クイズ</button>
+        <button type="button" class='date' onclick="attack()">アタッカー向け打ち方分析</button>
+    </div>
+
+
 
     <script src="../Javascript/home.js"></script>
 </body>

@@ -75,20 +75,22 @@ function sent() {
             console.log('DONE', data);
             console.log("通信が成功しました!!!");
             frame1 = data[i]['frame1'];
-            // frame2 = data[i]['frame2'];
+            frame2 = data[i]['frame2'];
             video_path = data[i]['video_path'];
             video_id = data[i]['video_id'];
             // user_id = data[i]['player_id'];
             correct = data[i]['ans_id'];
             console.log('DONE', frame1);
-            // console.log('DONE', frame2);
+            frame1 = frame1 / 29.97;
+            frame1 = frame1 * 1000;
+            frame1 = frame1 - 1000;
+            console.log('DONE', frame2);
             console.log('DONE', video_path);
             console.log('DONE', video_id);
             // console.log('DONE', user_id);
             console.log('正解のボタン番号', correct);
             mv.setAttribute("src", video_path);
             dofy();
-            a();
             i = i + 1;
             console.log(i);
             x = data;
@@ -101,7 +103,7 @@ function sent() {
         });
 }
 
-// window.setTimeout("view()", 1000);
+setTimeout("a()", 1000);
 
 
 // function view() {
@@ -112,20 +114,23 @@ function sent() {
 //     setTimeout(movplay, frame1);
 // }
 
+var trust = 0;
 function a() {
-    frame1 = frame1 / 29.97;
-    frame1 = frame1 * 1000;
-    frame1 = frame1 - 1000;
+    console.log("a()が呼び出されました！！");
+
     console.log(frame1);
     videoElement.addEventListener("timeupdate", function () {
         var submit = videoElement.currentTime * 1000;
         // console.log(videoElement.currentTime)
-        console.log(frame1 - submit)
-        if (frame1 - submit < 1500) {
+        console.log(frame1 - submit);
+        if (frame1 - submit < 3000 && trust == 0) {
+            selectdiv.style.display = "none";
             videoElement.playbackRate = 1.0;
             var hold = frame1 - submit;
             setTimeout("movplay()", hold);
-            console.log("セットタイムアウト呼び出しまで" + hold);
+            // console.log("セットタイムアウト呼び出しまで" + hold);
+            trust = 1;
+            console.log("trust :", trust);
         }
     });
 }
@@ -135,9 +140,10 @@ function change() {
         window.location = "../HTML/home.html";
     }
     else {
-
+        trust = 0;
         setTimeout("wille()", 100);
-        // setTimeout("view()", 1000);
+        setTimeout("a()", 1000);
+
     }
 }
 
@@ -145,26 +151,33 @@ function wille() {
 
     console.log(x);
     frame1 = x[i]['frame1'];
-    // frame2 = x[i]['frame2'];
+    frame2 = x[i]['frame2'];
     video_path = x[i]['video_path'];
     video_id = x[i]['video_id'];
-    correct = x[i]['button_id'];
-    console.log('DONE', frame1);
-    // console.log('DONE', frame2);
+    correct = x[i]['ans_id'];
+    console.log('frame1　前: ', frame1);
+    frame1 = frame1 / 29.97;
+    frame1 = frame1 * 1000;
+    frame1 = frame1 - 1000;
+    console.log('frame1　後: ', frame1);
+    console.log('DONE', frame2);
     console.log('DONE', video_path);
     console.log('DONE', video_id);
-    console.log('DONE', correct);
+    console.log('正解のボタン', correct);
     mv.setAttribute("src", video_path);
     i = i + 1;
     console.log(i);
+    dofy();
+    selectdiv.style.display = "block";
+    console.log("trust :", trust);
 }
 
 
 function apple() {
-    frame2 = frame2 / 29.97;
-    frame2 = frame2 * 1000;
-    console.log(frame2);
-    // frame2 = 2000;
+    // frame2 = frame2 / 29.97;
+    // frame2 = frame2 * 1000;
+    // console.log(frame2);
+    frame2 = 2000;
     setTimeout("movplay()", frame2);
     // pop = frame2;
     // pop = pop + 3000;
