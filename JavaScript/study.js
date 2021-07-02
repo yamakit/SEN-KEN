@@ -10,10 +10,6 @@ window.onload = function () {
     console.log("プレイヤーid :", more);
 }
 
-function receive() {
-    location.href = "http://localhost/HTML/index.html?data=" + more;
-}
-
-function attack() {
-    location.href = "http://localhost/HTML/attack.html?data=" + more;
+function push() {
+    location.href = "http://localhost/HTML/home.html?data=" + more;
 }

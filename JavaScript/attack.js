@@ -33,7 +33,7 @@ setTimeout(cut(), 1);
 function cut() {
     var data = location.href.split("?")[1];
     more = data.split("=")[1];
-    console.log(more);
+    console.log("プレイヤーid :", more);
 }
 
 setTimeout(sent(), 100);
@@ -129,6 +129,11 @@ function hikaku() {
 
 
 }
+
+// function push() {
+//     location.href = "http://localhost/HTML/home.html?data=" + more;
+// }
+
 
     // var text = document.getElementById("sendText").value;
 

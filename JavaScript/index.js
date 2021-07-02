@@ -21,7 +21,7 @@ var more;
 var nowTime;
 
 function dofy() {
-
+    console.log("dofy()が呼び出されました！！");
     videoElement = document.querySelector("video");
     const btn_slow = document.getElementById("btn_slow");
     const btn_normal = document.getElementById("btn_normal");
@@ -57,13 +57,15 @@ function getId(ele) {
 setTimeout(cut(), 1);
 
 function cut() {
+    console.log("cut()が呼び出されました！！");
     var data = location.href.split("?")[1];
     more = data.split("=")[1];
-    console.log(more);
+    console.log("プレイヤーid :", more);
 }
 
 setTimeout(sent(), 100);
 function sent() {
+    console.log("sent()が呼び出されました！！");
     $.ajax({
         type: "GET",
         url: "../PHP/index.php",
@@ -124,23 +126,26 @@ function a() {
         // console.log(videoElement.currentTime)
         console.log(frame1 - submit);
         if (frame1 - submit < 3000 && trust == 0) {
+            console.log("変わり目");
             selectdiv.style.display = "none";
             videoElement.playbackRate = 1.0;
             var hold = frame1 - submit;
             setTimeout("movplay()", hold);
             // console.log("セットタイムアウト呼び出しまで" + hold);
             trust = 1;
-            console.log("trust :", trust);
+            // console.log("trust :", trust);
         }
     });
 }
 function change() {
+    console.log("change()が呼び出されました！！");
 
     if (i === 10) {
         window.location = "../HTML/home.html";
     }
     else {
         trust = 0;
+        // console.log("trust :", trust);
         setTimeout("wille()", 100);
         setTimeout("a()", 1000);
 
@@ -148,7 +153,7 @@ function change() {
 }
 
 function wille() {
-
+    console.log("wille()が呼び出されました！！");
     console.log(x);
     frame1 = x[i]['frame1'];
     frame2 = x[i]['frame2'];
@@ -169,11 +174,12 @@ function wille() {
     console.log(i);
     dofy();
     selectdiv.style.display = "block";
-    console.log("trust :", trust);
+    // console.log("trust :", trust);
 }
 
 
 function apple() {
+    console.log("apple()が呼び出されました！！");
     // frame2 = frame2 / 29.97;
     // frame2 = frame2 * 1000;
     // console.log(frame2);
@@ -195,11 +201,13 @@ function movplay(num) {
         obj.play();
     }
     else {
+
         obj.pause();
     }
 }
 
 function compare() {
+    console.log("compare()が呼び出されました！！");
     if (correct === button_id) {
         setTimeout("change()", 2000);
         console.log("あってるよ！！！")
@@ -214,10 +222,18 @@ function compare() {
     }
 }
 function out() {
+    console.log("out()が呼び出されました！！");
     window.location = "../HTML/study.html";
+    location.href = "http://localhost/HTML/study.html?data=" + more;
+
+}
+
+function push() {
+    location.href = "http://localhost/HTML/home.html?data=" + more;
 }
 
 function send() {
+    console.log("send()が呼び出されました！！");
     $.ajax({
         type: "GET",
         url: "../PHP/insert.php",
