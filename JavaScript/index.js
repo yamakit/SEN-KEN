@@ -1,9 +1,9 @@
 var videoElement;
-function drawVideo() {
-    var video = document.getElementById("mv");
-    var canvas = document.getElementById("c");
-    canvas.getContext("2d").drawImage(video, 0, 0, 480, 270);
-}
+// function drawVideo() {
+//     var video = document.getElementById("mv");
+//     // var canvas = document.getElementById("c");
+//     // canvas.getContext("2d").drawImage(video, 0, 0, 480, 270);
+// }
 
 var frame1 = 0;
 var frame2 = 0;
@@ -22,6 +22,7 @@ var nowTime;
 
 function dofy() {
     console.log("dofy()が呼び出されました！！");
+    buttondiv.style.display = "none";
     videoElement = document.querySelector("video");
     const btn_slow = document.getElementById("btn_slow");
     const btn_normal = document.getElementById("btn_normal");
@@ -94,9 +95,10 @@ function sent() {
             mv.setAttribute("src", video_path);
             dofy();
             i = i + 1;
-            console.log(i);
+            console.log("カウンター：", i);
             x = data;
             console.log(x);
+            a();
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log('通信に失敗しました');
             console.log("XMLHttpRequest : " + XMLHttpRequest.status);
@@ -104,17 +106,6 @@ function sent() {
             console.log("errorThrown    : " + errorThrown.message);
         });
 }
-
-setTimeout("a()", 1000);
-
-
-// function view() {
-//     frame1 = frame1 / 29.97;
-//     frame1 = frame1 * 1000;
-//     frame1 = frame1 - 1000;
-//     console.log(frame1);
-//     setTimeout(movplay, frame1);
-// }
 
 var trust = 0;
 function a() {
@@ -131,8 +122,8 @@ function a() {
             videoElement.playbackRate = 1.0;
             var hold = frame1 - submit;
             setTimeout("movplay()", hold);
-            // console.log("セットタイムアウト呼び出しまで" + hold);
             trust = 1;
+
             // console.log("trust :", trust);
         }
     });
@@ -140,14 +131,14 @@ function a() {
 function change() {
     console.log("change()が呼び出されました！！");
 
-    if (i === 10) {
-        window.location = "../HTML/home.html";
+    if (i === 4) {
+        location.href = "http://localhost/HTML/result.html?data=" + more + "|" + kazu + "|" + result;
     }
     else {
         trust = 0;
         // console.log("trust :", trust);
         setTimeout("wille()", 100);
-        setTimeout("a()", 1000);
+        // setTimeout("a()", 1000);
 
     }
 }
@@ -171,7 +162,7 @@ function wille() {
     console.log('正解のボタン', correct);
     mv.setAttribute("src", video_path);
     i = i + 1;
-    console.log(i);
+    console.log("カウンター：", i);
     dofy();
     selectdiv.style.display = "block";
     // console.log("trust :", trust);
@@ -201,35 +192,40 @@ function movplay(num) {
         obj.play();
     }
     else {
-
+        buttondiv.style.display = "block";
         obj.pause();
     }
 }
 
+var kazu = 0;
+var result = 0;
 function compare() {
     console.log("compare()が呼び出されました！！");
     if (correct === button_id) {
         setTimeout("change()", 2000);
         console.log("あってるよ！！！")
         judge = 1;
+        result += 1;
+        kazu += 1;
         setTimeout("send()", 100);
 
     }
     else {
         setTimeout("out()", 2000)
         console.log("まちがってるよ！！！");
+        kazu += 1;
         setTimeout("send()", 100);
     }
 }
 function out() {
     console.log("out()が呼び出されました！！");
-    window.location = "../HTML/study.html";
-    location.href = "http://localhost/HTML/study.html?data=" + more;
+    // window.location = "../HTML/study.html";
+    location.href = "http://localhost/HTML/study.html?data=" + more + "|" + correct + "|" + kazu + "|" + result;
 
 }
 
 function push() {
-    location.href = "http://localhost/HTML/home.html?data=" + more;
+    location.href = "http://localhost/HTML/result.html?data=" + more + "|" + kazu + "|" + result;
 }
 
 function send() {
