@@ -4,7 +4,7 @@
 
 $player_id = $_GET['player_id'];
 
-$dsn = 'mysql:dbname=sen-ken;host=localhost';
+$dsn = 'mysql:dbname=test;host=localhost';
 $user = 'root';
 $password = '';
 $result = array();

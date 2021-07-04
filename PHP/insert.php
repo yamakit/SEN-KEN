@@ -7,7 +7,7 @@ if(!empty($_GET)){
     $button_id = $_GET['button_id'];
     $judge = $_GET['judge'];
     
-    $dsn = 'mysql:dbname=sen-ken;host=localhost';
+    $dsn = 'mysql:dbname=test;host=localhost';
     $user = 'root';
     $password = '';
     $result = array();
