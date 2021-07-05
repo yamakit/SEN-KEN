@@ -17,9 +17,11 @@ window.onload = function () {
     //     fff.innerHTML = "あなた問題解いてないね！"
     // } else {
 
-    if (most == 0) {
+    if (most == "undefined") {
+        most = 0;
+        mostest = 0;
         percentage = 0;
-        console.log("こっちだよー");
+        console.log("undefined発見！！");
     } else {
         percentage = mostest / most * 100;
         console.log("正解率：", percentage);

@@ -18,7 +18,9 @@ var video_id;
 var correct;
 let judge = 0;
 var more;
-var nowTime;
+var x_coordinate = 0;
+var y_coordinate = 0;
+
 
 function dofy() {
     console.log("dofy()が呼び出されました！！");
@@ -84,6 +86,10 @@ function sent() {
             video_id = data[i]['video_id'];
             // user_id = data[i]['player_id'];
             correct = data[i]['ans_id'];
+            x_coordinate = data[i]['x_coordinate'];
+            y_coordinate = data[i]['y_coordinate'];
+            console.log("x座標：", x_coordinate);
+            console.log("y座標：", y_coordinate);
             console.log('frame1　前: ', frame1);
             frame1 = frame1 / 29.97;
             frame1 = frame1 * 1000;
@@ -154,6 +160,8 @@ function wille() {
     video_path = x[i]['video_path'];
     video_id = x[i]['video_id'];
     correct = x[i]['ans_id'];
+    x_coordinate = x[i]['x_coordinate'];
+    y_coordinate = x[i]['y_coordinate'];
     console.log('frame1　前: ', frame1);
     frame1 = frame1 / 29.97;
     frame1 = frame1 * 1000;
@@ -163,6 +171,8 @@ function wille() {
     console.log('DONE', video_path);
     console.log('DONE', video_id);
     console.log('正解のボタン', correct);
+    console.log("x座標：", x_coordinate);
+    console.log("y座標：", y_coordinate);
     mv.setAttribute("src", video_path);
     i = i + 1;
     console.log("カウンター：", i);
@@ -200,8 +210,8 @@ function movplay(num) {
     }
 }
 
-var kazu = 0;
-var result = 0;
+var kazu;
+var result;
 function compare() {
     console.log("compare()が呼び出されました！！");
     if (correct === button_id) {
@@ -212,6 +222,7 @@ function compare() {
         judge = 1;
         result += 1;
         kazu += 1;
+        console.log("kazu", kazu);
         setTimeout(send, 100);
 
     }
@@ -242,8 +253,10 @@ function send() {
         data: {
             "video_id": video_id,
             "button_id": button_id,
-            "player_id": more,
-            "judge": judge
+            "user_id": more,
+            "judge": judge,
+            "x_coordinate": x_coordinate,
+            "y_coordinate": y_coordinate,
         },
     })
         .done(function (data) {
