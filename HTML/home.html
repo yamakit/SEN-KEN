@@ -1,55 +1,56 @@
+<!-- home画面　ここからattackとindexへ -->
 <!DOCTYPE html>
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../CSS/home.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache">
-    <link rel="stylesheet" href="../CSS/home.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
+    <script src="../JavaScript/correct.js"></script>
+    <script src="http://code.jquery.com/jquery-1.6.1.min.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <title>SEN-KENホームページ</title>
 </head>
 
 <body>
-
     <h2 class="title">スポーツの予知能力をクイズで向上させる</h2>
-    <h1 class="line">SEN-KEN </h1>
-    <img class='img' src="../volleyball.png">
-    <button class="pic">正解率分布図</button>
-    <button class="graph">正解率推移</button>
-    <select class="new">
-        <optgroup></optgroup>
-        <option>500問</option>
-        <option>100問</option>
-    </select>
-
+    <h1 class="line">S<span>E</span>N-KEN</h1>
+    <img class='img' src="..//volleyball.png">
+    <input class="pic" type="button" value="正解率分布図" onclick="select()">
+    <input class="graph" type="button" value="正解率推移" onclick="chart()">
+    <div style="width:100%">
+        <canvas id="myChart"></canvas>
+    </div>
+    <form name=form1>
+        <select class="new" name='pull' onchange="chart()">
+            <option value=10>直近10問</option>
+            <option value=50>直近50問</option>
+            <option value=100>直近100問</option>
+            <option value=300>直近300問</option>
+        </select>
+    </form>
     <table class="math">
         <tr>
-            <td>60</td>
-            <td>70</td>
-            <td>80</td>
+            <td id="td1"></td>
+            <td id="td2"></td>
+            <td id="td3"></td>
         </tr>
         <tr>
-            <td>60</td>
-            <td>70</td>
-            <td>80</td>
+            <td id="td4"></td>
+            <td id="td5"></td>
+            <td id="td6"></td>
         </tr>
         <tr>
-            <td>60</td>
-            <td>70</td>
-            <td>80</td>
+            <td id="td7"></td>
+            <td id="td8"></td>
+            <td id="td9"></td>
         </tr>
     </table>
-
     <div class="button">
-        <button type="button" class='quiz' onclick="receive()">レシーバー向け予想クイズ</button>
-        <button type="button" class='date' onclick="attack()">アタッカー向け打ち方分析</button>
+        <button type="button" class='quiz' onclick="location.href='./index.html'">レシーバー向け予想クイズ</button>
+        <button class='date' onclick="location.href='./attack.html'">アタッカー向け打ち方分析</button>
     </div>
-
-
-
-    <script src="../Javascript/home.js"></script>
 </body>
 
 </html>
