@@ -3,7 +3,7 @@
 
 if(!empty($_GET)){
     $video_id = $_GET['video_id'];
-    $user_id = $_GET['user_id'];
+    $player_id = $_GET['player_id'];
     $button_id = $_GET['button_id'];
     $judge = $_GET['judge'];
     
@@ -17,7 +17,7 @@ if(!empty($_GET)){
         
         // echo "<p>DB接続に成功しました。</p>";
 
-        $sql = "INSERT INTO `answer_table`(`ball_id`, `yolo_video_id`, `user_id`, `button_id`, `judge`, `datetime`) VALUES (1, $video_id, $user_id, $button_id, $judge, NOW())";
+        $sql = "INSERT INTO `answer_table`(`ball_id`, `yolo_video_id`, `player_id`, `button_id`, `judge`, `datetime`) VALUES (1, $video_id, $player_id, $button_id, $judge, NOW())";
         $dbh->exec($sql);
     } catch (Exception $e) {
         // echo "<p>DB接続エラー</p>";

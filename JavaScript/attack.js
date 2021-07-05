@@ -10,7 +10,7 @@ board.addEventListener("click", (e) => {
     x = e.clientX - rect.left
     y = e.clientY - rect.top
     console.log(`${x}:${y}`)
-    setTimeout("hikaku()", 100);
+    setTimeout(hikaku, 100);
 });
 const chara = new Image();
 chara.src = "../valley.png";  // 画像のURLを指定
@@ -28,17 +28,18 @@ var r = [];
 var text;
 var more;
 
-setTimeout(cut(), 1);
+setTimeout(cut, 1);
 
 function cut() {
     var data = location.href.split("?")[1];
     more = data.split("=")[1];
     console.log("プレイヤーid :", more);
+    sent();
 }
 
-setTimeout(sent(), 100);
-// window.onload = sent(); window.onloadを二つ使うのはダメ
+// setTimeout(sent, 500);
 function sent() {
+    console.log("sent()が呼び出されました！！");
     $.ajax({
         type: "GET",
         url: "../PHP/attack.php",
@@ -48,6 +49,8 @@ function sent() {
         .done(function (data) {
             console.log('DONE', data);
             console.log("通信が成功しました!!!");
+            counter = data;
+            push();
             // zahyo_x = data[i]['x_coordinate'];
             // zahyo_y = data[i]['y_coordinate'];
             // path = data[i]['video_path'];
@@ -56,8 +59,6 @@ function sent() {
             // console.log('DONE', path);
             // judge = true;
             // i = i + 1;
-            counter = data;
-            push();
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log('通信に失敗しました');
             console.log("XMLHttpRequest : " + XMLHttpRequest.status);

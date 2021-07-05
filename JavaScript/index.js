@@ -55,16 +55,17 @@ function getId(ele) {
 }
 
 
-setTimeout(cut(), 1);
+setTimeout(cut, 1);
 
 function cut() {
     console.log("cut()が呼び出されました！！");
     var data = location.href.split("?")[1];
     more = data.split("=")[1];
     console.log("プレイヤーid :", more);
+    sent();
 }
 
-setTimeout(sent(), 100);
+
 function sent() {
     console.log("sent()が呼び出されました！！");
     $.ajax({
@@ -83,16 +84,18 @@ function sent() {
             video_id = data[i]['video_id'];
             // user_id = data[i]['player_id'];
             correct = data[i]['ans_id'];
-            console.log('DONE', frame1);
+            console.log('frame1　前: ', frame1);
             frame1 = frame1 / 29.97;
             frame1 = frame1 * 1000;
-            frame1 = frame1 - 1000;
+            // frame1 = frame1 - 1000;
+            console.log('frame1　後: ', frame1);
             console.log('DONE', frame2);
             console.log('DONE', video_path);
             console.log('DONE', video_id);
             // console.log('DONE', user_id);
             console.log('正解のボタン番号', correct);
             mv.setAttribute("src", video_path);
+            console.log("動画が流れます")
             dofy();
             i = i + 1;
             console.log("カウンター：", i);
@@ -116,32 +119,32 @@ function a() {
         var submit = videoElement.currentTime * 1000;
         // console.log(videoElement.currentTime)
         console.log(frame1 - submit);
-        if (frame1 - submit < 3000 && trust == 0) {
+        if (frame1 - submit < 2000 && trust == 0) {
             console.log("変わり目");
             selectdiv.style.display = "none";
             videoElement.playbackRate = 1.0;
             var hold = frame1 - submit;
-            setTimeout("movplay()", hold);
+            setTimeout(movplay, hold);
             trust = 1;
 
             // console.log("trust :", trust);
         }
     });
 }
-function change() {
-    console.log("change()が呼び出されました！！");
+// function change() {
+//     console.log("change()が呼び出されました！！");
 
-    if (i === 4) {
-        location.href = "http://localhost/HTML/result.html?data=" + more + "|" + kazu + "|" + result;
-    }
-    else {
-        trust = 0;
-        // console.log("trust :", trust);
-        setTimeout("wille()", 100);
-        // setTimeout("a()", 1000);
+//     if (i === 4) {
+//         location.href = "http://localhost/HTML/result.html?data=" + more + "|" + kazu + "|" + result;
+//     }
+//     else {
+//         trust = 0;
+//         // console.log("trust :", trust);
+//         setTimeout(wille, 100);
+//         // setTimeout(a, 1000);
 
-    }
-}
+//     }
+// }
 
 function wille() {
     console.log("wille()が呼び出されました！！");
@@ -154,7 +157,7 @@ function wille() {
     console.log('frame1　前: ', frame1);
     frame1 = frame1 / 29.97;
     frame1 = frame1 * 1000;
-    frame1 = frame1 - 1000;
+    // frame1 = frame1 - 1000;
     console.log('frame1　後: ', frame1);
     console.log('DONE', frame2);
     console.log('DONE', video_path);
@@ -171,18 +174,18 @@ function wille() {
 
 function apple() {
     console.log("apple()が呼び出されました！！");
-    // frame2 = frame2 / 29.97;
-    // frame2 = frame2 * 1000;
-    // console.log(frame2);
-    frame2 = 2000;
-    setTimeout("movplay()", frame2);
-    // pop = frame2;
-    // pop = pop + 3000;
+    console.log('frame2　前: ', frame2);
+    frame2 = frame2 / 29.97;
+    frame2 = frame2 * 1000;
+    console.log('frame2　後: ', frame2);
+    frame_sa = frame2 - frame1;
+    console.log("次止まるまで：", frame_sa);
+    // frame2 = 2000;
+    setTimeout(movplay, frame_sa);
 
-    quiet = frame2;
+    quiet = frame_sa;
     quiet = quiet + 1000;
-    // setTimeout("change()", pop);
-    setTimeout("compare()", quiet);
+    setTimeout(compare, quiet);
 }
 
 function movplay(num) {
@@ -202,19 +205,21 @@ var result = 0;
 function compare() {
     console.log("compare()が呼び出されました！！");
     if (correct === button_id) {
-        setTimeout("change()", 2000);
+        // setTimeout(change, 2000);
+        trust = 0;
+        setTimeout(wille, 2000);
         console.log("あってるよ！！！")
         judge = 1;
         result += 1;
         kazu += 1;
-        setTimeout("send()", 100);
+        setTimeout(send, 100);
 
     }
     else {
-        setTimeout("out()", 2000)
+        setTimeout(out, 2000);
         console.log("まちがってるよ！！！");
         kazu += 1;
-        setTimeout("send()", 100);
+        setTimeout(send, 100);
     }
 }
 function out() {
@@ -237,7 +242,7 @@ function send() {
         data: {
             "video_id": video_id,
             "button_id": button_id,
-            "user_id": more,
+            "player_id": more,
             "judge": judge
         },
     })
