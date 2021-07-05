@@ -1,29 +1,16 @@
-//プルダウンに変更があった時実行
+var count = 0;
 function select() {
     const question = document.form1.pull;//要素を取得
     const num = question.selectedIndex;//選択されている要素の番号を格納する
     const str = question.options[num].value;//選択されたオプションの決められたvalueを格納する
     console.log(str);
 
-    const url = 'conn.php?begin=' + str;
+    const url = '../PHP/conn.php?begin=' + str;
     let response = fetch(url)
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            // const button = [];
-            // const button_rate = [];
-            // for (let i = 1; i < 9; i++) {
-            //     button.push(data[i]['correct_count'] + "/" + data[i]['question_count'])
-            //     button_rate.push(data[i]['correct_rate']);
-            // }
-            // console.log(button[0])
-            // if (data[0]['question_count'] == 0) {
-            //     const button1 = 0 + "/" + 0;
-            //     //const button1_rate = 100;
-            // } else {
-            //     const button1 = data[0]['correct_count'] + "/" + data[0]['question_count']
-            //     const button1_rate = data[0]['correct_rate'];
-            // }
+
             const button1 = data[0]['correct_count'] + "/" + data[0]['question_count']
             const button2 = data[1]['correct_count'] + "/" + data[1]['question_count']
             const button3 = data[2]['correct_count'] + "/" + data[2]['question_count']
@@ -64,6 +51,84 @@ function select() {
 }
 
 function chart() {
-    console.log(total);
-}
+    const question = document.form1.pull;//要素を取得
+    const num = question.selectedIndex;//選択されている要素の番号を格納する
+    const str = question.options[num].value;//選択されたオプションの決められたvalueを格納する
+    console.log(str);
 
+    const url = '../PHP/chart.php?begin=' + str;
+    let response = fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            labels = []; //ajaxのたびに初期化するので[]を代入する
+            datasets = [];
+
+            datasets['y'] = {
+                label: 'aaa',
+                data: [],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1,
+                lineTension: 0,
+                fill: false,
+                borderWidth: 3
+
+            };
+
+
+            var x = 0;
+            $.each(data, function (index) {
+                if (data[index].judge == 1) {
+
+                    x = count++;
+                    console.log(x);
+                    // labels.push(index);
+                    // datasets['y']['data'].push(x); //1個目のデータセットを追加
+                }
+                labels.push(index+1);
+                datasets['y']['data'].push(x); //1個目のデータセットを追加
+            });
+
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,//各棒の名前（name)
+                    // labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'ほげ'],//各棒の名前（name)
+                    datasets: [datasets['y']]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                userCallback: function(label, index, labels) {
+                                    if (Math.floor(label) === label) {
+                                      return label;
+                                    }
+                                  }
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+
+
+
+}
