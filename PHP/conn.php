@@ -3,7 +3,11 @@
 //mysqlのパスワード
 define('DB_USERNAME','root');
 define('DB_PASSWORD','');
+<<<<<<< HEAD
 define('PDO_DSN','mysql:host=localhost;dbname=SEN-KEN;charset=utf8');
+=======
+define('PDO_DSN','mysql:host=localhost;dbname=test;charset=utf8');
+>>>>>>> demo
 try
 {
 // mysql接続
@@ -11,7 +15,11 @@ $db = new PDO(PDO_DSN, DB_USERNAME, DB_PASSWORD);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 //プルダウンの選択を受け取る
 $begin = $_GET["begin"];
+<<<<<<< HEAD
 $stmt = $db->query("SELECT * FROM `answer_table` WHERE `user_id` = 1 LIMIT {$begin}");
+=======
+$stmt = $db->query("SELECT * FROM `answer_table` WHERE `user_id` = 2 LIMIT {$begin}");
+>>>>>>> demo
 $user_filtered = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     catch(PDOException $e)
@@ -60,5 +68,9 @@ $result = array_map(function($num) use ($user_filtered) {
 header('Content-type: application/json');
 $json = json_encode($result,JSON_UNESCAPED_UNICODE);
 echo json_encode($result,JSON_UNESCAPED_UNICODE);
+<<<<<<< HEAD
 ?>
 
+=======
+?>
+>>>>>>> demo

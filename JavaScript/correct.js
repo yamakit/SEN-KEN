@@ -1,4 +1,3 @@
-//プルダウンに変更があった時実行
 var count = 0;
 function select() {
     const question = document.form1.pull;//要素を取得
@@ -11,20 +10,7 @@ function select() {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            // const button = [];
-            // const button_rate = [];
-            // for (let i = 1; i < 9; i++) {
-            //     button.push(data[i]['correct_count'] + "/" + data[i]['question_count'])
-            //     button_rate.push(data[i]['correct_rate']);
-            // }
-            // console.log(button[0])
-            // if (data[0]['question_count'] == 0) {
-            //     const button1 = 0 + "/" + 0;
-            //     //const button1_rate = 100;
-            // } else {
-            //     const button1 = data[0]['correct_count'] + "/" + data[0]['question_count']
-            //     const button1_rate = data[0]['correct_rate'];
-            // }
+
             const button1 = data[0]['correct_count'] + "/" + data[0]['question_count']
             const button2 = data[1]['correct_count'] + "/" + data[1]['question_count']
             const button3 = data[2]['correct_count'] + "/" + data[2]['question_count']
@@ -114,7 +100,7 @@ function chart() {
                     // labels.push(index);
                     // datasets['y']['data'].push(x); //1個目のデータセットを追加
                 }
-                labels.push(index);
+                labels.push(index+1);
                 datasets['y']['data'].push(x); //1個目のデータセットを追加
             });
 
@@ -130,7 +116,12 @@ function chart() {
                     scales: {
                         yAxes: [{
                             ticks: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                userCallback: function(label, index, labels) {
+                                    if (Math.floor(label) === label) {
+                                      return label;
+                                    }
+                                  }
                             }
                         }]
                     }
@@ -141,4 +132,3 @@ function chart() {
 
 
 }
-

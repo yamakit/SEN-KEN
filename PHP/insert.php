@@ -9,7 +9,7 @@ if(!empty($_GET)){
     $x_coordinate = $_GET['x_coordinate'];
     $y_coordinate = $_GET['y_coordinate'];
     
-    $dsn = 'mysql:dbname=sen-ken;host=localhost';
+    $dsn = 'mysql:dbname=test;host=localhost';
     $user = 'root';
     $password = '';
     $result = array();
