@@ -49,11 +49,14 @@ function dofy() {
 
 }
 
+var stop_renda = 0;
 
 
 function getId(ele) {
-    button_id = ele.getAttribute("id"); // input要素のid属性の値を取得
-    console.log(button_id);
+    if (stop_renda == 0) {
+        button_id = ele.getAttribute("id"); // input要素のid属性の値を取得
+        console.log(button_id);
+    }
 }
 
 
@@ -154,6 +157,7 @@ function a() {
 
 function wille() {
     console.log("wille()が呼び出されました！！");
+    stop_renda = 0;
     console.log(x);
     frame1 = x[i]['frame1'];
     frame2 = x[i]['frame2'];
@@ -183,19 +187,22 @@ function wille() {
 
 
 function apple() {
-    console.log("apple()が呼び出されました！！");
-    console.log('frame2　前: ', frame2);
-    frame2 = frame2 / 29.97;
-    frame2 = frame2 * 1000;
-    console.log('frame2　後: ', frame2);
-    frame_sa = frame2 - frame1;
-    console.log("次止まるまで：", frame_sa);
-    // frame2 = 2000;
-    setTimeout(movplay, frame_sa);
+    if (stop_renda == 0) {
+        stop_renda = stop_renda + 1;
+        console.log("apple()が呼び出されました！！");
+        console.log('frame2　前: ', frame2);
+        frame2 = frame2 / 29.97;
+        frame2 = frame2 * 1000;
+        console.log('frame2　後: ', frame2);
+        frame_sa = frame2 - frame1;
+        console.log("次止まるまで：", frame_sa);
+        // frame2 = 2000;
+        setTimeout(movplay, frame_sa);
 
-    quiet = frame_sa;
-    quiet = quiet + 1000;
-    setTimeout(compare, quiet);
+        quiet = frame_sa;
+        quiet = quiet + 1000;
+        setTimeout(compare, quiet);
+    }
 }
 
 function movplay(num) {
