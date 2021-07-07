@@ -30,21 +30,26 @@ function dofy() {
     const btn_fast = document.getElementById("btn_fast");
     const btn_veryfast = document.getElementById("btn_veryfast");
 
+    btn_veryslow.addEventListener("click", (e) => {
+        videoElement.playbackRate = 2.5;
+    });
+
     btn_slow.addEventListener("click", (e) => {
-        videoElement.playbackRate = 0.5;
-    });
-
-    btn_normal.addEventListener("click", (e) => {
-        videoElement.playbackRate = 1.0;
-    });
-
-    btn_fast.addEventListener("click", (e) => {
         videoElement.playbackRate = 5.0;
     });
 
-    btn_veryfast.addEventListener("click", (e) => {
+    btn_normal.addEventListener("click", (e) => {
+        videoElement.playbackRate = 7.5;
+    });
+
+    btn_fast.addEventListener("click", (e) => {
         videoElement.playbackRate = 10.0;
     });
+
+    btn_veryfast.addEventListener("click", (e) => {
+        videoElement.playbackRate = 12.5;
+    });
+    videoElement.playbackRate = 7.5;
 
 }
 
