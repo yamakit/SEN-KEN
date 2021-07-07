@@ -1,10 +1,4 @@
 var videoElement;
-// function drawVideo() {
-//     var video = document.getElementById("mv");
-//     // var canvas = document.getElementById("c");
-//     // canvas.getContext("2d").drawImage(video, 0, 0, 480, 270);
-// }
-
 var frame1 = 0;
 var frame2 = 0;
 var video_path;
@@ -20,11 +14,16 @@ let judge = 0;
 var more;
 var x_coordinate = 0;
 var y_coordinate = 0;
+var kazu;
+var result;
 
 
 function dofy() {
     console.log("dofy()が呼び出されました！！");
     buttondiv.style.display = "none";
+    marudiv.style.display = "none";
+    batsudiv.style.display = "none";
+    resultdiv.style.display = "none";
     videoElement = document.querySelector("video");
     const btn_slow = document.getElementById("btn_slow");
     const btn_normal = document.getElementById("btn_normal");
@@ -65,8 +64,14 @@ setTimeout(cut, 1);
 function cut() {
     console.log("cut()が呼び出されました！！");
     var data = location.href.split("?")[1];
-    more = data.split("=")[1];
+    var text = data.split("=")[1];
+    console.log(text);
+    more = text.split("|")[0];
     console.log("プレイヤーid :", more);
+    kazu = text.split("|")[1];
+    console.log("解いた問題数：", kazu);
+    result = text.split("|")[2];
+    console.log("正解した数：", result);
     sent();
 }
 
@@ -96,7 +101,7 @@ function sent() {
             console.log('frame1　前: ', frame1);
             frame1 = frame1 / 29.97;
             frame1 = frame1 * 1000;
-            // frame1 = frame1 - 1000;
+            frame1 = frame1 - 500;
             console.log('frame1　後: ', frame1);
             console.log('DONE', frame2);
             console.log('DONE', video_path);
@@ -169,7 +174,7 @@ function wille() {
     console.log('frame1　前: ', frame1);
     frame1 = frame1 / 29.97;
     frame1 = frame1 * 1000;
-    // frame1 = frame1 - 1000;
+    frame1 = frame1 - 500;
     console.log('frame1　後: ', frame1);
     console.log('DONE', frame2);
     console.log('DONE', video_path);
@@ -193,6 +198,7 @@ function apple() {
         console.log('frame2　前: ', frame2);
         frame2 = frame2 / 29.97;
         frame2 = frame2 * 1000;
+        frame2 = frame2 - 500;
         console.log('frame2　後: ', frame2);
         frame_sa = frame2 - frame1;
         console.log("次止まるまで：", frame_sa);
@@ -217,8 +223,6 @@ function movplay(num) {
     }
 }
 
-var kazu;
-var result;
 function compare() {
     console.log("compare()が呼び出されました！！");
     if (correct === button_id) {
@@ -229,8 +233,11 @@ function compare() {
         judge = 1;
         result += 1;
         kazu += 1;
-        console.log("kazu", kazu);
         setTimeout(send, 100);
+
+        marudiv.style.display = "block";
+        setTimeout(maru_none, 1000);
+        document.getElementById('maru_sound').play();
 
     }
     else {
@@ -238,8 +245,25 @@ function compare() {
         console.log("まちがってるよ！！！");
         kazu += 1;
         setTimeout(send, 100);
+
+        batsudiv.style.display = "block";
+        setTimeout(batsu_none, 1000);
+        document.getElementById('batsu_sound').play();
     }
 }
+
+function maru_none() {
+    console.log("maru_none()が呼び出されました！！");
+    marudiv.style.display = "none";
+}
+
+function batsu_none() {
+    console.log("batsu_none()が呼び出されました！！");
+    batsudiv.style.display = "none";
+}
+
+
+
 function out() {
     console.log("out()が呼び出されました！！");
     // window.location = "../HTML/study.html";
@@ -248,7 +272,7 @@ function out() {
 }
 
 function push() {
-    location.href = "http://localhost/HTML/result.html?data=" + more + "|" + kazu + "|" + result;
+    location.href = "http://localhost/HTML/home.html?data=" + more;
 }
 
 function send() {
@@ -275,3 +299,25 @@ function send() {
             console.log("errorThrown    : " + errorThrown.message);
         });
 }
+
+
+function switch_obverse() {
+    maindiv.style.display = "none";
+    resultdiv.style.display = "block";
+
+    if (kazu == 0) {
+        percentage = 0;
+    } else {
+        percentage = result / kazu * 100;
+        console.log("正解率：", percentage);
+    }
+    total.innerHTML = "現在" + kazu + "問解いて" + result + "問正解です 正解率は" + percentage + "％です";
+    // percentage.innerHTML = "正解率は" + percentage + "％です";
+}
+
+function switch_reverse() {
+    maindiv.style.display = "block";
+    resultdiv.style.display = "none";
+
+}
+
