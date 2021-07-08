@@ -1,0 +1,76 @@
+.title{
+    margin: 0px;
+    font-size: 5vh;
+}
+.line{
+    font-size: 10vh;
+    padding: 0px;
+    border-bottom: 3px solid #2979FF;
+    margin: 0px 0 5px;
+}
+.line span{
+    color: #2979FF;
+}
+.img{
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    height: 25%;
+}
+.pic{
+    width: calc(100% / 5);
+    font-size: 20px;
+    color: white;
+    background-color: #2979FF;
+    margin-left: 2%;
+}
+.graph{
+    width: calc(100% / 5);
+    font-size: 20px;
+    color: white;
+    background-color: #2979FF;
+    margin-left: 2%;
+}
+form{
+    display: inline;
+}
+.new{
+    width: calc(100% / 5);
+    height: calc(100% / 10);
+    font-size: 20px;
+    color: white;
+    background-color: #2979FF;
+    margin-left: 2%;
+}
+.math{     /*ここ変更*/
+    position: absolute;
+    font-size: 180%;
+    height: 60%;
+    margin: 1%;
+    width: 70%;
+    table-layout: fixed;
+}
+.math td{
+    border: solid 2px black;
+    border-radius: 3%;
+    text-align: center;
+}
+.button button{
+    width: calc(100% / 4);
+    height: calc(100% / 4);
+    font-size:3vh;
+    color:#FFFFFF;
+    background:#2979FF;
+    border-radius: 3%;
+    margin: 2%;
+    float: right;
+}
+.quiz{
+   position: absolute;
+   right: 0px;
+}
+.date{
+    position: absolute;
+    right: 0px;
+    top: 60%;
+}
