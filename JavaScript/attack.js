@@ -34,7 +34,6 @@ function cut() {
     sent();
 }
 
-// setTimeout(sent, 500);
 function sent() {
     console.log("sent()が呼び出されました！！");
     $.ajax({
