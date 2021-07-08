@@ -1,8 +1,5 @@
 var x;
 var y;
-// videodiv.style.display = "none";
-// buttondiv.style.display = "none";
-// canvas準備
 const board = document.querySelector("#board");  //getElementById()等でも可。オブジェクトが取れれば良い。
 const ctx = board.getContext("2d");
 board.addEventListener("click", (e) => {
