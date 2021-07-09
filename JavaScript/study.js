@@ -13,5 +13,5 @@ window.onload = function () {
 }
 
 function push() {
-    location.href = "http://localhost/HTML/home.html?data=" + more;
+    location.href = "http://localhost/SEN-KEN/HTML/result.html?data=" + more;
 }

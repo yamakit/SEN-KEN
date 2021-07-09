@@ -1,5 +1,5 @@
 <?php
-    include 'db_config.php';
+    // include 'db_config.php';
 
 if(!empty($_GET)){
     $video_id = $_GET['video_id'];
@@ -9,7 +9,7 @@ if(!empty($_GET)){
     $x_coordinate = $_GET['x_coordinate'];
     $y_coordinate = $_GET['y_coordinate'];
     
-    $dsn = 'mysql:dbname=test;host=localhost';
+    $dsn = 'mysql:dbname=sen-ken;host=localhost';
     $user = 'root';
     $password = '';
     $result = array();

@@ -1,5 +1,8 @@
 var x;
 var y;
+// videodiv.style.display = "none";
+// buttondiv.style.display = "none";
+// canvas準備
 const board = document.querySelector("#board");  //getElementById()等でも可。オブジェクトが取れれば良い。
 const ctx = board.getContext("2d");
 board.addEventListener("click", (e) => {
@@ -10,7 +13,7 @@ board.addEventListener("click", (e) => {
     setTimeout(hikaku, 100);
 });
 const chara = new Image();
-chara.src = "../valley.png";  // 画像のURLを指定
+chara.src = "../img/valley.png";  // 画像のURLを指定
 
 var zahyo_x;
 var zahyo_y;
@@ -34,6 +37,7 @@ function cut() {
     sent();
 }
 
+// setTimeout(sent, 500);
 function sent() {
     console.log("sent()が呼び出されました！！");
     $.ajax({

@@ -1,7 +1,7 @@
 <?php
-    include 'db_config.php';
+    // include 'db_config.php';
 
-    $dsn = 'mysql:dbname=test;host=localhost';
+    $dsn = 'mysql:dbname=sen-ken;host=localhost';
 $user = 'root';
 $password = '';
 $result = array();

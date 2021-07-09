@@ -1,10 +1,10 @@
 <?php
-    include 'db_config.php';
+    // include 'db_config.php';
 
 
 $player_id = $_GET['player_id'];
 
-$dsn = 'mysql:dbname=test;host=localhost';
+$dsn = 'mysql:dbname=sen-ken;host=localhost';
 $user = 'root';
 $password = '';
 $result = array();

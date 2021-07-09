@@ -14,8 +14,8 @@ let judge = 0;
 var more;
 var x_coordinate = 0;
 var y_coordinate = 0;
-var kazu;
-var result;
+var kazu = 0;
+var result = 0;
 
 
 function dofy() {
@@ -31,7 +31,7 @@ function dofy() {
     const btn_veryfast = document.getElementById("btn_veryfast");
 
     btn_veryslow.addEventListener("click", (e) => {
-        videoElement.playbackRate = 2.5;
+        videoElement.playbackRate = 3.0;
     });
 
     btn_slow.addEventListener("click", (e) => {
@@ -39,17 +39,17 @@ function dofy() {
     });
 
     btn_normal.addEventListener("click", (e) => {
-        videoElement.playbackRate = 7.5;
+        videoElement.playbackRate = 7.0;
     });
 
-    btn_fast.addEventListener("click", (e) => {
-        videoElement.playbackRate = 10.0;
-    });
+    // btn_fast.addEventListener("click", (e) => {
+    //     videoElement.playbackRate = 12.0;
+    // });
 
-    btn_veryfast.addEventListener("click", (e) => {
-        videoElement.playbackRate = 12.5;
-    });
-    videoElement.playbackRate = 7.5;
+    // btn_veryfast.addEventListener("click", (e) => {
+    //     videoElement.playbackRate = 15.0;
+    // });
+    videoElement.playbackRate = 8.0;
 
 }
 
@@ -73,10 +73,10 @@ function cut() {
     console.log(text);
     more = text.split("|")[0];
     console.log("プレイヤーid :", more);
-    kazu = text.split("|")[1];
-    console.log("解いた問題数：", kazu);
-    result = text.split("|")[2];
-    console.log("正解した数：", result);
+    // kazu = text.split("|")[1];
+    // console.log("解いた問題数：", kazu);
+    // result = text.split("|")[2];
+    // console.log("正解した数：", result);
     sent();
 }
 
@@ -236,8 +236,8 @@ function compare() {
         setTimeout(wille, 2000);
         console.log("あってるよ！！！")
         judge = 1;
-        result += 1;
-        kazu += 1;
+        result = result + 1;
+        kazu = kazu + 1;
         setTimeout(send, 100);
 
         marudiv.style.display = "block";
@@ -248,7 +248,7 @@ function compare() {
     else {
         setTimeout(out, 2000);
         console.log("まちがってるよ！！！");
-        kazu += 1;
+        kazu = kazu + 1;
         setTimeout(send, 100);
 
         batsudiv.style.display = "block";
@@ -272,12 +272,12 @@ function batsu_none() {
 function out() {
     console.log("out()が呼び出されました！！");
     // window.location = "../HTML/study.html";
-    location.href = "http://localhost/HTML/study.html?data=" + more + "|" + correct + "|" + kazu + "|" + result;
+    location.href = "http://localhost/SEN-KEN/HTML/study.html?data=" + more + "|" + correct + "|" + kazu + "|" + result;
 
 }
 
 function push() {
-    location.href = "http://localhost/HTML/home.html?data=" + more;
+    location.href = "http://localhost/SEN-KEN/HTML/home.html?data=" + more;
 }
 
 function send() {
@@ -317,7 +317,6 @@ function switch_obverse() {
         console.log("正解率：", percentage);
     }
     total.innerHTML = "現在" + kazu + "問解いて" + result + "問正解です 正解率は" + percentage + "％です";
-    // percentage.innerHTML = "正解率は" + percentage + "％です";
 }
 
 function switch_reverse() {

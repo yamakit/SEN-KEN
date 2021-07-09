@@ -18,26 +18,16 @@
         <button class="home" onclick="push()">終わる</button>
         <button onclick="switch_obverse()">途中成績</button>
 
-        <video id="mv" autobuffer autoplay loop muted controls poster="../00.jpg">
+        <video id="mv" autobuffer autoplay loop muted controls poster="../img/00.jpg">
             <source src="" id="video" controls muted autoplay playinline loop>
-            <!-- <img id=ppp src="../00.jpg" /> -->
         </video>
 
-        <!-- 
-        <form>
-            <button id="1" type="button" onclick="movplay(0); getId(this); apple()">1</button>
-            <button id="2" type="button" onclick="movplay(0); getId(this); apple()">2</button>
-            <button id="3" type="button" onclick="movplay(0); getId(this); apple()">3</button>
-            <button id="4" type="button" onclick="movplay(0); getId(this); apple()">4</button>
-            <<button type="button" onclick="change();">動画切り替え</button> -->
-        <!-- <button type="button" onclick="movplay(1)">一時停止</button> -->
-        <!-- </form> -->
         <div id="selectdiv">
             <button id="btn_veryslow">もっとスロー</button>
             <button id="btn_slow">スロー</button>
             <button id="btn_normal">通常</button>
-            <button id="btn_fast">早送り</button>
-            <button id="btn_veryfast">もっと早送り</button>
+            <!-- <button id="btn_fast">早送り</button>
+            <button id="btn_veryfast">もっと早送り</button> -->
         </div>
 
         <form>
@@ -57,33 +47,27 @@
         </form>
 
         <audio id="maru_sound" preload="auto">
-            <source src="../Correct_Answer2.mp3" type="audio/mp3">
+            <source src="../img/Correct_Answer2.mp3" type="audio/mp3">
             <!-- <source src="sound.wav" type="audio/wav"> -->
         </audio>
 
         <audio id="batsu_sound" preload="auto">
-            <source src="../Wrong_Buzzer3.mp3" type="audio/mp3">
+            <source src="../img/Wrong_Buzzer3.mp3" type="audio/mp3">
             <!-- <source src="sound.wav" type="audio/wav"> -->
         </audio>
 
         <div id="marudiv">
-            <img src="../mark_maru.png">
+            <img src="../img/mark_maru.png">
         </div>
         <div id="batsudiv">
-            <img src="../mark_batsu.png">
+            <img src="../img/mark_batsu.png">
         </div>
 
-        <!-- <a href="./home.html">
-        <button type="button">終わる</button>
-    </a> -->
-
-        <!-- <canvas id="c" width="480px" height="270px"></canvas> -->
 
     </div>
 
     <div id="resultdiv">
         <h1 id="total"></h1>
-        <h1 id="percentage"></h1>
         <button class="home" onclick="switch_reverse()">クイズに戻る</button>
     </div>
 

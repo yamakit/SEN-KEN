@@ -34,10 +34,10 @@ window.onload = function () {
 
 
 function push() {
-    location.href = "http://localhost/HTML/home.html?data=" + more;
+    location.href = "http://localhost/SEN-KEN/HTML/home.html?data=" + more;
 }
 
 function challenge() {
-    location.href = "http://localhost/HTML/index.html?data=" + more;
+    location.href = "http://localhost/SEN-KEN/HTML/index.html?data=" + more;
 }
 
