@@ -261,6 +261,8 @@ function compare() {
         kazu += 1;
         setTimeout(send, 100);
 
+        button_id.style.backgroundColor = "red";
+
         marudiv.style.display = "block";
         setTimeout(maru_none, 1000);
         document.getElementById('maru_sound').play();
