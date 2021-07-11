@@ -52,11 +52,15 @@ function dofy() {
 
 var stop_renda = 0;
 
+var color;
+var color2;
 
 function getId(ele) {
     if (stop_renda == 0) {
         button_id = ele.getAttribute("id"); // input要素のid属性の値を取得
+        color = document.getElementById(button_id);
         console.log(button_id);
+        console.log(color);
     }
 }
 
@@ -115,6 +119,8 @@ function sent() {
             video_id = data[i]['video_id'];
             // user_id = data[i]['player_id'];
             correct = data[i]['ans_id'];
+            color2 = document.getElementById(correct);
+
             x_coordinate = data[i]['x_coordinate'];
             y_coordinate = data[i]['y_coordinate'];
             console.log("x座標：", x_coordinate);
@@ -261,7 +267,7 @@ function compare() {
         kazu += 1;
         setTimeout(send, 100);
 
-        button_id.style.backgroundColor = "red";
+        color.style.color = "blue";
 
         marudiv.style.display = "block";
         setTimeout(maru_none, 1000);
@@ -274,6 +280,9 @@ function compare() {
         kazu += 1;
         setTimeout(send, 100);
 
+        color.style.color = "red";
+        color2.style.color = "blue";
+
         batsudiv.style.display = "block";
         setTimeout(batsu_none, 1000);
         document.getElementById('batsu_sound').play();
@@ -283,6 +292,7 @@ function compare() {
 function maru_none() {
     console.log("maru_none()が呼び出されました！！");
     marudiv.style.display = "none";
+    color.style.color = "white";
 }
 
 function batsu_none() {

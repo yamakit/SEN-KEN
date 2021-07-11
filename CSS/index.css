@@ -53,6 +53,6 @@ a{
 }
 .inner button:active{
     background: rgb(33, 74, 255);
-    background: #ff0000;
+    /* background: rgb(33, 74, 255); */
 }
 
