@@ -13,20 +13,20 @@ import gc
 
 ball_id = 1 # バレー:1 バド:2 テニス:3
 player_id = 1 # DBを参照
-#---DBからyolo_flagが1の動画のパスを取得---
+#===DBからyolo_flagが1の動画のパスを取得===
 conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
 cur = conn.cursor(buffered=True)
 cur.execute("SELECT video_path FROM yolo_video_table WHERE yolo_flag = 1")
 rows = cur.fetchall()
-folder = []
+folder = [] #jsonファイルへのパスを格納するリスト
 for row in rows:
     folder.append(row[0])
 cur.close
 conn.commit()
 conn.close()
 
-rep_chk = 0
-# folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*.json") #ローカル環境での実行用、運用時は消去
+# folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*0627.json") #ローカル環境での実行用、運用時は消去
+
 print(folder)
 
 for lap,fl in enumerate(folder):
@@ -36,9 +36,15 @@ for lap,fl in enumerate(folder):
     fl = fl.replace('/',"\\")
 
     print(fl + 'を処理中...')
+
+    #===jsonファイルのバックスラッシュが一個なら二個に置き換える処理===
+    rep_chk = 0  #前のループでバックスラッシュを検出したかどうかのフラグ
+
+    #---jsonファイルの中身を、一文字ずつ要素に入れたリストに変換---
     with open(fl, encoding="utf-8") as f:
         data_lines = f.read()
     chr_list = list(data_lines)
+    #---リストを走査しバックスラッシュを検出、置換する---
     for c in chr_list:
         if(rep_chk == 0 and c == "\\"):
             rep_chk = 1
@@ -49,30 +55,48 @@ for lap,fl in enumerate(folder):
                     f.write(data_lines)
             break
 
-    rep_chk = 0
+    #===jsonからcsvに変換===
     json_path = fl #頂点を取得するjsonファイル
     csv_path = fl.replace('json','csv')
 
-    #変換したいJSONファイルを読み込む
+    #---変換したいJSONファイルを読み込む---
     df = pd.read_json(json_path)
     df.to_csv(csv_path, encoding='utf-8')
 
     data = pd.read_csv(csv_path)
 
+    #===ファイル毎に初期化する変数を宣言===
     data['center_y'] = np.nan
     data['center_x'] = np.nan
     data['original_y'] = np.nan
     data['original_x'] = np.nan
     data['sabun_y'] = np.nan
-    data['vartex_point'] = np.nan
+    data['vertex_point'] = np.nan
+    data['ave_graph'] = np.nan 
+    data['ave_graph2'] = np.nan 
+    data['ave_graph3'] = np.nan 
     # data['low_area'] = np.nan
     # data['mid_area'] = np.nan
     # data['high_area'] = np.nan
+    data['movave_5'] = np.nan
+    data['movave_40'] = np.nan
+    data['movave_50'] = np.nan
+    data['trend'] = np.nan
+    data['panda_mov5'] = np.nan
+    data['panda_mov50'] = np.nan
 
     y_points = []
-    coor_list = []
-    strange_list = []
+    hit_points = []
+    mes_list = []
+    mes_frame = []      #y座標の変位がマイナスからプラスになったフレームと、その次プラスからマイナスになったフレームを格納するリストを格納するリスト
+    coor_list = []      
+    strange_list = []   #異常値の座標とその座標での検出回数のリストを格納するリスト
     ans = []
+    vertex_point = []
+    egg_frames = []
+    intsec_inf = []     #5と50の移動平均のグラフの各交点のデータを格納するリスト
+    intsec_max = []     #intsec_infの要素のリストの内一番多いintsec_cntを格納する物を格納するリスト
+
     nxt_val = 0
     obj_n = 0
     diff_tmp_x = 0
@@ -81,26 +105,18 @@ for lap,fl in enumerate(folder):
     stack = 0
     have_got = 0
     sign = 0
-    v_frame = 0
     renzoku = 0
     phase = 0
     frame1 = 0
+    intsec_frame = 0     #5と50ののグラフの交点のフレーム
 
+    # ===csvファイルから各フレームごとのデータを取り出す===
     for i in range(0,len(data)):
         obj_n = 0
         diff_temp = 0
         triple = '''{}'''.format(data.loc[i,'objects'])
         obj_list = eval(triple)
-        # # ---複数オブジェクトから適切な座標を抽出---
-        # print("-------------------------------")
-        # print(data.loc[i-stack,'center_y'])
-        # if(obj_list):
-        #     print(obj_list[0]['relative_coordinates']['center_y'])
-        #     print(data.loc[i-stack,'center_y'] - obj_list[0]['relative_coordinates']['center_y'])
-        # else:
-        #     print(None)
-        #     print(None)
-        # print("-------------------------------")
+        # ---1フレームでオブジェクトが複数検出されていたなら座標を比べ適切な方を選択---
         if(obj_list):
             for n,obj in enumerate(obj_list):
                 diff_tmp_y = obj['relative_coordinates']['center_y'] - data.loc[i-stack,'center_y']
@@ -116,6 +132,7 @@ for lap,fl in enumerate(folder):
                 coor_list.append([np.nan,np.nan])
                 y_points.append([i,obj_list[obj_n]['relative_coordinates']['center_y']])
 
+    # === 取り出したデータから異常値を省く ===
     for f in range(0,len(coor_list)):
         data.loc[f,'original_y'] = coor_list[f][0]
         data.loc[f,'original_x'] = coor_list[f][1]
@@ -134,7 +151,7 @@ for lap,fl in enumerate(folder):
                         sign = -1
                     else:
                         sign = 1
-                    print(f"data.loc[{f},'center_y'] in +-0.01")
+                    # print(f"data.loc[{f},'center_y'] in +-0.01")
                 else:
                     for coor in range(f + 1,len(coor_list)):
                         if not(np.isnan(coor_list[coor][0])):
@@ -147,10 +164,10 @@ for lap,fl in enumerate(folder):
                                 break
                             if(num == len(strange_list) - 1):
                                 strange_list.append([coor_list[f][0],coor_list[f][1],0])
-                                print(f"[{coor_list[f][0]},{coor_list[f][1]}] was appended to strange_list!(frame = {f}),near:{(-0.003 < coor_list[f][0] - coor_list[nxt_val][0] and coor_list[f][0] - coor_list[nxt_val][0] < 0.003)},near_val:{coor_list[f][0] - coor_list[nxt_val][0]},now_val:{coor_list[f][0]},next_val:{coor_list[nxt_val][0]}")
+                                # print(f"[{coor_list[f][0]},{coor_list[f][1]}] was appended to strange_list!(frame = {f}),near:{(-0.003 < coor_list[f][0] - coor_list[nxt_val][0] and coor_list[f][0] - coor_list[nxt_val][0] < 0.003)},near_val:{coor_list[f][0] - coor_list[nxt_val][0]},now_val:{coor_list[f][0]},next_val:{coor_list[nxt_val][0]}")
                         if not(strange_list):
                             strange_list.append([coor_list[f][0],coor_list[f][1],0])
-                            print(f"[{coor_list[f][0]},{coor_list[f][1]}] was appended to strange_list!(frame = {f}),near:{(-0.003 < coor_list[f][0] - coor_list[nxt_val][0] and coor_list[f][0] - coor_list[nxt_val][0] < 0.003)},near_val:{coor_list[f][0] - coor_list[nxt_val][0]},now_val:{coor_list[f][0]},next_val:{coor_list[nxt_val][0]}")
+                            # print(f"[{coor_list[f][0]},{coor_list[f][1]}] was appended to strange_list!(frame = {f}),near:{(-0.003 < coor_list[f][0] - coor_list[nxt_val][0] and coor_list[f][0] - coor_list[nxt_val][0] < 0.003)},near_val:{coor_list[f][0] - coor_list[nxt_val][0]},now_val:{coor_list[f][0]},next_val:{coor_list[nxt_val][0]}")
                         data.loc[f,'center_y'] = coor_list[f][0]
                         data.loc[f,'center_x'] = coor_list[f][1]
                     elif((coor_list[stack][0] - coor_list[f][0])*(coor_list[f][0] - coor_list[nxt_val][0]) < 0):
@@ -162,23 +179,25 @@ for lap,fl in enumerate(folder):
                                 strange_list.append([coor_list[f][0],coor_list[f][1],0])
                         if not(strange_list):
                             strange_list.append([coor_list[f][0],coor_list[f][1],0])
-                        print(f"[{coor_list[f][0]},{coor_list[f][1]}] was appended to strange_list!(frame = {f}),vector:{(coor_list[stack][0] - coor_list[f][0])*(coor_list[f][0] - coor_list[nxt_val][0]) < 0},vector_val:{(coor_list[stack][0] - coor_list[f][0])*(coor_list[f][0] - coor_list[nxt_val][0])},now_val:{coor_list[f][0]},next_val{coor_list[nxt_val][0]}")
+                        # print(f"[{coor_list[f][0]},{coor_list[f][1]}] was appended to strange_list!(frame = {f}),vector:{(coor_list[stack][0] - coor_list[f][0])*(coor_list[f][0] - coor_list[nxt_val][0]) < 0},vector_val:{(coor_list[stack][0] - coor_list[f][0])*(coor_list[f][0] - coor_list[nxt_val][0])},now_val:{coor_list[f][0]},next_val{coor_list[nxt_val][0]}")
                     else:
                         data.loc[f,'center_y'] = coor_list[f][0]
                         data.loc[f,'center_x'] = coor_list[f][1]
                         stack = f
-                        print('passed check! near:' + str(coor_list[f][0] - coor_list[nxt_val][0]) + ',vector:' + str(Decimal(str(coor_list[stack][0] - coor_list[f][0]))*(Decimal(str(coor_list[f][0])) - Decimal(str(coor_list[nxt_val][0])))))
+                        # print('passed check! near:' + str(coor_list[f][0] - coor_list[nxt_val][0]) + ',vector:' + str(Decimal(str(coor_list[stack][0] - coor_list[f][0]))*(Decimal(str(coor_list[f][0])) - Decimal(str(coor_list[nxt_val][0])))))
         else:
-            print('no object!')
+            # print('no object!')
+            pass
 
-    print(strange_list)
+    # print(strange_list)
     for coor in strange_list:
         for i in range(0,len(data)):
             if(coor[0] - 0.001 <= data.loc[i,'center_y'] and data.loc[i,'center_y'] <= coor[0] + 0.001 and coor[2] >= 4):
-                print('deleted(frame:' + str(i) + ',y:' + str(data.loc[i,'center_y']) + ',x:' + str(data.loc[i,'center_x']) + ')')
+                # print('deleted(frame:' + str(i) + ',y:' + str(data.loc[i,'center_y']) + ',x:' + str(data.loc[i,'center_x']) + ')')
                 data.loc[i,'center_y'] = np.nan
                 data.loc[i,'center_x'] = np.nan
 
+    # === データの空白を補完 ===
     data.loc[:,['center_y']] = data.loc[:,['center_y']].interpolate(axis=0)
     data.loc[:,['center_x']] = data.loc[:,['center_x']].interpolate(axis=0)
     data.loc[:,['original_y']] = data.loc[:,['original_y']].interpolate(axis=0)
@@ -213,10 +232,10 @@ for lap,fl in enumerate(folder):
     #     emp = ''
     #     fig.savefig(f'.\\graphs\\graph{emp.join(json_path.replace(ext,emp)[-4:])}_{i}.jpg')
 
-    # if(lap == 50):
-    #     plt.show()
+    if(lap == 50):
+        plt.show()
 
-    #---スパイク検出---
+    # ===スパイク検出===
     data['MedFilTemp_y'] = data['center_y'].rolling(24, center=True).median()
     data.loc[:,'MedFilTemp_y'] = data.loc[:,['MedFilTemp_y']].interpolate(axis=0,limit_direction='both')
     data['MedFilTemp_x'] = data['center_x'].rolling(24, center=True).median()
@@ -225,9 +244,12 @@ for lap,fl in enumerate(folder):
         
         first_y = Decimal(str(data.loc[i,'MedFilTemp_y']))
         second_y = Decimal(str(data.loc[i + 1,'MedFilTemp_y']))
+        first_x = Decimal(str(data.loc[i,'MedFilTemp_x']))
+        second_x = Decimal(str(data.loc[i + 1,'MedFilTemp_x']))
         diff_y = second_y - first_y
-
+        diff_x = second_x - first_x
         data.loc[i,'sabun_y'] = float(diff_y)
+        data.loc[i,'sabun_x'] = float(diff_x)
 
         if(abs(diff_y) < 0.001):
             data.loc[i,'low_area'] = data.loc[i,'center_y']
@@ -236,7 +258,7 @@ for lap,fl in enumerate(folder):
         elif(0.005 <= abs(diff_y)):
             data.loc[i,'high_area'] = data.loc[i,'center_y']
 
-        if(i >= len(data)/2):
+        if(i >= (len(data)*1)/5):
             if(phase == 0):
                 if(data.loc[i,'sabun_y'] < 0):
                     renzoku += 1
@@ -246,51 +268,130 @@ for lap,fl in enumerate(folder):
                 else:
                     renzoku = 0
             elif(phase == 1):
-                if(data.loc[i,'sabun_y'] <= 0):
+                if(data.loc[i,'sabun_y'] > 0 and renzoku <= 5):
                     renzoku += 1
                 elif(data.loc[i,'sabun_y'] > 0 and renzoku > 5):
-                    if(data.loc[i - renzoku, 'center_y'] <= data.loc[v_frame,'center_y'] or frame1 == 0):
-                        v_frame = i - renzoku
-                        renzoku = 0
-                        phase = 2
-                    else:
-                        renzoku = 0
+                    hit_points.append([i - renzoku, data.loc[i - renzoku, 'center_y']])
+                    renzoku = 0
+                    phase = 2
                 else:
-                    phase = 0
+                    renzoku = 0
+                    # phase = 0
             elif(phase == 2):
-                if(data.loc[i,'sabun_y'] <= 0):
-                    renzoku += 1
-                if(data.loc[i,'sabun_y'] <= 0 and renzoku > 5):
-                    frame1 = i - renzoku
+                renzoku += 1
+                if(renzoku <= 4):
+                    pass
+                elif(data.loc[i,'sabun_y'] >= -0.0005):
+                    if(len(mes_list) == 0):
+                        mes_list.append([i - renzoku])
+                    elif(mes_list[-1][0] != i - renzoku):
+                        mes_list.append([i - renzoku])
+                else:
                     renzoku = 0
                     phase = 0
-        
-        # print(phase,v_frame)
+                    mes_list[-1].append(i)
                     
-        first_x = Decimal(str(data.loc[i,'MedFilTemp_x']))
-        second_x = Decimal(str(data.loc[i + 1,'MedFilTemp_x']))
-        diff_x = second_x - first_x
-        data.loc[i,'sabun_x'] = float(diff_x)
+        if(mes_list):
+            if(i == len(data) - 2 and len(mes_list[-1]) == 1):
+                mes_list[-1].append(i)
 
-    # data.loc[frame1-1:frame1+1,'vartex_point'] = data.loc[frame1, 'sabun_y']
+    data['movave_5'] = data['sabun_y'].rolling(5, center=True).median()
+    data['movave_40'] = data['sabun_y'].rolling(40, center=True).median()
+    data['movave_50'] = data['sabun_y'].rolling(50, center=True).median()
+    for fr in range(0,len(data) - 1):
+        data.loc[fr,'trend'] = (data.loc[fr,'movave_5'] + data.loc[fr,'movave_40'] + data.loc[fr,'movave_50'])/3
+
+    print(mes_list)
+    if(mes_list):
+        if(len(mes_list) == 1):
+            mes_frame = mes_list[0]
+        elif(len(mes_list) == 2):
+            mes_frame = mes_list[data.loc[mes_list[0][0], 'center_y'] > data.loc[mes_list[1][0], 'center_y']]
+        else:
+            mes_frame = mes_list[1]
+                    
+
+    # frame2取得
+    # for i in range(len(data),0,-1):
+    #     data.loc[i,'center_y']
+
+    #移動平均プロット
+    data.loc[:, 'panda_mov5'] = data.loc[:, 'sabun_y']
+    data.loc[:, 'panda_mov50'] = data.loc[:, 'sabun_y']
+    print(data['panda_mov5'].rolling(5, center=True))
+    data['panda_mov5'] = data['panda_mov5'].rolling(5, center=False).mean()
+    data['panda_mov50'] = data['panda_mov50'].rolling(50, center=False).mean()
+    movave = plt.figure()
+    movaves = movave.add_subplot(1,1,1)
+    data[:].plot('frame_id', 'panda_mov5', c = 'black', ax = movaves)
+    data[:].plot('frame_id', 'panda_mov50', c = 'red', ax = movaves)
+    # data[:].plot('frame_id', 'sabun_y', c = 'blue', ax = movaves)
+    egg_frames = []
+    if(mes_frame):
+        for m_frame in range(mes_frame[0], mes_frame[1]):
+            if(data.loc[m_frame, 'panda_mov50'] - data.loc[m_frame, 'panda_mov5'] >= 0.002):
+                # frame1 = m_frame - 6
+                frame1 = m_frame
+                egg_frames.append(frame1)
+                break
+            # print(m_frame, data.loc[m_frame, 'panda_mov50'] - data.loc[m_frame, 'panda_mov5'])
+        for egg in egg_frames:
+            plt.plot(egg, data.loc[egg,'panda_mov50'], c = 'blue', marker = '.', axes = movaves)
+
+    if(mes_frame):
+        for m_frame in range(frame1 - 1, mes_frame[0], -1):
+            if(data.loc[m_frame, 'panda_mov5'] - data.loc[m_frame + 1, 'panda_mov5'] > 0):
+                if((data.loc[m_frame, 'panda_mov50'] <= data.loc[m_frame, 'panda_mov5'] and data.loc[m_frame + 1, 'panda_mov5'] <= data.loc[m_frame + 1, 'panda_mov50']) or (data.loc[m_frame, 'panda_mov5'] <= data.loc[m_frame , 'panda_mov50'] and data.loc[m_frame + 1, 'panda_mov50'] <= data.loc[m_frame + 1, 'panda_mov5'])):
+                    intsec_frame = m_frame + 1
+                    plt.plot(intsec_frame + 1, data.loc[intsec_frame, 'panda_mov5'], c = '#89f', marker = '.', axes = movaves)                    
+                    break
+
+    # data.loc[frame1-1,'vertex_point'] = data.loc[frame1-1, 'sabun_y']
+    # data.loc[frame1,'vertex_point'] = data.loc[frame1, 'sabun_y']
+    # data.loc[frame1+1,'vertex_point'] = data.loc[frame1+1, 'sabun_y']
     # sabun_fig = plt.figure()
     # sabun_ax = sabun_fig.add_subplot(1,1,1)
     # data[:].plot('frame_id', 'sabun_y', c = 'red', ax = sabun_ax)
-    # data[:].plot('frame_id', 'vartex_point', c = 'black', ax = sabun_ax)
-    # y_coor = plt.figure()
-    # ax_y = y_coor.add_subplot(1,1,1)
-    # data.loc[:,'vartex_point'] = np.nan
-    # data.loc[frame1-1:frame1+1,'vartex_point'] = data.loc[frame1, 'center_y']
-    # data[:].plot('frame_id', 'center_y', c = 'red', zorder = 1, label = 'remove outliers', ax = ax_y)    
-    # data[:].plot('frame_id', 'vartex_point', c = 'black', ax = ax_y)
-    # area = plt.figure()
+    # data[:].plot('frame_id', 'vertex_point', c = 'black', ax = sabun_ax)
+    y_coor = plt.figure()
+    ax_y = y_coor.add_subplot(1,1,1)
+    data.loc[:,'vertex_point'] = np.nan
+    if(frame1 != 0):
+        data.loc[frame1-1,'vertex_point'] = data.loc[frame1-1, 'center_y']
+        vertex_point.append(frame1)
+        vertex_point.append(data.loc[frame1,'center_y'])
+    data.loc[frame1,'vertex_point'] = data.loc[frame1, 'center_y']
+    data.loc[frame1+1,'vertex_point'] = data.loc[frame1+1, 'center_y']
+    data[:].plot('frame_id', 'center_y', c = 'red', zorder = 1, label = 'remove outliers', ax = ax_y)    
+    data[:].plot('frame_id', 'vertex_point', c = 'black', ax = ax_y)
+    if(vertex_point):
+        plt.plot(vertex_point[0], vertex_point[1], c = 'blue', zorder = 2, marker = '.', label = 'all objects', axes = ax_y)
+    for hit in hit_points:
+        plt.plot(hit[0], hit[1], c = 'black', marker = '.', label = 'all objects', axes = ax_y)
+    for egg in egg_frames:
+        plt.plot(egg, data.loc[egg,'center_y'], c = 'blue', marker = '.', axes = ax_y)
+    plt.plot(intsec_frame + 1, data.loc[intsec_frame, 'center_y'], c = '#89f', marker = '.', axes = ax_y)
+    #  area = plt.figure()
     # ax_area = area.add_subplot(1,1,1)
     # data[:].plot('frame_id', 'low_area', c = 'black', ax = ax_area)
     # data[:].plot('frame_id', 'mid_area', c = 'blue', ax = ax_area)
     # data[:].plot('frame_id', 'high_area', c = 'red', ax = ax_area)
+    
+    # ave = plt.figure()
+    # aves = ave.add_subplot(1,1,1)
+    # data[:].plot('frame_id', 'movave_5', c = 'red', ax = aves)
+    # # data[:].plot('frame_id', 'movave_40', c = 'blue', ax = aves)
+    # data[:].plot('frame_id', 'movave_50', c = 'black', ax = aves)
+    # trend_fig = plt.figure()
+    # trend = trend_fig.add_subplot(1,1,1)
+    # data[:].plot('frame_id', 'trend', c = '#89e' , ax = trend)
 
     # plt.show()
+    # movave.savefig(f'.\\graphs\\movave\\graph_{i}.jpg')
+    # y_coor.savefig(f'.\\graphs\\center_y\\graph_{i}.jpg')
 
+    print(mes_frame)
+    print(mes_list)
     #---こっからDB関連---
 
     # コネクションの作成
