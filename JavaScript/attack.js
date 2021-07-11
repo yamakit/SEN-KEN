@@ -10,10 +10,10 @@ board.addEventListener("click", (e) => {
     x = e.clientX - rect.left
     y = e.clientY - rect.top
     console.log(`${x}:${y}`)
-    setTimeout("hikaku()", 100);
+    setTimeout(hikaku, 100);
 });
 const chara = new Image();
-chara.src = "../valley.png";  // 画像のURLを指定
+chara.src = "../img/valley.png";  // 画像のURLを指定
 
 var zahyo_x;
 var zahyo_y;
@@ -28,17 +28,18 @@ var r = [];
 var text;
 var more;
 
-setTimeout(cut(), 1);
+setTimeout(cut, 1);
 
 function cut() {
     var data = location.href.split("?")[1];
     more = data.split("=")[1];
-    console.log(more);
+    console.log("プレイヤーid :", more);
+    sent();
 }
 
-setTimeout(sent(), 100);
-// window.onload = sent(); window.onloadを二つ使うのはダメ
+
 function sent() {
+    console.log("sent()が呼び出されました！！");
     $.ajax({
         type: "GET",
         url: "../PHP/attack.php",
@@ -48,6 +49,8 @@ function sent() {
         .done(function (data) {
             console.log('DONE', data);
             console.log("通信が成功しました!!!");
+            counter = data;
+            push();
             // zahyo_x = data[i]['x_coordinate'];
             // zahyo_y = data[i]['y_coordinate'];
             // path = data[i]['video_path'];
@@ -56,8 +59,6 @@ function sent() {
             // console.log('DONE', path);
             // judge = true;
             // i = i + 1;
-            counter = data;
-            push();
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log('通信に失敗しました');
             console.log("XMLHttpRequest : " + XMLHttpRequest.status);
@@ -70,7 +71,7 @@ function sent() {
 
 function push() {
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 50; i++) {
         zahyo_x = counter[i]['x_coordinate'];
         zahyo_y = counter[i]['y_coordinate'];
         path = counter[i]['video_path'];
@@ -116,7 +117,7 @@ function hikaku() {
 
     text = array[number_r]["path"];
     console.log(array[number_r]["path"]);
-    location.href = "http://localhost/HTML/view.html?data=" + text;
+    location.href = "http://localhost/SEN-KEN/HTML/view.html?data=" + text;
     // if (number_r) {
     // mv.setAttribute("src", array[number_r]["path"]);
     // plotdiv.style.display = "none";
@@ -129,6 +130,11 @@ function hikaku() {
 
 
 }
+
+// function push() {
+//     location.href = "http://localhost/HTML/home.html?data=" + more;
+// }
+
 
     // var text = document.getElementById("sendText").value;
 

@@ -1,5 +1,5 @@
 <?php
-    include 'db_config.php';
+    // include 'db_config.php';
 
     $dsn = 'mysql:dbname=sen-ken;host=localhost';
 $user = 'root';

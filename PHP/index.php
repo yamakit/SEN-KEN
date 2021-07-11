@@ -1,5 +1,5 @@
 <?php
-    include 'db_config.php';
+    // include 'db_config.php';
 
     
 $dsn = 'mysql:dbname=sen-ken;host=localhost';
@@ -13,7 +13,7 @@ try {
 // echo "<p>DB接続に成功しました。</p>";
 
 // $sql = "SELECT * FROM `yolo_video_table`";
-$sql = "SELECT * FROM `yolo_video_tables`ORDER BY RAND() LIMIT 10";
+$sql = "SELECT * FROM `yolo_video_table` ORDER BY RAND()";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 $result = $stmt->fetchAll();

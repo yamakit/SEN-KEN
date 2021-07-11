@@ -5,26 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache">
+    <link rel="stylesheet" href="../CSS/view.css">
     <script src="../Javascript/view.js"></script>
-    <style>
-        video {
-            width: 1000px;
-            height: auto;
-        }
-    </style>
-
     <title>SEN-KEN</title>
 
 </head>
 
 <body>
-    <video id="mv" autobuffer autoplay loop muted controls poster="../00.jpg">
+    <video id="mv" autobuffer autoplay loop muted controls poster="../img/00.jpg">
         <source src="" id="video" controls muted autoplay playinline loop>
-        <img id=ppp src="../00.jpg" />
     </video>
 
-    <button onclick="history.back()">戻る</button>
-    <canvas id="c" width="480px" height="270px"></canvas>
+    <button class="home" onclick="history.back()">戻る</button>
+    <div id="selectdiv">
+        <button id="btn_veryslow">もっとスロー</button>
+        <button id="btn_slow">スロー</button>
+        <button id="btn_normal">通常</button>
+        <!-- <button id="btn_fast">早送り</button>
+        <button id="btn_veryfast">もっと早送り</button> -->
+    </div>
 </body>
 
 </html>

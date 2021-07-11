@@ -1,5 +1,5 @@
 <?php
-    include 'db_config.php';
+    // include 'db_config.php';
 
 
 $player_id = $_GET['player_id'];

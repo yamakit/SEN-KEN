@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
   $connectstr_dbhost = '';
   $connectstr_dbname = '';
   $connectstr_dbusername = '';
@@ -19,4 +19,4 @@
   define('DB_USERNAME', $connectstr_dbusername);
   define('DB_PASSWORD', $connectstr_dbpassword);
   define('PDO_DSN', 'mysql:host='.$connectstr_dbhost.';dbname='. DB_DATABASE . ';charset=utf8;');
-?>
+?> -->
