@@ -36,14 +36,14 @@ for fl in folder:
     file_name = fl.replace(".MOV","")
     print(file_name)
 
-    file_names = file_name.replace("../", "D:\\htdocs\\")
-    file_names = file_names.replace("D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\","")
+    file_names = file_name.replace("../", "D:/htdocs/")
+    file_names = file_names.replace("D:/htdocs/SEN-KEN/2021SEN_KEN/volleyball/","")    
     person_num = file_names[:2]
     print(person_num)
     video_num = file_names[3:]
     print(video_num)
 
-    resutl = subprocess.run(['./YOLOv3_volleyball.bat', video_num, person_num], shell=True)
+    resutl = subprocess.run(['YOLOv3_volleyball.bat', person_num, video_num], shell=True)
 
     conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
     cur = conn.cursor(buffered=True)
