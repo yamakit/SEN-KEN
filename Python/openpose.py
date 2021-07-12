@@ -25,7 +25,7 @@ player_id = 1 # DBを参照
 rep_chk = 0
 print(folder)
 
-folder = ['D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\02\\2106041922040.MOV']
+# folder = ['D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\02\\2106041922040.MOV']
 
 for fl in folder:
     print(fl + 'を処理中...')

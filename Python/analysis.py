@@ -24,14 +24,26 @@ conn.close()
 ball_id = 1 # バレー:1 バド:2 テニス:3
 player_id = 1 # DBを参照
 rep_chk = 0
+
+folder = ['D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\02\\2106041922040.MOV']
+
 print(folder)
 
 for fl in folder:
     print(fl + 'を処理中...')
 
+    
     file_name = fl.replace(".MOV","")
     print(file_name)
-    resutl = subprocess.run(['./YOLOv3_volleyball.bat', file_name], shell=True)
+
+    file_names = file_name.replace("../", "D:\\htdocs\\")
+    file_names = file_names.replace("D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\","")
+    person_num = file_names[:2]
+    print(person_num)
+    video_num = file_names[3:]
+    print(video_num)
+
+    resutl = subprocess.run(['./YOLOv3_volleyball.bat', video_num, person_num], shell=True)
 
     conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
     cur = conn.cursor(buffered=True)
