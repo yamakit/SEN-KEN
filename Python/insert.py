@@ -4,7 +4,6 @@ from numpy.core.numeric import NaN
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import pyautogui as key
 from pandas.io.json import json_normalize
 import mysql.connector as mydb
 import glob as gb
@@ -30,7 +29,7 @@ conn.close()
 print(folder)
 
 for lap,fl in enumerate(folder):
-    fl = fl.replace('IMG','ffmpeg')
+    fl = fl.replace('2106','ffmpeg_21')
     fl = fl.replace('MOV','json')
     fl = fl.replace('../',"D:\\htdocs\\")
     fl = fl.replace('/',"\\")
