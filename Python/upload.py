@@ -33,7 +33,7 @@ for f in files2:
     f = f.replace("ffmpeg", "IMG")
     f = f.replace('\\', '/')
     f = f.replace("D:/htdocs/", "../")
-    cur.execute("INSERT yolo_video_table VALUES (%(id)s, %(ans_id)s, %(ball_id)s, %(frame1)s, %(frame2)s, %(player_id)s, %(x_coordinate)s, %(y_coordinate)s, %(video_path)s, %(yolo_flag)s)", {'id':0, 'ans_id':-1, 'ball_id':1, 'frame1':-1, 'frame2':-1, 'player_id':1, 'video_path':f, 'x_coordinate':-1, 'y_coordinate':-1, 'yolo_flag':0})
+    cur.execute("INSERT yolo_video_table VALUES (%(id)s, %(frame1)s, %(frame2)s, %(ball_id)s, %(player_id)s, %(ans_id)s, %(x_coordinate)s, %(y_coordinate)s, %(video_path)s, %(yolo_flag)s)", {'id':0, 'ans_id':-1, 'ball_id':1, 'frame1':-1, 'frame2':-1, 'player_id':1, 'video_path':f, 'x_coordinate':-1, 'y_coordinate':-1, 'yolo_flag':0})
 print(str(files2) + ' was uploaded!')
 
 cur.close()

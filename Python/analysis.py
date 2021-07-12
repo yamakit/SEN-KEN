@@ -30,9 +30,8 @@ for fl in folder:
     print(fl + 'を処理中...')
 
     file_name = fl.replace(".MOV","")
-    video_num = file_name[-4:]
-    print(video_num)
-    resutl = subprocess.run(['C:\\Users\\procon\\Desktop\\main\\SEN-KEN\\batfile\\YOLOv3_volleyball.bat', video_num], shell=True)
+    print(file_name)
+    resutl = subprocess.run(['./YOLOv3_volleyball.bat', file_name], shell=True)
 
     conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
     cur = conn.cursor(buffered=True)

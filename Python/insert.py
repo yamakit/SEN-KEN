@@ -29,7 +29,7 @@ conn.close()
 print(folder)
 
 for lap,fl in enumerate(folder):
-    fl = fl.replace('2106','ffmpeg_21')
+    fl = fl.replace('IMG','ffmpeg')
     fl = fl.replace('MOV','json')
     fl = fl.replace('../',"D:\\htdocs\\")
     fl = fl.replace('/',"\\")
