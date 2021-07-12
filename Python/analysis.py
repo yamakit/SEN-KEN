@@ -25,7 +25,7 @@ ball_id = 1 # バレー:1 バド:2 テニス:3
 player_id = 1 # DBを参照
 rep_chk = 0
 
-folder = ['D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\02\\2106041922040.MOV']
+# folder = ['D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\02\\2106041922040.MOV']
 
 print(folder)
 
