@@ -4,6 +4,7 @@ from numpy.core.numeric import NaN
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import pyautogui as key
 from pandas.io.json import json_normalize
 import mysql.connector as mydb
 import glob as gb
@@ -24,7 +25,7 @@ cur.close
 conn.commit()
 conn.close()
 
-# folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*0627.json") #ローカル環境での実行用、運用時は消去
+# folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*0568.json") #ローカル環境での実行用、運用時は消去
 
 print(folder)
 
@@ -108,16 +109,21 @@ for lap,fl in enumerate(folder):
     phase = 0
     frame1 = 0
     intsec_frame = 0     #5と50ののグラフの交点のフレーム
+    aiuw = 0
 
     # ===csvファイルから各フレームごとのデータを取り出す===
     for i in range(0,len(data)):
+        print(i)
         obj_n = 0
         diff_temp = 0
         triple = '''{}'''.format(data.loc[i,'objects'])
         obj_list = eval(triple)
         # ---1フレームでオブジェクトが複数検出されていたなら座標を比べ適切な方を選択---
         if(obj_list):
+            print(obj_list)
             for n,obj in enumerate(obj_list):
+                print(aiuw,obj['relative_coordinates']['center_y'])
+                aiuw += 1
                 diff_tmp_y = obj['relative_coordinates']['center_y'] - data.loc[i-stack,'center_y']
                 diff_tmp_x = obj['relative_coordinates']['center_x'] - data.loc[i-stack,'center_x']
                 if(diff_tmp > m.sqrt(diff_tmp_x**2 + diff_tmp_y**2) or n == 0):
@@ -125,11 +131,10 @@ for lap,fl in enumerate(folder):
                 diff_tmp = m.sqrt(diff_tmp_x**2 + diff_tmp_y**2)
                 y_points.append([i,obj['relative_coordinates']['center_y']])
                 ans.append([i,obj_list[obj_n]['relative_coordinates']['center_y']])
-            if(obj_list):
-                coor_list.append([obj_list[obj_n]['relative_coordinates']['center_y'],obj_list[obj_n]['relative_coordinates']['center_x']])
-            else:
-                coor_list.append([np.nan,np.nan])
-                y_points.append([i,obj_list[obj_n]['relative_coordinates']['center_y']])
+            coor_list.append([obj_list[obj_n]['relative_coordinates']['center_y'],obj_list[obj_n]['relative_coordinates']['center_x']])
+        else:
+            coor_list.append([np.nan,np.nan])
+            y_points.append([i,np.nan])
 
     # === 取り出したデータから異常値を省く ===
     for f in range(0,len(coor_list)):
@@ -217,10 +222,10 @@ for lap,fl in enumerate(folder):
     # for fy in ans:
     #     plt.plot(fy[0], fy[1], c = 'red', zorder = 0, marker = '.', label = 'picked object', axes = ax2)
 
-    # fig_list[2] = plt.figure()
-    # ax3 = fig_list[2].add_subplot(1,1,1)
-    # data[:].plot('frame_id', 'center_y', c = 'red', zorder = 1, label = 'remove outliers', ax = ax3)
-    # data[:].plot('frame_id', 'original_y', c = 'black', zorder = 0, label = 'don\'t remove outliers', ax = ax3)
+    fig_list[2] = plt.figure()
+    ax3 = fig_list[2].add_subplot(1,1,1)
+    data[:].plot('frame_id', 'center_y', c = 'red', zorder = 1, label = 'remove outliers', ax = ax3)
+    data[:].plot('frame_id', 'original_y', c = 'black', zorder = 0, label = 'don\'t remove outliers', ax = ax3)
 
     # fig_list[3] = plt.figure()
     # ax4 = fig_list[3].add_subplot(1,1,1)
@@ -294,11 +299,11 @@ for lap,fl in enumerate(folder):
             if(i == len(data) - 2 and len(mes_list[-1]) == 1):
                 mes_list[-1].append(i)
 
-    data['movave_5'] = data['sabun_y'].rolling(5, center=True).median()
-    data['movave_40'] = data['sabun_y'].rolling(40, center=True).median()
-    data['movave_50'] = data['sabun_y'].rolling(50, center=True).median()
-    for fr in range(0,len(data) - 1):
-        data.loc[fr,'trend'] = (data.loc[fr,'movave_5'] + data.loc[fr,'movave_40'] + data.loc[fr,'movave_50'])/3
+    # data['movave_5'] = data['sabun_y'].rolling(5, center=True).median()
+    # data['movave_40'] = data['sabun_y'].rolling(40, center=True).median()
+    # data['movave_50'] = data['sabun_y'].rolling(50, center=True).median()
+    # for fr in range(0,len(data) - 1):
+    #     data.loc[fr,'trend'] = (data.loc[fr,'movave_5'] + data.loc[fr,'movave_40'] + data.loc[fr,'movave_50'])/3
 
     print(mes_list)
     if(mes_list):
@@ -385,7 +390,7 @@ for lap,fl in enumerate(folder):
     # trend = trend_fig.add_subplot(1,1,1)
     # data[:].plot('frame_id', 'trend', c = '#89e' , ax = trend)
 
-    # plt.show()
+    plt.show()
     # movave.savefig(f'.\\graphs\\movave\\graph_{i}.jpg')
     # y_coor.savefig(f'.\\graphs\\center_y\\graph_{i}.jpg')
 
@@ -435,7 +440,7 @@ for lap,fl in enumerate(folder):
             ans_id = 6
         else:
             ans_id = 9
-    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 45}, ans_id = {ans_id}, x_coordinate = {x_coordinate}, y_coordinate = {y_coordinate}, yolo_flag = {2} WHERE video_path = '{fl}';"
+    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, ans_id = {ans_id}, x_coordinate = {x_coordinate}, y_coordinate = {y_coordinate}, yolo_flag = {2} WHERE video_path = '{fl}';"
     print(stmt)
     cur.execute(stmt)
     cur.close()
