@@ -24,7 +24,7 @@ cur.close
 conn.commit()
 conn.close()
 
-# folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*0568.json") #ローカル環境での実行用、運用時は消去
+folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*.json") #ローカル環境での実行用、運用時は消去
 
 print(folder)
 
@@ -68,6 +68,7 @@ for lap,fl in enumerate(folder):
     data['center_y'] = np.nan
     data['center_x'] = np.nan
     data['original_y'] = np.nan
+    data['inped_ori_y'] = np.nan
     data['original_x'] = np.nan
     data['sabun_y'] = np.nan
     data['vertex_point'] = np.nan
@@ -107,21 +108,24 @@ for lap,fl in enumerate(folder):
     renzoku = 0
     phase = 0
     frame1 = 0
+    frame2 = 0
+    exist_cnt = 0        #frame2を検出する際に値が存在するフレームが連続した回数を保存する変数
+    exist_frame = 0      #frame2を検出する際に最初に見つけた、値が存在するフレームを保存する変数
     intsec_frame = 0     #5と50ののグラフの交点のフレーム
     aiuw = 0
 
     # ===csvファイルから各フレームごとのデータを取り出す===
     for i in range(0,len(data)):
-        print(i)
+        # print(i)
         obj_n = 0
         diff_temp = 0
         triple = '''{}'''.format(data.loc[i,'objects'])
         obj_list = eval(triple)
         # ---1フレームでオブジェクトが複数検出されていたなら座標を比べ適切な方を選択---
         if(obj_list):
-            print(obj_list)
+            # print(obj_list)
             for n,obj in enumerate(obj_list):
-                print(aiuw,obj['relative_coordinates']['center_y'])
+                # print(aiuw,obj['relative_coordinates']['center_y'])
                 aiuw += 1
                 diff_tmp_y = obj['relative_coordinates']['center_y'] - data.loc[i-stack,'center_y']
                 diff_tmp_x = obj['relative_coordinates']['center_x'] - data.loc[i-stack,'center_x']
@@ -203,7 +207,8 @@ for lap,fl in enumerate(folder):
     # === データの空白を補完 ===
     data.loc[:,['center_y']] = data.loc[:,['center_y']].interpolate(axis=0)
     data.loc[:,['center_x']] = data.loc[:,['center_x']].interpolate(axis=0)
-    data.loc[:,['original_y']] = data.loc[:,['original_y']].interpolate(axis=0)
+
+    data.loc[:,['inped_ori_y']] = data.loc[:,['original_y']].interpolate(axis=0)
     data.loc[:,['original_x']] = data.loc[:,['original_x']].interpolate(axis=0)
 
     #---グラフ出力、運用時はコメントアウト---
@@ -211,20 +216,20 @@ for lap,fl in enumerate(folder):
     
     # fig_list[0] = plt.figure()
     # ax = fig_list[0].add_subplot(1,1,1)
-    # data[:].plot('frame_id', 'original_y', c = 'black', zorder = 1, label = 'don\'t remove outliers', ax = ax)
+    # data[:].plot('frame_id', 'inped_ori_y', c = 'black', zorder = 1, label = 'don\'t remove outliers', ax = ax)
     # for fy in y_points:
     #     plt.plot(fy[0], fy[1], c = 'red', zorder = 0, marker = '.', label = 'all objects', axes = ax)
 
     # fig_list[1] = plt.figure()
     # ax2 = fig_list[1].add_subplot(1,1,1)
-    # data[:].plot('frame_id', 'original_y', c = 'black', zorder = 1, label = 'don\'t remove outliers', ax = ax2)
+    # data[:].plot('frame_id', 'inped_ori_y', c = 'black', zorder = 1, label = 'don\'t remove outliers', ax = ax2)
     # for fy in ans:
     #     plt.plot(fy[0], fy[1], c = 'red', zorder = 0, marker = '.', label = 'picked object', axes = ax2)
 
     fig_list[2] = plt.figure()
     ax3 = fig_list[2].add_subplot(1,1,1)
     data[:].plot('frame_id', 'center_y', c = 'red', zorder = 1, label = 'remove outliers', ax = ax3)
-    data[:].plot('frame_id', 'original_y', c = 'black', zorder = 0, label = 'don\'t remove outliers', ax = ax3)
+    data[:].plot('frame_id', 'inped_ori_y', c = 'black', zorder = 0, label = 'don\'t remove outliers', ax = ax3)
 
     # fig_list[3] = plt.figure()
     # ax4 = fig_list[3].add_subplot(1,1,1)
@@ -304,7 +309,7 @@ for lap,fl in enumerate(folder):
     # for fr in range(0,len(data) - 1):
     #     data.loc[fr,'trend'] = (data.loc[fr,'movave_5'] + data.loc[fr,'movave_40'] + data.loc[fr,'movave_50'])/3
 
-    print(mes_list)
+    # print(mes_list)
     if(mes_list):
         if(len(mes_list) == 1):
             mes_frame = mes_list[0]
@@ -314,14 +319,24 @@ for lap,fl in enumerate(folder):
             mes_frame = mes_list[1]
                     
 
-    # frame2取得
-    # for i in range(len(data),0,-1):
-    #     data.loc[i,'center_y']
+    # ===frame2取得===
+    for i in range(len(data) - 1,0,-1):
+        if not(np.isnan(data.loc[i,'original_y'])):
+            exist_cnt += 1
+            if(exist_cnt == 1):
+                exist_frame = i
+            elif(exist_cnt == 3):
+                frame2 = exist_frame - 4
+                # print(frame2)
+                break
+        else:
+            exist_cnt = 0
+            exist_frame = 0
 
     #移動平均プロット
     data.loc[:, 'panda_mov5'] = data.loc[:, 'sabun_y']
     data.loc[:, 'panda_mov50'] = data.loc[:, 'sabun_y']
-    print(data['panda_mov5'].rolling(5, center=True))
+    # print(data['panda_mov5'].rolling(5, center=True))
     data['panda_mov5'] = data['panda_mov5'].rolling(5, center=False).mean()
     data['panda_mov50'] = data['panda_mov50'].rolling(50, center=False).mean()
     movave = plt.figure()
@@ -389,12 +404,12 @@ for lap,fl in enumerate(folder):
     # trend = trend_fig.add_subplot(1,1,1)
     # data[:].plot('frame_id', 'trend', c = '#89e' , ax = trend)
 
-    plt.show()
+    # plt.show()
     # movave.savefig(f'.\\graphs\\movave\\graph_{i}.jpg')
     # y_coor.savefig(f'.\\graphs\\center_y\\graph_{i}.jpg')
 
-    print(mes_frame)
-    print(mes_list)
+    # print(mes_frame)
+    # print(mes_list)
     #---こっからDB関連---
 
     # コネクションの作成
@@ -406,16 +421,16 @@ for lap,fl in enumerate(folder):
     fl = fl.replace(".json", ".MOV")
     fl = fl.replace("ffmpeg", "IMG")
     fl = fl.replace("D:/htdocs/", "../")
-    print(fl)
+    # print(fl)
     if(np.isnan(data.loc[frame1, 'original_x'])):
         data.loc[frame1, 'original_x'] = -1
-    if(np.isnan(data.loc[frame1, 'original_y'])):
-        data.loc[frame1, 'original_y'] = -1
+    if(np.isnan(data.loc[frame1, 'inped_ori_y'])):
+        data.loc[frame1, 'inped_ori_y'] = -1
     frame2 = frame1 + 5
     x_coordinate = float(data.loc[frame1,'original_x'])
     x_coordinate2 = float(data.loc[frame2,'original_x'])
-    y_coordinate = float(data.loc[frame1,'original_y'])
-    y_coordinate2 = float(data.loc[frame2,'original_y'])
+    y_coordinate = float(data.loc[frame1,'inped_ori_y'])
+    y_coordinate2 = float(data.loc[frame2,'inped_ori_y'])
   
     #ans_idの判定
     if(0 <= x_coordinate2 <= 0.333):
@@ -439,7 +454,7 @@ for lap,fl in enumerate(folder):
             ans_id = 6
         else:
             ans_id = 9
-    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, ans_id = {ans_id}, x_coordinate = {x_coordinate}, y_coordinate = {y_coordinate}, yolo_flag = {2} WHERE video_path = '{fl}';"
+    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame2}, ans_id = {ans_id}, x_coordinate = {x_coordinate}, y_coordinate = {y_coordinate}, yolo_flag = {2} WHERE video_path = '{fl}';"
     print(stmt)
     cur.execute(stmt)
     cur.close()
