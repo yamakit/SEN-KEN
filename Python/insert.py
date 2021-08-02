@@ -112,28 +112,24 @@ for lap,fl in enumerate(folder):
     exist_cnt = 0        #frame2を検出する際に値が存在するフレームが連続した回数を保存する変数
     exist_frame = 0      #frame2を検出する際に最初に見つけた、値が存在するフレームを保存する変数
     intsec_frame = 0     #5と50ののグラフの交点のフレーム
-    aiuw = 0
 
     # ===csvファイルから各フレームごとのデータを取り出す===
     for i in range(0,len(data)):
         # print(i)
         obj_n = 0
-        diff_temp = 0
         triple = '''{}'''.format(data.loc[i,'objects'])
         obj_list = eval(triple)
         # ---1フレームでオブジェクトが複数検出されていたなら座標を比べ適切な方を選択---
         if(obj_list):
             # print(obj_list)
-            for n,obj in enumerate(obj_list):
-                # print(aiuw,obj['relative_coordinates']['center_y'])
-                aiuw += 1
-                diff_tmp_y = obj['relative_coordinates']['center_y'] - data.loc[i-stack,'center_y']
-                diff_tmp_x = obj['relative_coordinates']['center_x'] - data.loc[i-stack,'center_x']
-                if(diff_tmp > m.sqrt(diff_tmp_x**2 + diff_tmp_y**2) or n == 0):
-                    obj_n = n
-                diff_tmp = m.sqrt(diff_tmp_x**2 + diff_tmp_y**2)
-                y_points.append([i,obj['relative_coordinates']['center_y']])
-                ans.append([i,obj_list[obj_n]['relative_coordinates']['center_y']])
+            # for n,obj in enumerate(obj_list):
+            #     diff_tmp_y = obj['relative_coordinates']['center_y'] - data.loc[i-stack,'center_y']
+            #     diff_tmp_x = obj['relative_coordinates']['center_x'] - data.loc[i-stack,'center_x']
+            #     if(diff_tmp > m.sqrt(diff_tmp_x**2 + diff_tmp_y**2) or n == 0):
+            #         obj_n = n
+            #     diff_tmp = m.sqrt(diff_tmp_x**2 + diff_tmp_y**2)
+            #     y_points.append([i,obj['relative_coordinates']['center_y']])
+            #     ans.append([i,obj_list[obj_n]['relative_coordinates']['center_y']])
             coor_list.append([obj_list[obj_n]['relative_coordinates']['center_y'],obj_list[obj_n]['relative_coordinates']['center_x']])
         else:
             coor_list.append([np.nan,np.nan])
@@ -404,7 +400,7 @@ for lap,fl in enumerate(folder):
     # trend = trend_fig.add_subplot(1,1,1)
     # data[:].plot('frame_id', 'trend', c = '#89e' , ax = trend)
 
-    # plt.show()
+    plt.show()
     # movave.savefig(f'.\\graphs\\movave\\graph_{i}.jpg')
     # y_coor.savefig(f'.\\graphs\\center_y\\graph_{i}.jpg')
 
