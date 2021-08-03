@@ -24,7 +24,7 @@ cur.close
 conn.commit()
 conn.close()
 
-folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*.json") #ローカル環境での実行用、運用時は消去
+# folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*.json") #ローカル環境での実行用、運用時は消去
 
 print(folder)
 
@@ -78,9 +78,9 @@ for lap,fl in enumerate(folder):
     # data['low_area'] = np.nan
     # data['mid_area'] = np.nan
     # data['high_area'] = np.nan
-    data['movave_5'] = np.nan
-    data['movave_40'] = np.nan
-    data['movave_50'] = np.nan
+    data['movave_5'] = np.nan   #差分を5で移動平均をとったものを格納する
+    data['movave_40'] = np.nan  
+    data['movave_50'] = np.nan  #差分を50で移動平均をとったものを格納する
     data['trend'] = np.nan
     data['panda_mov5'] = np.nan
     data['panda_mov50'] = np.nan
@@ -135,7 +135,7 @@ for lap,fl in enumerate(folder):
             coor_list.append([np.nan,np.nan])
             y_points.append([i,np.nan])
 
-    # === 取り出したデータから異常値を省く ===
+    # ===取り出したデータから異常値を省く===
     for f in range(0,len(coor_list)):
         data.loc[f,'original_y'] = coor_list[f][0]
         data.loc[f,'original_x'] = coor_list[f][1]
@@ -222,10 +222,11 @@ for lap,fl in enumerate(folder):
     # for fy in ans:
     #     plt.plot(fy[0], fy[1], c = 'red', zorder = 0, marker = '.', label = 'picked object', axes = ax2)
 
-    fig_list[2] = plt.figure()
-    ax3 = fig_list[2].add_subplot(1,1,1)
-    data[:].plot('frame_id', 'center_y', c = 'red', zorder = 1, label = 'remove outliers', ax = ax3)
-    data[:].plot('frame_id', 'inped_ori_y', c = 'black', zorder = 0, label = 'don\'t remove outliers', ax = ax3)
+    # 異常値を弾く後前のグラフをプロット(プロット用)
+    # fig_list[2] = plt.figure()
+    # ax3 = fig_list[2].add_subplot(1,1,1)
+    # data[:].plot('frame_id', 'center_y', c = 'red', zorder = 1, label = 'remove outliers', ax = ax3)
+    # data[:].plot('frame_id', 'inped_ori_y', c = 'black', zorder = 0, label = 'don\'t remove outliers', ax = ax3)
 
     # fig_list[3] = plt.figure()
     # ax4 = fig_list[3].add_subplot(1,1,1)
@@ -236,16 +237,18 @@ for lap,fl in enumerate(folder):
     #     emp = ''
     #     fig.savefig(f'.\\graphs\\graph{emp.join(json_path.replace(ext,emp)[-4:])}_{i}.jpg')
 
-    if(lap == 50):
-        plt.show()
+    #溜まったfigure消化処理(プロット用)
+    # if(lap == 50):
+    #     plt.show()
 
     # ===スパイク検出===
+    # ---平滑化---
     data['MedFilTemp_y'] = data['center_y'].rolling(24, center=True).median()
     data.loc[:,'MedFilTemp_y'] = data.loc[:,['MedFilTemp_y']].interpolate(axis=0,limit_direction='both')
     data['MedFilTemp_x'] = data['center_x'].rolling(24, center=True).median()
     data.loc[:,'MedFilTemp_x'] = data.loc[:,['MedFilTemp_x']].interpolate(axis=0,limit_direction='both')  
     for i in range(0,len(data) - 1):
-        
+        # ---平滑化した値から差分をとる---
         first_y = Decimal(str(data.loc[i,'MedFilTemp_y']))
         second_y = Decimal(str(data.loc[i + 1,'MedFilTemp_y']))
         first_x = Decimal(str(data.loc[i,'MedFilTemp_x']))
@@ -255,13 +258,15 @@ for lap,fl in enumerate(folder):
         data.loc[i,'sabun_y'] = float(diff_y)
         data.loc[i,'sabun_x'] = float(diff_x)
 
-        if(abs(diff_y) < 0.001):
-            data.loc[i,'low_area'] = data.loc[i,'center_y']
-        elif(0.001 <= abs(diff_y) and abs(diff_y) < 0.005):
-            data.loc[i,'mid_area'] = data.loc[i,'center_y']
-        elif(0.005 <= abs(diff_y)):
-            data.loc[i,'high_area'] = data.loc[i,'center_y']
+        # # 前フレームとの差分を大きさによって三段階に分ける処理(プロット用)
+        # if(abs(diff_y) < 0.001):
+        #     data.loc[i,'low_area'] = data.loc[i,'center_y']
+        # elif(0.001 <= abs(diff_y) and abs(diff_y) < 0.005):
+        #     data.loc[i,'mid_area'] = data.loc[i,'center_y']
+        # elif(0.005 <= abs(diff_y)):
+        #     data.loc[i,'high_area'] = data.loc[i,'center_y']
 
+        # ---差分をもとにボールの上がり始めたフレームと少し下がり始めるまでフレームのリストをリストに格納---
         if(i >= (len(data)*1)/5):
             if(phase == 0):
                 if(data.loc[i,'sabun_y'] < 0):
@@ -306,6 +311,7 @@ for lap,fl in enumerate(folder):
     #     data.loc[fr,'trend'] = (data.loc[fr,'movave_5'] + data.loc[fr,'movave_40'] + data.loc[fr,'movave_50'])/3
 
     # print(mes_list)
+    # ---リストに格納されているリストからスパイクが含まれるフレームと思われるものを選択---
     if(mes_list):
         if(len(mes_list) == 1):
             mes_frame = mes_list[0]
@@ -329,17 +335,21 @@ for lap,fl in enumerate(folder):
             exist_cnt = 0
             exist_frame = 0
 
-    #移動平均プロット
+    # ---差分の移動平均をとる---
     data.loc[:, 'panda_mov5'] = data.loc[:, 'sabun_y']
     data.loc[:, 'panda_mov50'] = data.loc[:, 'sabun_y']
     # print(data['panda_mov5'].rolling(5, center=True))
     data['panda_mov5'] = data['panda_mov5'].rolling(5, center=False).mean()
     data['panda_mov50'] = data['panda_mov50'].rolling(50, center=False).mean()
-    movave = plt.figure()
-    movaves = movave.add_subplot(1,1,1)
-    data[:].plot('frame_id', 'panda_mov5', c = 'black', ax = movaves)
-    data[:].plot('frame_id', 'panda_mov50', c = 'red', ax = movaves)
-    # data[:].plot('frame_id', 'sabun_y', c = 'blue', ax = movaves)
+
+    # #差分の5と50の移動平均をプロット
+    # movave = plt.figure()
+    # movaves = movave.add_subplot(1,1,1)
+    # data[:].plot('frame_id', 'panda_mov5', c = 'black', ax = movaves)
+    # data[:].plot('frame_id', 'panda_mov50', c = 'red', ax = movaves)
+    # # data[:].plot('frame_id', 'sabun_y', c = 'blue', ax = movaves)
+    
+    # ---選択したフレームの間から5と50の差分の移動平均の差が広がったフレームを選択---
     egg_frames = []
     if(mes_frame):
         for m_frame in range(mes_frame[0], mes_frame[1]):
@@ -349,15 +359,18 @@ for lap,fl in enumerate(folder):
                 egg_frames.append(frame1)
                 break
             # print(m_frame, data.loc[m_frame, 'panda_mov50'] - data.loc[m_frame, 'panda_mov5'])
-        for egg in egg_frames:
-            plt.plot(egg, data.loc[egg,'panda_mov50'], c = 'blue', marker = '.', axes = movaves)
+        # # プロット処理
+        # for egg in egg_frames:
+        #     plt.plot(egg, data.loc[egg,'panda_mov50'], c = 'blue', marker = '.', axes = movaves)
 
+    # ---選択したフレームから遡り、5と50の移動平均の交点を見つける---
     if(mes_frame):
         for m_frame in range(frame1 - 1, mes_frame[0], -1):
             if(data.loc[m_frame, 'panda_mov5'] - data.loc[m_frame + 1, 'panda_mov5'] > 0):
                 if((data.loc[m_frame, 'panda_mov50'] <= data.loc[m_frame, 'panda_mov5'] and data.loc[m_frame + 1, 'panda_mov5'] <= data.loc[m_frame + 1, 'panda_mov50']) or (data.loc[m_frame, 'panda_mov5'] <= data.loc[m_frame , 'panda_mov50'] and data.loc[m_frame + 1, 'panda_mov50'] <= data.loc[m_frame + 1, 'panda_mov5'])):
                     intsec_frame = m_frame + 1
-                    plt.plot(intsec_frame + 1, data.loc[intsec_frame, 'panda_mov5'], c = '#89f', marker = '.', axes = movaves)                    
+                    # # プロット処理
+                    # plt.plot(intsec_frame + 1, data.loc[intsec_frame, 'panda_mov5'], c = '#89f', marker = '.', axes = movaves)                    
                     break
 
     # data.loc[frame1-1,'vertex_point'] = data.loc[frame1-1, 'sabun_y']
@@ -367,24 +380,27 @@ for lap,fl in enumerate(folder):
     # sabun_ax = sabun_fig.add_subplot(1,1,1)
     # data[:].plot('frame_id', 'sabun_y', c = 'red', ax = sabun_ax)
     # data[:].plot('frame_id', 'vertex_point', c = 'black', ax = sabun_ax)
-    y_coor = plt.figure()
-    ax_y = y_coor.add_subplot(1,1,1)
-    data.loc[:,'vertex_point'] = np.nan
-    if(frame1 != 0):
-        data.loc[frame1-1,'vertex_point'] = data.loc[frame1-1, 'center_y']
-        vertex_point.append(frame1)
-        vertex_point.append(data.loc[frame1,'center_y'])
-    data.loc[frame1,'vertex_point'] = data.loc[frame1, 'center_y']
-    data.loc[frame1+1,'vertex_point'] = data.loc[frame1+1, 'center_y']
-    data[:].plot('frame_id', 'center_y', c = 'red', zorder = 1, label = 'remove outliers', ax = ax_y)    
-    data[:].plot('frame_id', 'vertex_point', c = 'black', ax = ax_y)
-    if(vertex_point):
-        plt.plot(vertex_point[0], vertex_point[1], c = 'blue', zorder = 2, marker = '.', label = 'all objects', axes = ax_y)
-    for hit in hit_points:
-        plt.plot(hit[0], hit[1], c = 'black', marker = '.', label = 'all objects', axes = ax_y)
-    for egg in egg_frames:
-        plt.plot(egg, data.loc[egg,'center_y'], c = 'blue', marker = '.', axes = ax_y)
-    plt.plot(intsec_frame + 1, data.loc[intsec_frame, 'center_y'], c = '#89f', marker = '.', axes = ax_y)
+
+    # #y座標の変位のグラフにframe1などをプロット
+    # y_coor = plt.figure()
+    # ax_y = y_coor.add_subplot(1,1,1)
+    # data.loc[:,'vertex_point'] = np.nan
+    # if(frame1 != 0):
+    #     data.loc[frame1-1,'vertex_point'] = data.loc[frame1-1, 'center_y']
+    #     vertex_point.append(frame1)
+    #     vertex_point.append(data.loc[frame1,'center_y'])
+    # data.loc[frame1,'vertex_point'] = data.loc[frame1, 'center_y']
+    # data.loc[frame1+1,'vertex_point'] = data.loc[frame1+1, 'center_y']
+    # data[:].plot('frame_id', 'center_y', c = 'red', zorder = 1, label = 'remove outliers', ax = ax_y)    
+    # data[:].plot('frame_id', 'vertex_point', c = 'black', ax = ax_y)
+    # if(vertex_point):
+    #     plt.plot(vertex_point[0], vertex_point[1], c = 'blue', zorder = 2, marker = '.', label = 'all objects', axes = ax_y)
+    # for hit in hit_points:
+    #     plt.plot(hit[0], hit[1], c = 'black', marker = '.', label = 'all objects', axes = ax_y)
+    # for egg in egg_frames:
+    #     plt.plot(egg, data.loc[egg,'center_y'], c = 'blue', marker = '.', axes = ax_y)
+    # plt.plot(intsec_frame + 1, data.loc[intsec_frame, 'center_y'], c = '#89f', marker = '.', axes = ax_y)
+
     #  area = plt.figure()
     # ax_area = area.add_subplot(1,1,1)
     # data[:].plot('frame_id', 'low_area', c = 'black', ax = ax_area)
@@ -400,7 +416,7 @@ for lap,fl in enumerate(folder):
     # trend = trend_fig.add_subplot(1,1,1)
     # data[:].plot('frame_id', 'trend', c = '#89e' , ax = trend)
 
-    plt.show()
+    # plt.show()
     # movave.savefig(f'.\\graphs\\movave\\graph_{i}.jpg')
     # y_coor.savefig(f'.\\graphs\\center_y\\graph_{i}.jpg')
 
