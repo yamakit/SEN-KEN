@@ -71,7 +71,7 @@ for lap,fl in enumerate(folder):
     data['inped_ori_y'] = np.nan
     data['original_x'] = np.nan
     data['sabun_y'] = np.nan
-    data['vertex_point'] = np.nan
+    data['vertex_point'] = np.nan 
     data['ave_graph'] = np.nan 
     data['ave_graph2'] = np.nan 
     data['ave_graph3'] = np.nan 
@@ -82,36 +82,35 @@ for lap,fl in enumerate(folder):
     data['movave_40'] = np.nan  
     data['movave_50'] = np.nan  #差分を50で移動平均をとったものを格納する
     data['trend'] = np.nan
-    data['panda_mov5'] = np.nan
+    data['panda_mov5'] = np.nan 
     data['panda_mov50'] = np.nan
 
     y_points = []
     hit_points = []
-    mes_list = []
+    mes_list = []       #ボールの上がり始めたフレームと少し下がり始めるまでフレームを格納するリストを格納するリスト
     mes_frame = []      #y座標の変位がマイナスからプラスになったフレームと、その次プラスからマイナスになったフレームを格納するリストを格納するリスト
-    coor_list = []      
+    coor_list = []      #x,y座標のリストが格納されるリスト
     strange_list = []   #異常値の座標とその座標での検出回数のリストを格納するリスト
-    ans = []
-    vertex_point = []
-    egg_frames = []
+    ans = []            #プロット用変数
+    vertex_point = []   #プロット用変数
+    egg_frames = []     #プロット用変数
     intsec_inf = []     #5と50の移動平均のグラフの各交点のデータを格納するリスト
     intsec_max = []     #intsec_infの要素のリストの内一番多いintsec_cntを格納する物を格納するリスト
 
-    nxt_val = 0
-    obj_n = 0
-    diff_tmp_x = 0
-    diff_tmp_y = 0
-    diff_tmp = 0
-    stack = 0
-    have_got = 0
-    sign = 0
-    renzoku = 0
-    phase = 0
-    frame1 = 0
-    frame2 = 0
-    exist_cnt = 0        #frame2を検出する際に値が存在するフレームが連続した回数を保存する変数
-    exist_frame = 0      #frame2を検出する際に最初に見つけた、値が存在するフレームを保存する変数
-    intsec_frame = 0     #5と50ののグラフの交点のフレーム
+    nxt_val = 0         #
+    obj_n = 0           #
+    diff_tmp_x = 0      #
+    diff_tmp_y = 0      #
+    diff_tmp = 0        #
+    stack = 0           #
+    have_got = 0        #
+    renzoku = 0         #
+    phase = 0           #フラグ変数
+    frame1 = 0          #スパイクのフレーム
+    frame2 = 0          #答え合わせを行うフレーム
+    exist_cnt = 0       #frame2を検出する際に値が存在するフレームが連続した回数を保存する変数
+    exist_frame = 0     #frame2を検出する際に最初に見つけた、値が存在するフレームを保存する変数
+    intsec_frame = 0    #5と50ののグラフの交点のフレーム = frame1
 
     # ===csvファイルから各フレームごとのデータを取り出す===
     for i in range(0,len(data)):
@@ -119,7 +118,7 @@ for lap,fl in enumerate(folder):
         obj_n = 0
         triple = '''{}'''.format(data.loc[i,'objects'])
         obj_list = eval(triple)
-        # ---1フレームでオブジェクトが複数検出されていたなら座標を比べ適切な方を選択---
+        # ---1フレームでオブジェクトが複数検出されていたなら座標を比べ適切な方を選択(機能していない)---
         if(obj_list):
             # print(obj_list)
             # for n,obj in enumerate(obj_list):
@@ -150,10 +149,6 @@ for lap,fl in enumerate(folder):
                     data.loc[f,'center_y'] = coor_list[f][0]
                     data.loc[f,'center_x'] = coor_list[f][1]
                     stack = f
-                    if(coor_list[stack][0] - coor_list[f][0] >= 0):
-                        sign = -1
-                    else:
-                        sign = 1
                     # print(f"data.loc[{f},'center_y'] in +-0.01")
                 else:
                     for coor in range(f + 1,len(coor_list)):
@@ -208,7 +203,7 @@ for lap,fl in enumerate(folder):
     data.loc[:,['original_x']] = data.loc[:,['original_x']].interpolate(axis=0)
 
     #---グラフ出力、運用時はコメントアウト---
-    fig_list = [None,None,None,None]
+    # fig_list = [None,None,None,None]
     
     # fig_list[0] = plt.figure()
     # ax = fig_list[0].add_subplot(1,1,1)
@@ -222,7 +217,7 @@ for lap,fl in enumerate(folder):
     # for fy in ans:
     #     plt.plot(fy[0], fy[1], c = 'red', zorder = 0, marker = '.', label = 'picked object', axes = ax2)
 
-    # 異常値を弾く後前のグラフをプロット(プロット用)
+    # 異常値を弾く後前のグラフをプロット
     # fig_list[2] = plt.figure()
     # ax3 = fig_list[2].add_subplot(1,1,1)
     # data[:].plot('frame_id', 'center_y', c = 'red', zorder = 1, label = 'remove outliers', ax = ax3)
@@ -354,9 +349,8 @@ for lap,fl in enumerate(folder):
     if(mes_frame):
         for m_frame in range(mes_frame[0], mes_frame[1]):
             if(data.loc[m_frame, 'panda_mov50'] - data.loc[m_frame, 'panda_mov5'] >= 0.002):
-                # frame1 = m_frame - 6
                 frame1 = m_frame
-                egg_frames.append(frame1)
+                egg_frames.append(frame1) #egg_framesが元々frame1の候補が入るリストだった名残、実際は値は一つしか入らない
                 break
             # print(m_frame, data.loc[m_frame, 'panda_mov50'] - data.loc[m_frame, 'panda_mov5'])
         # # プロット処理
@@ -369,6 +363,7 @@ for lap,fl in enumerate(folder):
             if(data.loc[m_frame, 'panda_mov5'] - data.loc[m_frame + 1, 'panda_mov5'] > 0):
                 if((data.loc[m_frame, 'panda_mov50'] <= data.loc[m_frame, 'panda_mov5'] and data.loc[m_frame + 1, 'panda_mov5'] <= data.loc[m_frame + 1, 'panda_mov50']) or (data.loc[m_frame, 'panda_mov5'] <= data.loc[m_frame , 'panda_mov50'] and data.loc[m_frame + 1, 'panda_mov50'] <= data.loc[m_frame + 1, 'panda_mov5'])):
                     intsec_frame = m_frame + 1
+                    frame1 = intsec_frame
                     # # プロット処理
                     # plt.plot(intsec_frame + 1, data.loc[intsec_frame, 'panda_mov5'], c = '#89f', marker = '.', axes = movaves)                    
                     break
@@ -422,6 +417,7 @@ for lap,fl in enumerate(folder):
 
     # print(mes_frame)
     # print(mes_list)
+
     #---こっからDB関連---
 
     # コネクションの作成
