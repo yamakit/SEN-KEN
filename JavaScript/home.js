@@ -11,11 +11,11 @@ window.onload = function () {
 }
 
 function receive() {
-    location.href = "http://localhost/SEN-KEN/HTML/index.html?data=" + more;
+    location.href = "http://localhost/HTML/index.html?data=" + more;
 }
 
 function attack() {
-    location.href = "http://localhost/SEN-KEN/HTML/attack.html?data=" + more;
+    location.href = "http://localhost/HTML/attack.html?data=" + more;
 }
 
 var count = 0;

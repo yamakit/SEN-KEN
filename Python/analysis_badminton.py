@@ -30,9 +30,16 @@ for fl in folder:
     print(fl + 'を処理中...')
 
     file_name = fl.replace(".MOV","")
-    video_num = file_name[-4:]
+
+    file_names = file_name.replace("../", "D:/htdocs/")
+    print(file_names)
+    file_names = file_names.replace("D:/htdocs/SEN-KEN/2021SEN_KEN/badminton/","")
+    print(file_names)
+    person_num = file_names[:2]
+    print(person_num)
+    video_num = file_names[3:]
     print(video_num)
-    result = subprocess.run(['C:\\Users\\procon\\Desktop\\main\\SEN-KEN\\batfile\\YOLOv3_badminton.bat', video_num], shell=True)
+    result = subprocess.run(['YOLOv3_badminton.bat', person_num, video_num], shell=True)
     conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
     cur = conn.cursor(buffered=True)
     cur.execute(f"UPDATE yolo_video_table SET yolo_flag = 1 WHERE video_path = '{fl}'")

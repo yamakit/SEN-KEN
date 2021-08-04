@@ -3,7 +3,7 @@ from typing import Text
 import mysql.connector as mydb
 import os
 
-files = gb.glob("D:\\htdocs\\2021SEN_KEN\\badminton\\*\\*.MOV")
+files = gb.glob("D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\badminton\\*\\*.MOV")
 conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
 
 files1 = []
