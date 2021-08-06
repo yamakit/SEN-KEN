@@ -136,41 +136,43 @@ function hikaku() {
 // }
 
 
-    // var text = document.getElementById("sendText").value;
+// var text = document.getElementById("sendText").value;
 
 // function plot() {
 //     plotdiv.style.display = "block";
 //     videodiv.style.display = "none";
 
 // }
- // i = 0;
-        // console.log(array);
-        // var value = x;
-        // var diff = [];
-        // var index = 0;
-        // $(array).each(function (i, val) {
-        //     diff[i] = Math.abs(value - val["x"]);
-        //     console.log(value);
-        //     console.log(val["x"]);
-        //     console.log(diff[i]);
-        //     index = (diff[index] < diff[i]) ? index : i;
-        // });
-        // console.log(arr1);
-        // console.log(array[index]);
-        // console.log(diff);
-        // number_x = index;
+// i = 0;
+// console.log(array);
+// var value = x;
+// var diff = [];
+// var index = 0;
+// $(array).each(function (i, val) {
+//     diff[i] = Math.abs(value - val["x"]);
+//     console.log(value);
+//     console.log(val["x"]);
+//     console.log(diff[i]);
+//     index = (diff[index] < diff[i]) ? index : i;
+// });
+// console.log(arr1);
+// console.log(array[index]);
+// console.log(diff);
+// number_x = index;
 
-        // i = 0;
-        // value = y;
-        // diff = [];
-        // index = 0;
-        // $(array).each(function (i, val) {
-        //     diff[i] = Math.abs(value - val["y"]);
-        //     console.log(value);
-        //     console.log(val["y"]);
-        //     console.log(diff[i]);
-        //     index = (diff[index] < diff[i]) ? index : i;
-        // });
-        // console.log(array[index]);
-        // console.log(diff);
-        // number_y = index;
+// i = 0;
+// value = y;
+// diff = [];
+// index = 0;
+// $(array).each(function (i, val) {
+//     diff[i] = Math.abs(value - val["y"]);
+//     console.log(value);
+//     console.log(val["y"]);
+//     console.log(diff[i]);
+//     index = (diff[index] < diff[i]) ? index : i;
+// });
+// console.log(array[index]);
+// console.log(diff);
+// number_y = index;
+
+
