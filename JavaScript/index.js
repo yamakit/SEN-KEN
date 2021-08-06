@@ -15,12 +15,15 @@ var x_coordinate = 0;
 var y_coordinate = 0;
 var kazu = 0;
 var result = 0;
+var array = [];
+var picture_path;
 
 function dofy() {
     console.log("dofy()が呼び出されました！！");
+    back.style.display = "none";
     buttondiv.style.display = "none";
-    marudiv.style.display = "none";
-    batsudiv.style.display = "none";
+    // marudiv.style.display = "none";
+    // batsudiv.style.display = "none";
     videoElement = document.querySelector("video");
     const btn_slow = document.getElementById("btn_slow");
     const btn_normal = document.getElementById("btn_normal");
@@ -56,6 +59,7 @@ var color;
 var color2;
 
 function getId(ele) {
+    console.log("getId(ele)が呼び出されました！！");
     if (stop_renda == 0) {
         button_id = ele.getAttribute("id"); // input要素のid属性の値を取得
         color = document.getElementById(button_id);
@@ -120,7 +124,8 @@ function sent() {
             // user_id = data[i]['player_id'];
             correct = data[i]['ans_id'];
             color2 = document.getElementById(correct);
-
+            picture_path = data[i]['picture_path'];
+            console.log("画像のパス:", picture_path);
             x_coordinate = data[i]['x_coordinate'];
             y_coordinate = data[i]['y_coordinate'];
             console.log("x座標：", x_coordinate);
@@ -189,6 +194,8 @@ function a() {
 
 function wille() {
     console.log("wille()が呼び出されました！！");
+    color.style.color = "white";
+    color2.style.color = "white";
     percentage = result / kazu * 100;
     console.log("正解率：", percentage);
     percentage = Math.round(percentage);
@@ -203,6 +210,7 @@ function wille() {
     correct = x[i]['ans_id'];
     x_coordinate = x[i]['x_coordinate'];
     y_coordinate = x[i]['y_coordinate'];
+    picture_path = x[i]['picture_path'];
     console.log('frame1　前: ', frame1);
     frame1 = frame1 / 29.97;
     frame1 = frame1 * 1000;
@@ -212,6 +220,7 @@ function wille() {
     console.log('DONE', video_path);
     console.log('DONE', video_id);
     console.log('正解のボタン', correct);
+    console.log("画像のパス:", picture_path);
     console.log("x座標：", x_coordinate);
     console.log("y座標：", y_coordinate);
     mv.setAttribute("src", video_path);
@@ -269,35 +278,43 @@ function compare() {
 
         color.style.color = "blue";
 
-        marudiv.style.display = "block";
+        // marudiv.style.display = "block";
         setTimeout(maru_none, 1000);
         document.getElementById('maru_sound').play();
-
     }
     else {
-        setTimeout(out, 2000);
+        // setTimeout(out, 2000);
         console.log("まちがってるよ！！！");
         kazu += 1;
         setTimeout(send, 100);
-
+        setTimeout(wille, 2000);
+        trust = 0;
         color.style.color = "red";
         color2.style.color = "blue";
 
-        batsudiv.style.display = "block";
+        // batsudiv.style.display = "block";
         setTimeout(batsu_none, 1000);
         document.getElementById('batsu_sound').play();
     }
+    array.push(
+        {
+            "ans_id": button_id,
+            "picture_path": picture_path,
+        }
+    );
+    console.log("まとめ:", array);
+    var buttonobject = document.getElementById("buttonhere");
+    buttonobject.innerHTML = "<button type=\"button\" id=\"1\" onclick=\"look(this)\">1問目</button>";
 }
 
 function maru_none() {
     console.log("maru_none()が呼び出されました！！");
-    marudiv.style.display = "none";
-    color.style.color = "white";
+    // marudiv.style.display = "none";
 }
 
 function batsu_none() {
     console.log("batsu_none()が呼び出されました！！");
-    batsudiv.style.display = "none";
+    // batsudiv.style.display = "none";
 }
 
 
@@ -310,6 +327,13 @@ function out() {
 
 function push() {
     location.href = "http://localhost/SEN-KEN/HTML/home.html?data=" + more;
+
+}
+function pup() {
+    front.style.display = "none";
+    back.style.display = "block";
+    // total.innerHTML = "結果";
+    h1.innerHTML = "あなたは" + kazu + "問中" + result + "問正解しました。正解率は" + percentage + "％です。";
 }
 
 function send() {
@@ -337,7 +361,16 @@ function send() {
         });
 }
 
-
+function look(ele) {
+    console.log("look()が呼び出されました！！");
+    z = ele.getAttribute("id"); // input要素のid属性の値を取得
+    z = z - 1;
+    console.log(z);
+    console.log(array[z]["ans_id"]);
+    img_left.setAttribute("src", array[z]["picture_path"]);
+    img_left.setAttribute("width", 300);
+    img_left.setAttribute("height", 500);
+}
 
 
 
