@@ -49,10 +49,19 @@ a{
     border-radius: 10px;
 }
 .inner button:hover{
-    background: rgba(210, 105, 30, 0.158);
+    background: rgba(56, 54, 53, 0.158);
 }
 .inner button:active{
     background: rgb(33, 74, 255);
     /* background: rgb(33, 74, 255); */
 }
+
+/* 
+.swiper-container{
+	width: 400px;
+	height: 500px;
+} */
+
+
+
 
