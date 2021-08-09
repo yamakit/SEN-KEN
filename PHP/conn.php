@@ -3,7 +3,7 @@
 //mysqlのパスワード
 define('DB_USERNAME','root');
 define('DB_PASSWORD','');
-define('PDO_DSN','mysql:host=localhost;dbname=sen-ken;charset=utf8');
+define('PDO_DSN','mysql:host=localhost;dbname=test;charset=utf8');
 try
 {
 // mysql接続

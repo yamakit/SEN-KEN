@@ -4,7 +4,7 @@
 
 $player_id = $_GET['player_id'];
 
-$dsn = 'mysql:dbname=sen-ken;host=localhost';
+$dsn = 'mysql:dbname=test;host=localhost';
 $user = 'root';
 $password = '';
 $result = array();
@@ -15,7 +15,7 @@ try {
 // echo "<p>DB接続に成功しました。</p>";
 
 
-$sql = "SELECT * FROM `yolo_video_table` WHERE player_id = $player_id LIMIT 50";
+$sql = "SELECT * FROM `yolo_video_tables` WHERE player_id = $player_id LIMIT 50";
 // $sql = "SELECT * FROM `yolo_video_table` WHERE player_id = 2";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
