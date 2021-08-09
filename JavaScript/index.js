@@ -17,6 +17,7 @@ var kazu = 0;
 var result = 0;
 var array = [];
 var picture_path;
+var hitplace = 0;
 
 function dofy() {
     console.log("dofy()が呼び出されました！！");
@@ -88,8 +89,6 @@ function cut() {
         kazu = 0;
         result = 0;
         percentage = 0;
-        // console.log("解いた問題数：", kazu);
-        // console.log("正解した数：", result);
     } else {
         kazu = parseInt(kazu);
         result = parseInt(result);
@@ -121,15 +120,16 @@ function sent() {
             frame2 = data[i]['frame2'];
             video_path = data[i]['video_path'];
             video_id = data[i]['video_id'];
-            // user_id = data[i]['player_id'];
             correct = data[i]['ans_id'];
             color2 = document.getElementById(correct);
             picture_path = data[i]['picture_path'];
             console.log("画像のパス:", picture_path);
             x_coordinate = data[i]['x_coordinate'];
             y_coordinate = data[i]['y_coordinate'];
+            hitplace = data[i]['hitplace'];
             console.log("x座標：", x_coordinate);
             console.log("y座標：", y_coordinate);
+            console.log("打つ場所：", hitplace);
             console.log('frame1　前: ', frame1);
             frame1 = frame1 / 29.97;
             frame1 = frame1 * 1000;
@@ -138,7 +138,6 @@ function sent() {
             console.log('DONE', frame2);
             console.log('DONE', video_path);
             console.log('DONE', video_id);
-            // console.log('DONE', user_id);
             console.log('正解のボタン番号', correct);
             mv.setAttribute("src", video_path);
             console.log("動画が流れます")
@@ -211,6 +210,7 @@ function wille() {
     x_coordinate = x[i]['x_coordinate'];
     y_coordinate = x[i]['y_coordinate'];
     picture_path = x[i]['picture_path'];
+    hitplace = x[i]['hitplace'];
     console.log('frame1　前: ', frame1);
     frame1 = frame1 / 29.97;
     frame1 = frame1 * 1000;
@@ -223,6 +223,7 @@ function wille() {
     console.log("画像のパス:", picture_path);
     console.log("x座標：", x_coordinate);
     console.log("y座標：", y_coordinate);
+    console.log("打つ場所：", hitplace);
     mv.setAttribute("src", video_path);
     i = i + 1;
     console.log("カウンター：", i);
@@ -299,12 +300,14 @@ function compare() {
     array.push(
         {
             "ans_id": button_id,
+            "hitplace": hitplace,
             "picture_path": picture_path,
         }
     );
     console.log("まとめ:", array);
-    var buttonobject = document.getElementById("buttonhere");
-    buttonobject.innerHTML = "<button type=\"button\" id=\"1\" onclick=\"look(this)\">1問目</button>";
+    buttonobject = document.getElementById("buttonhere");
+    link = '<button type="button" id="' + i + '" onclick="look(this)">' + i + '問目</button>';
+    buttonobject.insertAdjacentHTML('beforeend', link);
 }
 
 function maru_none() {
@@ -332,7 +335,6 @@ function push() {
 function pup() {
     front.style.display = "none";
     back.style.display = "block";
-    // total.innerHTML = "結果";
     h1.innerHTML = "あなたは" + kazu + "問中" + result + "問正解しました。正解率は" + percentage + "％です。";
 }
 
@@ -362,15 +364,62 @@ function send() {
 }
 
 function look(ele) {
-    console.log("look()が呼び出されました！！");
+    console.log("look(ele)が呼び出されました！！");
+    swiperobject = document.getElementById("swiperhere");
+    // swiperobject.parentNode.removeChild(swiperobject);
+
     z = ele.getAttribute("id"); // input要素のid属性の値を取得
     z = z - 1;
     console.log(z);
     console.log(array[z]["ans_id"]);
+    console.log(array[z]["hitplace"]);
     img_left.setAttribute("src", array[z]["picture_path"]);
     img_left.setAttribute("width", 300);
     img_left.setAttribute("height", 500);
+
+    album = [];
+    albumnumber = -1;
+    key1 = array[z]["ans_id"];
+    key2 = array[z]["hitplace"];
+    console.log("key1 :", key1);
+    console.log("key2 :", key2);
+
+    for (let step = 0; step < 10; step++) {
+
+        if (x[step]['ans_id'] == key1 && x[step]['hitplace'] == key2) {
+
+            album.push(x[step]["picture_path"]);
+            console.log(album);
+            albumnumber++;
+            // links = '<div class="swiper-slide"><img id="img_right" src="' + x[step]["picture_path"] + '" width="400" height="500" alt=""></div>';
+            // buttonobject.insertAdjacentHTML('beforeend', links);
+        }
+
+    }
+    // mySwiper = new Swiper('.swiper-container', {
+    //     navigation: {
+    //         nextEl: '.swiper-button-next',
+    //         prevEl: '.swiper-button-prev'
+    //     }
+    // });
+
+    // img_right.setAttribute("src", album[mam]);
+    // img_right.setAttribute("width", 300);
+    // img_right.setAttribute("height", 500);
+
+    setInterval(slideshow_timer, 1300);
 }
 
+let num = -1;
 
+
+function slideshow_timer() {
+    if (num === albumnumber) {
+        num = 0;
+    }
+    else {
+        num++;
+    }
+    img_right.setAttribute("src", album[num]);
+}
 

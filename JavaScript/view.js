@@ -40,9 +40,22 @@ function dofy() {
 
 }
 
+buttondiv.style.display = "none";
+var i = 0;
+function frame() {
+    console.log("frame()が呼び出されました。");
+    if (i == 0) {
+        buttondiv.style.display = "block";
+        console.log("ON!");
+        i = 1;
+    } else {
+        buttondiv.style.display = "none";
+        console.log("OFF!");
+        i = 0;
+    }
+}
+
 var nihon = 33;
-
-
 
 let datas = [
     { name: '体の開き', value: nihon },
@@ -58,8 +71,8 @@ for (var variable of datas) {
 
     // containerに追加
     document.querySelector('#container').insertAdjacentHTML('beforeend', `<div class="graf">
-        <div><span class="data-name">${variable.name}</span></div>
-        <div class="graf-bar-bg">
+            <div><span class="data-name">${variable.name}</span></div>
+            <div class="graf-bar-bg">
         <div class="graf-bar" id="${variable.name}"><span>${variable.value}</span></div>
         </div></div>`);
     // widthを指定

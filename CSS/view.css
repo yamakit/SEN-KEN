@@ -36,3 +36,40 @@ body {
     color: #FFF;
     padding: 0 6px;
     }
+
+    /* #video{
+        min-height: 65vh;
+        width: 100%;
+        position: relative;
+        margin: 1% 0;
+    }
+ */
+
+    .content{
+        position: absolute;
+        top: 8%;
+        left: 0;
+        min-height: 100%;
+        min-width: 98%;
+        padding: 1%;
+    }
+    .inner{
+        height: 54vw;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        flex-wrap: wrap;
+    }
+    .inner button{
+        width: calc(100% / 3);
+        height: calc(100% / 3);
+        font-size:50px;
+        color:hsl(0, 0%, 100%);
+        background:#00aeff5b;
+        border-radius: 10px;
+    }
+
+    /* .inner button:hover{
+        background: rgba(56, 54, 53, 0.158);
+    } */
