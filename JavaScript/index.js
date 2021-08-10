@@ -22,6 +22,7 @@ var hitplace = 0;
 function dofy() {
     console.log("dofy()が呼び出されました！！");
     back.style.display = "none";
+    back_most.style.display = "none";
     buttondiv.style.display = "none";
     // marudiv.style.display = "none";
     // batsudiv.style.display = "none";
@@ -363,10 +364,16 @@ function send() {
         });
 }
 
+var mam = 0;
+
 function look(ele) {
     console.log("look(ele)が呼び出されました！！");
-    swiperobject = document.getElementById("swiperhere");
+    mam = -1;
+    back_most.style.display = "block";
+    // swiperobject = document.getElementById("swiperhere");
+    // swiperobject.remove();
     // swiperobject.parentNode.removeChild(swiperobject);
+    varobject = document.getElementById("var");
 
     z = ele.getAttribute("id"); // input要素のid属性の値を取得
     z = z - 1;
@@ -378,48 +385,60 @@ function look(ele) {
     img_left.setAttribute("height", 500);
 
     album = [];
-    albumnumber = -1;
+    // albumnumber = -1;
     key1 = array[z]["ans_id"];
     key2 = array[z]["hitplace"];
     console.log("key1 :", key1);
     console.log("key2 :", key2);
 
-    for (let step = 0; step < 10; step++) {
+    for (let step = 0; step < 100; step++) {
 
         if (x[step]['ans_id'] == key1 && x[step]['hitplace'] == key2) {
 
             album.push(x[step]["picture_path"]);
             console.log(album);
-            albumnumber++;
-            // links = '<div class="swiper-slide"><img id="img_right" src="' + x[step]["picture_path"] + '" width="400" height="500" alt=""></div>';
-            // buttonobject.insertAdjacentHTML('beforeend', links);
+            // links = '<div class="swiper-slide"><img src="' + x[step]["picture_path"] + '" width="400" height="500" alt=""></div>';
+            // swiperobject.insertAdjacentHTML('beforeend', links);
+            mam = mam + 1;
         }
-
+        varobject.setAttribute("max", mam);
     }
+    console.log("mam :", mam);
     // mySwiper = new Swiper('.swiper-container', {
     //     navigation: {
     //         nextEl: '.swiper-button-next',
-    //         prevEl: '.swiper-button-prev'
-    //     }
+    //         prevEl: '.swiper-button-prev',
+    //     },
+    //     loop: true,
     // });
+    varobject.addEventListener('input', slide);
+    img_right.setAttribute("src", album[0]);
+    img_right.setAttribute("width", 300);
+    img_right.setAttribute("height", 500);
+    // }
 
-    // img_right.setAttribute("src", album[mam]);
-    // img_right.setAttribute("width", 300);
-    // img_right.setAttribute("height", 500);
 
-    setInterval(slideshow_timer, 1300);
 }
 
-let num = -1;
-
-
-function slideshow_timer() {
-    if (num === albumnumber) {
-        num = 0;
+var da = 0;
+function next() {
+    da = da + 1;
+    if (da > mam) {
+        da = 0;
     }
-    else {
-        num++;
-    }
-    img_right.setAttribute("src", album[num]);
+    img_right.setAttribute("src", album[da]);
 }
 
+function prev() {
+    da = da - 1;
+    if (da < 0) {
+        da = mam;
+    }
+    img_right.setAttribute("src", album[da]);
+}
+
+function slide() {
+    console.log("スライドの値：", varobject.value);
+    img_right.setAttribute("src", album[varobject.value]);
+
+}
