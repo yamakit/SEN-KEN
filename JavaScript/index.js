@@ -177,25 +177,12 @@ function a() {
         }
     });
 }
-// function change() {
-//     console.log("change()が呼び出されました！！");
 
-//     if (i === 4) {
-//         location.href = "http://localhost/HTML/result.html?data=" + more + "|" + kazu + "|" + result;
-//     }
-//     else {
-//         trust = 0;
-//         // console.log("trust :", trust);
-//         setTimeout(wille, 100);
-//         // setTimeout(a, 1000);
-
-//     }
-// }
 
 function wille() {
     console.log("wille()が呼び出されました！！");
-    color.style.color = "white";
-    color2.style.color = "white";
+    color.style.backgroundColor = '#00aeff5b';
+    color2.style.backgroundColor = '#00aeff5b';
     percentage = result / kazu * 100;
     console.log("正解率：", percentage);
     percentage = Math.round(percentage);
@@ -245,7 +232,6 @@ function apple() {
         console.log('frame2　後: ', frame2);
         frame_sa = frame2 - frame1;
         console.log("次止まるまで：", frame_sa);
-        // frame2 = 2000;
         setTimeout(movplay, frame_sa);
 
         quiet = frame_sa;
@@ -269,7 +255,6 @@ function movplay(num) {
 function compare() {
     console.log("compare()が呼び出されました！！");
     if (correct === button_id) {
-        // setTimeout(change, 2000);
         trust = 0;
         setTimeout(wille, 2000);
         console.log("あってるよ！！！")
@@ -278,10 +263,8 @@ function compare() {
         kazu += 1;
         setTimeout(send, 100);
 
-        color.style.color = "blue";
+        color.style.backgroundColor = '#0000FF';
 
-        // marudiv.style.display = "block";
-        setTimeout(maru_none, 1000);
         document.getElementById('maru_sound').play();
     }
     else {
@@ -291,11 +274,9 @@ function compare() {
         setTimeout(send, 100);
         setTimeout(wille, 2000);
         trust = 0;
-        color.style.color = "red";
-        color2.style.color = "blue";
+        color.style.backgroundColor = '#ff0000';
+        color2.style.backgroundColor = '#0000FF';
 
-        // batsudiv.style.display = "block";
-        setTimeout(batsu_none, 1000);
         document.getElementById('batsu_sound').play();
     }
     array.push(
@@ -311,23 +292,15 @@ function compare() {
     buttonobject.insertAdjacentHTML('beforeend', link);
 }
 
-function maru_none() {
-    console.log("maru_none()が呼び出されました！！");
-    // marudiv.style.display = "none";
-}
-
-function batsu_none() {
-    console.log("batsu_none()が呼び出されました！！");
-    // batsudiv.style.display = "none";
-}
 
 
 
-function out() {
-    console.log("out()が呼び出されました！！");
-    location.href = "http://localhost/SEN-KEN/HTML/study.html?data=" + more + "|" + correct + "|" + kazu + "|" + result;
 
-}
+// function out() {
+//     console.log("out()が呼び出されました！！");
+//     location.href = "http://localhost/SEN-KEN/HTML/study.html?data=" + more + "|" + correct + "|" + kazu + "|" + result;
+
+// }
 
 function push() {
     location.href = "http://localhost/SEN-KEN/HTML/home.html?data=" + more;
@@ -372,7 +345,6 @@ function look(ele) {
     back_most.style.display = "block";
     // swiperobject = document.getElementById("swiperhere");
     // swiperobject.remove();
-    // swiperobject.parentNode.removeChild(swiperobject);
     varobject = document.getElementById("var");
 
     z = ele.getAttribute("id"); // input要素のid属性の値を取得
@@ -385,7 +357,6 @@ function look(ele) {
     img_left.setAttribute("height", 500);
 
     album = [];
-    // albumnumber = -1;
     key1 = array[z]["ans_id"];
     key2 = array[z]["hitplace"];
     console.log("key1 :", key1);
