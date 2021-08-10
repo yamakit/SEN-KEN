@@ -24,7 +24,7 @@ cur.close
 conn.commit()
 conn.close()
 
-# folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*.json") #ローカル環境での実行用、運用時は消去
+folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*.json") #ローカル環境での実行用、運用時は消去
 
 print(folder)
 
@@ -314,21 +314,6 @@ for lap,fl in enumerate(folder):
             mes_frame = mes_list[data.loc[mes_list[0][0], 'center_y'] > data.loc[mes_list[1][0], 'center_y']]
         else:
             mes_frame = mes_list[1]
-                    
-
-    # ===frame2取得===
-    for i in range(len(data) - 1,0,-1):
-        if not(np.isnan(data.loc[i,'original_y'])):
-            exist_cnt += 1
-            if(exist_cnt == 1):
-                exist_frame = i
-            elif(exist_cnt == 3):
-                frame2 = exist_frame - 4
-                # print(frame2)
-                break
-        else:
-            exist_cnt = 0
-            exist_frame = 0
 
     # ---差分の移動平均をとる---
     data.loc[:, 'panda_mov5'] = data.loc[:, 'sabun_y']
@@ -418,6 +403,24 @@ for lap,fl in enumerate(folder):
     # print(mes_frame)
     # print(mes_list)
 
+    # ===frame2取得===
+    for i in range(len(data) - 1,0,-1):
+        if not(np.isnan(data.loc[i,'original_y'])):
+            exist_cnt += 1
+            if(exist_cnt == 1):
+                exist_frame = i + 1 #最後に検出されたフレーム(jsonではframe_idは1からの連番、DataFrame(i)では0からの連番なので+1している)
+            elif(exist_cnt == 5):
+                print(f'exist_frame:{exist_frame}')
+                if(frame1 + 10 < exist_frame or frame1 > exist_frame - 2):  #frame1 + 10 の方が、フレームアウトしたフレーム(exist_frame)より先ならばframe2は frame1 + 10
+                    print('frame1 + 10パターン')
+                    frame2 = frame1 + 10
+                else:                           #そうでなければ、frame2はexist_frame
+                    print('exist_frame - 2パターン')
+                    frame2 = exist_frame - 2
+                break
+        else:
+            exist_cnt = 0
+
     #---こっからDB関連---
 
     # コネクションの作成
@@ -434,7 +437,6 @@ for lap,fl in enumerate(folder):
         data.loc[frame1, 'original_x'] = -1
     if(np.isnan(data.loc[frame1, 'inped_ori_y'])):
         data.loc[frame1, 'inped_ori_y'] = -1
-    frame2 = frame1 + 5
     x_coordinate = float(data.loc[frame1,'original_x'])
     x_coordinate2 = float(data.loc[frame2,'original_x'])
     y_coordinate = float(data.loc[frame1,'inped_ori_y'])
