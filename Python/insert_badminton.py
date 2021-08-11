@@ -23,12 +23,13 @@ conn.commit()
 conn.close()
 rep_chk = 0
 
-folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\badminton\\*\\*.json") #ローカル環境での実行用、運用時は削除
+folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\badminton\\3\\*.json") #ローカル環境での実行用、運用時は削除
 
 for fl in folder:
     # fl = fl.replace('IMG', 'ffmpeg')
     fl = fl.replace('MOV', 'json')
     print(fl + 'を処理中...')
+    #---ファイル内の'\'を'\\'に置換---
     with open(fl, encoding="utf-8") as f:
         data_lines = f.read()
     chr_list = list(data_lines)
@@ -56,20 +57,14 @@ for fl in folder:
     data['center_x'] = np.nan
     data['sabun_y'] = np.nan
     data['sabun_x'] = np.nan
-    data['vartex_point'] = np.nan
     data.loc[:, 'panda_mov5'] = np.nan
     data.loc[:, 'panda_mov50'] =np.nan
 
-    cnt = 0
-    vartex = 0
-    renzoku = 0
-    found = 0
-    frame1 = 0
-    aiuw = 0
-    stack = 0
-    diff_tmp = 0
-    strange_flag = 0            #最初の2フレームが異常値かどうかの判定結果を格納する変数
-    nan_flag = 0                #異常値だった場合にその値を空白にしたという処理をしたことを記録する変数
+    frame1 = 0                  #シャトルがラケットに当たった瞬間のフレームを格納する変数
+    stack = 0                   #最後に値が入っていたフレームを格納する変数
+    # diff_tmp = 0
+    # strange_flag = 0            #最初の2フレームが異常値かどうかの判定結果を格納する変数
+    # nan_flag = 0                #異常値だった場合にその値を空白にしたという処理をしたことを記録する変数
     have_got = 0                #取り出した座標を走査する際に値が入ったフレームを見つけたことを記録するフラグ変数
     d_frame = 0                 #シャトルが下降し始めたフレームを格納する変数
     renzoku = 0                 #シャトルが下降したフレームが連続した回数を格納する変数
@@ -78,12 +73,11 @@ for fl in folder:
     changing_frame = 0          #グラフの傾向の変化点のフレームを格納する変数
     intsec_frame = 0            #差分のグラフを5と50で移動平均をとったグラフの交点のフレームを格納する変数
 
-    Zlist = []
-    y_points = []      #フレームとそのフレームのy座標を格納するリスト
-    ans = []           #
+    # y_points = []      #フレームとそのフレームのy座標を格納するリスト
+    # ans = []           
     coor_list = []     #座標を格納するリスト
     strange_list = []  #異常値と思われる座標とその検出回数のリストを格納するリスト
-    strange_coor = []  #異常値の基準となる座標を格納するリスト
+    # strange_coor = []  #異常値の基準となる座標を格納するリスト
 
     #===csvから座標を取り出す===
     # #---慢性的に検出される異常値を検出---
@@ -289,7 +283,7 @@ for fl in folder:
                     if((data.loc[frame, 'panda_mov50'] <= data.loc[frame, 'panda_mov5'] and data.loc[frame + 1, 'panda_mov5'] <= data.loc[frame + 1, 'panda_mov50']) or (data.loc[frame, 'panda_mov5'] <= data.loc[frame , 'panda_mov50'] and data.loc[frame + 1, 'panda_mov50'] <= data.loc[frame + 1, 'panda_mov5'])):
                         intsec_frame = frame + 1
                         frame1 = intsec_frame
-                        print('here!')                
+                        # print('here!')                
                         break
         else:
             for frame in range(changing_frame, 0, -1):
@@ -297,24 +291,24 @@ for fl in folder:
                     if((data.loc[frame, 'panda_mov50'] <= data.loc[frame, 'panda_mov5'] and data.loc[frame + 1, 'panda_mov5'] <= data.loc[frame + 1, 'panda_mov50']) or (data.loc[frame, 'panda_mov5'] <= data.loc[frame , 'panda_mov50'] and data.loc[frame + 1, 'panda_mov50'] <= data.loc[frame + 1, 'panda_mov5'])):
                         intsec_frame = frame + 1
                         frame1 = intsec_frame
-                        print('here!2')                
+                        # print('here!2')                
                         break
 
     print(frame1)
 
-    movave = plt.figure()
-    movaves = movave.add_subplot(1,1,1)
-    movaves.invert_yaxis()
-    data[:].plot('frame_id', 'panda_mov5', c = 'black', ax = movaves)
-    data[:].plot('frame_id', 'panda_mov50', c = 'red', ax = movaves)
-    plt.plot(intsec_frame + 1, data.loc[intsec_frame, 'panda_mov5'], c = '#89f', marker = '.', axes = movaves)
-    plt.plot(changing_frame + 1, data.loc[changing_frame, 'panda_mov5'], c = '#f00', marker = '.', axes = movaves)
-    plt.plot(d_frame + 1, data.loc[d_frame, 'panda_mov5'], c = '#0f0', marker = '.', axes = movaves)
+    # movave = plt.figure()
+    # movaves = movave.add_subplot(1,1,1)
+    # movaves.invert_yaxis()
+    # data[:].plot('frame_id', 'panda_mov5', c = 'black', ax = movaves)
+    # data[:].plot('frame_id', 'panda_mov50', c = 'red', ax = movaves)
+    # plt.plot(intsec_frame + 1, data.loc[intsec_frame, 'panda_mov5'], c = '#89f', marker = '.', axes = movaves)
+    # plt.plot(changing_frame + 1, data.loc[changing_frame, 'panda_mov5'], c = '#f00', marker = '.', axes = movaves)
+    # plt.plot(d_frame + 1, data.loc[d_frame, 'panda_mov5'], c = '#0f0', marker = '.', axes = movaves)
 
-    oriY_fig = plt.figure()
-    oriY_ax = oriY_fig.add_subplot(1,1,1)
-    oriY_ax.invert_yaxis()
-    data[:].plot('frame_id', 'original_y', c = 'black', ax = oriY_ax)
+    # oriY_fig = plt.figure()
+    # oriY_ax = oriY_fig.add_subplot(1,1,1)
+    # oriY_ax.invert_yaxis()
+    # data[:].plot('frame_id', 'original_y', c = 'black', ax = oriY_ax)
 
     cenY_fig = plt.figure()
     cenY_ax = cenY_fig.add_subplot(1,1,1)
