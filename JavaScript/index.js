@@ -20,12 +20,8 @@ var picture_path;
 var hitplace = 0;
 
 function dofy() {
-    console.log("dofy()が呼び出されました！！");
-    back.style.display = "none";
-    back_most.style.display = "none";
     buttondiv.style.display = "none";
-    // marudiv.style.display = "none";
-    // batsudiv.style.display = "none";
+    console.log("dofy()が呼び出されました！！");
     videoElement = document.querySelector("video");
     const btn_slow = document.getElementById("btn_slow");
     const btn_normal = document.getElementById("btn_normal");
@@ -56,7 +52,6 @@ function dofy() {
 }
 
 var stop_renda = 0;
-
 var color;
 var color2;
 
@@ -67,6 +62,7 @@ function getId(ele) {
         color = document.getElementById(button_id);
         console.log(button_id);
         console.log(color);
+        movplay(0);
     }
 }
 
@@ -107,6 +103,8 @@ function cut() {
 
 function sent() {
     console.log("sent()が呼び出されました！！");
+    back.style.display = "none";
+    back_most.style.display = "none";
     $.ajax({
         type: "GET",
         url: "../PHP/index.php",
@@ -115,6 +113,7 @@ function sent() {
     })
         .done(function (data) {
             var mv = document.getElementById("mv");
+            mv.controls = false;
             console.log('DONE', data);
             console.log("通信が成功しました!!!");
             frame1 = data[i]['frame1'];
@@ -159,7 +158,6 @@ function sent() {
 var trust = 0;
 function a() {
     console.log("a()が呼び出されました！！");
-
     console.log(frame1);
     videoElement.addEventListener("timeupdate", function () {
         var submit = videoElement.currentTime * 1000;
@@ -181,6 +179,7 @@ function a() {
 
 function wille() {
     console.log("wille()が呼び出されました！！");
+    judge = 0;
     color.style.backgroundColor = '#00aeff5b';
     color2.style.backgroundColor = '#00aeff5b';
     percentage = result / kazu * 100;
@@ -223,7 +222,7 @@ function wille() {
 
 function apple() {
     if (stop_renda == 0) {
-        stop_renda = stop_renda + 1;
+        stop_renda = 1;
         console.log("apple()が呼び出されました！！");
         console.log('frame2　前: ', frame2);
         frame2 = frame2 / 29.97;
@@ -263,7 +262,8 @@ function compare() {
         kazu += 1;
         setTimeout(send, 100);
 
-        color.style.backgroundColor = '#0000FF';
+        color.style.backgroundColor = '#00FF0080';
+        // color.style.backgroundColor = '#00FF99CC';
 
         document.getElementById('maru_sound').play();
     }
@@ -274,8 +274,9 @@ function compare() {
         setTimeout(send, 100);
         setTimeout(wille, 2000);
         trust = 0;
-        color.style.backgroundColor = '#ff0000';
-        color2.style.backgroundColor = '#0000FF';
+        color.style.backgroundColor = '#CD5C5C90';
+        color2.style.backgroundColor = '#00FF0080';
+        // color2.style.backgroundColor = '#00FF99CC';
 
         document.getElementById('batsu_sound').play();
     }
@@ -288,7 +289,7 @@ function compare() {
     );
     console.log("まとめ:", array);
     buttonobject = document.getElementById("buttonhere");
-    link = '<button type="button" id="' + i + '" onclick="look(this)">' + i + '問目</button>';
+    link = '<button type="button" class="item" id="' + i + '" onclick="look(this)">' + i + '問目</button>';
     buttonobject.insertAdjacentHTML('beforeend', link);
 }
 

@@ -9,6 +9,8 @@ window.onload = function () {
 
 function dofy() {
     console.log("dofy()が呼び出されました！！");
+    var mv = document.getElementById("mv");
+    mv.controls = false;
     videoElement = document.querySelector("video");
     const btn_slow = document.getElementById("btn_slow");
     const btn_normal = document.getElementById("btn_normal");

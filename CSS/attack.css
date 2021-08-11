@@ -23,4 +23,7 @@ a{
     position: absolute;
 }
 
-
+body {
+    background-image: url("../img/haikei.png");
+    background-size: cover;
+}

@@ -71,7 +71,7 @@ function sent() {
 
 function push() {
 
-    for (i = 0; i < 50; i++) {
+    for (i = 0; i < 100; i++) {
         zahyo_x = counter[i]['x_coordinate'];
         zahyo_y = counter[i]['y_coordinate'];
         path = counter[i]['video_path'];
