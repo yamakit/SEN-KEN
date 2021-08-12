@@ -1,3 +1,7 @@
+body{
+    margin: 0px;
+    font-family: "HGゴシックE", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
+}
 video {
     width: 1000px;
     height: auto;
@@ -24,6 +28,6 @@ a{
 }
 
 body {
-    background-image: url("../img/haikei.png");
+    background-image: url("../img/haikei2.png");
     background-size: cover;
 }

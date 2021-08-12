@@ -11,10 +11,12 @@ var video_id;
 var correct;
 let judge = 0;
 var more;
+var most;
 var x_coordinate = 0;
 var y_coordinate = 0;
 var kazu = 0;
 var result = 0;
+var percentage = 0;
 var array = [];
 var picture_path;
 var hitplace = 0;
@@ -74,17 +76,17 @@ function cut() {
     var data = location.href.split("?")[1];
     var text = data.split("=")[1];
     console.log(text);
-    more = text.split("|")[0];
+    more = text.split("&")[0];
     console.log("プレイヤーid :", more);
-    kazu = text.split("|")[1];
-    console.log("解いた問題数：", kazu);
-    result = text.split("|")[2];
-    console.log("正解した数：", result);
+    most = text.split("&")[1];
+    console.log("ボールid :", most);
+    // kazu = text.split("|")[1];
+    // console.log("解いた問題数：", kazu);
+    // result = text.split("|")[2];
+    // console.log("正解した数：", result);
 
 
-    if (kazu == undefined || result == undefined) {
-        kazu = 0;
-        result = 0;
+    if (kazu == 0) {
         percentage = 0;
     } else {
         kazu = parseInt(kazu);
@@ -304,7 +306,7 @@ function compare() {
 // }
 
 function push() {
-    location.href = "http://localhost/SEN-KEN/HTML/home.html?data=" + more;
+    location.href = "http://localhost/SEN-KEN/HTML/home.html?data=" + more + "&" + most;
 
 }
 function pup() {

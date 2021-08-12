@@ -27,13 +27,18 @@ var number_r;
 var r = [];
 var text;
 var more;
+var most;
 
 setTimeout(cut, 1);
 
 function cut() {
     var data = location.href.split("?")[1];
-    more = data.split("=")[1];
+    text = data.split("=")[1];
+    console.log(text);
+    more = text.split("&")[0];
     console.log("プレイヤーid :", more);
+    most = text.split("&")[1];
+    console.log("ボールid :", most);
     sent();
 }
 
@@ -81,7 +86,12 @@ function push() {
 
         zahyo_x = zahyo_x * 1600;
         zahyo_y = zahyo_y * 1000;
-        ctx.drawImage(chara, zahyo_x, zahyo_y, 20, 20);
+        // ctx.drawImage(chara, zahyo_x, zahyo_y, 30, 30);
+        ctx.beginPath();
+
+        ctx.arc(zahyo_x, zahyo_y, 15, 0, Math.PI * 2, false);
+        ctx.fillStyle = "rgba(0,0,0,0.3)"; //青で不透明度0.3で塗り潰す
+        ctx.fill();
 
 
         array.push(

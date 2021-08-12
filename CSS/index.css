@@ -9,6 +9,7 @@ a{
     color: rgb(255, 255, 255);
     background: #2979FF;
     position: relative;
+    padding: 0 1%;
     background-image: url(../img/aa.png);
     font-weight:bold;
 }
@@ -26,6 +27,11 @@ a{
 #mv{
     min-height: 55vw;
     width: 100%;
+}
+#selectdiv button{
+    color: #2979FF;
+    background: #ffffff;
+    border-radius: 2%;
 }
 .content{
     position: absolute;

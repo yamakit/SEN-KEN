@@ -6,23 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <meta http-equiv="Cache-Control" content="no-cache">
-
+    <link rel="stylesheet" href="../CSS/login.css">
     <title>SEN-KENログイン</title>
-
     <script src="../Javascript/login.js"></script>
 </head>
 
 <body>
-    <h1>SEN-KEN </h1>
-    <h1>ログインしてください</h1>
-
-    <form action="../HTML/home.html" method="GET">
-        <select name="SelectPref" id="SelectPref">
+    <h1 class="title">SEN-<span>K</span>EN </h1>
+    <form action="../HTML/home.html" method="GET" class="SelectPref">
+        <select name="SelectPref" id="SelectPref" class="select">
             <option>未選択</option>
             <option value=""></option>
         </select>
 
-        <input type="submit" name="submit" value="決定" />
+        <input type="submit" name="submit" value="Log in" class="button" />
         <!-- 
         <button type="reset" id="valley">バレーボール</button>
         <button type="reset" id="soft">ソフトテニス</button>

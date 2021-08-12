@@ -14,15 +14,15 @@
 </head>
 
 <body>
-    <h2 class="title">スポーツの予知能力をクイズで向上させる</h2>
     <h1 class="line">S<span>E</span>N-KEN</h1>
-    <img class='img' src="../img/volleyball.png">
-    <input class="pic" type="button" value="正解率分布図" onclick="select()">
-    <input class="graph" type="button" value="正解率推移" onclick="chart()">
-    <div style="width:100%">
-        <canvas id="myChart"></canvas>
+    <!-- <img class='img' src="../img/volleyball.png"> -->
+    <!-- <input class="pic" type="button" value="正解率分布図" onclick="select()">
+    <input class="graph" type="button" value="正解率推移" onclick="chart()"> -->
+    <div class="button">
+        <button type="button" class='quiz' onclick="receive()">予想クイズ</button>
+        <button type="button" class='date' onclick="attack()">打ち方分析</button>
     </div>
-    <form name=form1>
+    <form name=form1 class="form">
         <select class="new" name='pull' onchange="chart(),select()">
             <option value=10>直近10問</option>
             <option value=50>直近50問</option>
@@ -30,6 +30,12 @@
             <option value=300>直近300問</option>
         </select>
     </form>
+
+    <img src="/img/画像 -20210611-061000-241c5b65.png" class="face">
+    <a class="myself"></br>名前</br>所属</br>ポジション</a>
+    <div class="stick">
+        <canvas id="myChart"></canvas>
+    </div>
     <table class="math">
         <tr>
             <td id="td1"></td>
@@ -47,10 +53,7 @@
             <td id="td9"></td>
         </tr>
     </table>
-    <div class="button">
-        <button type="button" class='quiz' onclick="receive()">レシーバー向け予想クイズ</button>
-        <button type="button" class='date' onclick="attack()">アタッカー向け打ち方分析</button>
-    </div>
+
 </body>
 
 </html>

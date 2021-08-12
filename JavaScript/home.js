@@ -1,6 +1,6 @@
 
 var more;
-
+let most;
 window.onload = function () {
     var data = location.href.split("?")[1];
     console.log(data);
@@ -8,14 +8,43 @@ window.onload = function () {
     console.log(text);
     more = text.split("&")[0];
     console.log("プレイヤーid :", more);
+    most = text.split("&")[1];
+    console.log("ボールid :", most);
+    if (most == "submit") {
+        sent();
+    }
 }
 
 function receive() {
-    location.href = "http://localhost/SEN-KEN/HTML/index.html?data=" + more;
+    location.href = "http://localhost/SEN-KEN/HTML/index.html?data=" + more + "&" + most;
 }
 
 function attack() {
-    location.href = "http://localhost/SEN-KEN/HTML/attack.html?data=" + more;
+    location.href = "http://localhost/SEN-KEN/HTML/attack.html?data=" + more + "&" + most;
+}
+
+
+function sent() {
+    console.log("sent()が呼び出されました！！");
+    $.ajax({
+        type: "GET",
+        url: "../PHP/home.php",
+        dataType: "json",
+        data: { 'player_id': more },
+    })
+        .done(function (data) {
+            console.log('DONE', data);
+            console.log("通信が成功しました!!!");
+            most = data[0][0];
+            console.log("ボールid :", most);
+
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log('通信に失敗しました');
+            console.log("XMLHttpRequest : " + XMLHttpRequest.status);
+            console.log("textStatus     : " + textStatus);
+            console.log("errorThrown    : " + errorThrown.message);
+        });
+
 }
 
 var count = 0;

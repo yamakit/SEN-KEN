@@ -56,27 +56,3 @@ function frame() {
         i = 0;
     }
 }
-
-var nihon = 33;
-
-let datas = [
-    { name: '体の開き', value: nihon },
-];
-
-//しきい値
-let threshold = 100;
-
-for (var variable of datas) {
-
-    //しきい値からパーセンテージを計算
-    variable.percentage = Math.round(variable.value / threshold * 100);
-
-    // containerに追加
-    document.querySelector('#container').insertAdjacentHTML('beforeend', `<div class="graf">
-            <div><span class="data-name">${variable.name}</span></div>
-            <div class="graf-bar-bg">
-        <div class="graf-bar" id="${variable.name}"><span>${variable.value}</span></div>
-        </div></div>`);
-    // widthを指定
-    document.querySelector('#' + variable.name).style.width = variable.percentage + '%';
-}
