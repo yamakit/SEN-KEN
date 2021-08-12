@@ -322,6 +322,7 @@ function send() {
         url: "../PHP/insert.php",
         dataType: "json",
         data: {
+            "ball_id": most,
             "video_id": video_id,
             "button_id": button_id,
             "user_id": more,
