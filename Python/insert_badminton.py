@@ -318,10 +318,10 @@ for fl in folder:
     plt.plot(changing_frame + 1, data.loc[changing_frame, 'center_y'], c = '#f00', marker = '.', axes = cenY_ax)    
     plt.plot(d_frame + 1, data.loc[d_frame, 'center_y'], c = '#0f0', marker = '.', axes = cenY_ax)
 
-    sabY_fig = plt.figure()
-    sabY_ax = sabY_fig.add_subplot(1,1,1)
-    sabY_ax.invert_yaxis()
-    data[:].plot('frame_id', 'sabun_y', c = 'black', ax = sabY_ax)
+    # sabY_fig = plt.figure()
+    # sabY_ax = sabY_fig.add_subplot(1,1,1)
+    # sabY_ax.invert_yaxis()
+    # data[:].plot('frame_id', 'sabun_y', c = 'black', ax = sabY_ax)
 
     plt.show()
 
