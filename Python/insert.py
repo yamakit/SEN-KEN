@@ -435,12 +435,12 @@ for lap,fl in enumerate(folder):
     # print(fl)
     if(np.isnan(data.loc[frame1, 'original_x'])):
         data.loc[frame1, 'original_x'] = -1
-    if(np.isnan(data.loc[frame1, 'inped_ori_y'])):
-        data.loc[frame1, 'inped_ori_y'] = -1
+    if(np.isnan(data.loc[frame1, 'original_y'])):
+        data.loc[frame1, 'original_y'] = -1
     x_coordinate = float(data.loc[frame1,'original_x'])
     x_coordinate2 = float(data.loc[frame2,'original_x'])
-    y_coordinate = float(data.loc[frame1,'inped_ori_y'])
-    y_coordinate2 = float(data.loc[frame2,'inped_ori_y'])
+    y_coordinate = float(data.loc[frame1,'original_y'])
+    y_coordinate2 = float(data.loc[frame2,'original_y'])
   
     #ans_idの判定
     if(0 <= x_coordinate2 <= 0.333):

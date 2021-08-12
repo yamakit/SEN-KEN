@@ -305,10 +305,10 @@ for fl in folder:
     # plt.plot(changing_frame + 1, data.loc[changing_frame, 'panda_mov5'], c = '#f00', marker = '.', axes = movaves)
     # plt.plot(d_frame + 1, data.loc[d_frame, 'panda_mov5'], c = '#0f0', marker = '.', axes = movaves)
 
-    # oriY_fig = plt.figure()
-    # oriY_ax = oriY_fig.add_subplot(1,1,1)
-    # oriY_ax.invert_yaxis()
-    # data[:].plot('frame_id', 'original_y', c = 'black', ax = oriY_ax)
+    oriY_fig = plt.figure()
+    oriY_ax = oriY_fig.add_subplot(1,1,1)
+    oriY_ax.invert_yaxis()
+    data[:].plot('frame_id', 'original_y', c = 'black', ax = oriY_ax)
 
     cenY_fig = plt.figure()
     cenY_ax = cenY_fig.add_subplot(1,1,1)
@@ -318,10 +318,10 @@ for fl in folder:
     plt.plot(changing_frame + 1, data.loc[changing_frame, 'center_y'], c = '#f00', marker = '.', axes = cenY_ax)    
     plt.plot(d_frame + 1, data.loc[d_frame, 'center_y'], c = '#0f0', marker = '.', axes = cenY_ax)
 
-    # sabY_fig = plt.figure()
-    # sabY_ax = sabY_fig.add_subplot(1,1,1)
-    # sabY_ax.invert_yaxis()
-    # data[:].plot('frame_id', 'sabun_y', c = 'black', ax = sabY_ax)
+    sabY_fig = plt.figure()
+    sabY_ax = sabY_fig.add_subplot(1,1,1)
+    sabY_ax.invert_yaxis()
+    data[:].plot('frame_id', 'sabun_y', c = 'black', ax = sabY_ax)
 
     plt.show()
 
