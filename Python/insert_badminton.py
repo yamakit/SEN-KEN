@@ -321,7 +321,7 @@ for fl in folder:
         data.loc[frame1, 'center_x'] = -1
     if(np.isnan(data.loc[frame1, 'center_y'])):
         data.loc[frame1, 'center_y'] = -1
-    frame2 = frame1 + 5
+        
     x_coordinate = float(data.loc[frame1,'center_x'])
     x_coordinate2 = float(data.loc[frame2,'center_x'])
     y_coordinate = float(data.loc[frame1,'center_y'])
@@ -350,7 +350,7 @@ for fl in folder:
             ans_id = 9
 
     # print(x_coordinate,y_coordinate)
-    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame1 + 20}, ans_id = {ans_id}, x_coordinate = {x_coordinate}, y_coordinate = {y_coordinate}, yolo_flag = 2 WHERE video_path = '{fl}';"
+    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame2}, ans_id = {ans_id}, x_coordinate = {x_coordinate}, y_coordinate = {y_coordinate}, yolo_flag = 2 WHERE video_path = '{fl}';"
     cur.execute(stmt)
     cur.close()
     conn.commit()
