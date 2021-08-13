@@ -12,5 +12,5 @@ rem フォルダを作成
 mkdir D:\htdocs\SEN-KEN\2021SEN_KEN\volleyball\%1\openpose_%2
 
 rem 動画を分割
-ffmpeg -i "D:\htdocs\SEN-KEN\2021SEN_KEN\volleyball\%1\%2.avi" -r 30 D:\htdocs\SEN-KEN\2021SEN_KEN\volleyball\%1\%2\OpenPose_%%06d.jpg
+ffmpeg -i "D:\htdocs\SEN-KEN\2021SEN_KEN\volleyball\%1\%2.avi" -r 30 D:\htdocs\SEN-KEN\2021SEN_KEN\volleyball\%1\openpose_%2\OpenPose_%%06d.jpg
 

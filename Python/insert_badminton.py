@@ -23,10 +23,10 @@ conn.commit()
 conn.close()
 rep_chk = 0
 
-folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\badminton\\1\\*.json") #ローカル環境での実行用、運用時は削除
+folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\badminton\\*\\*.json") #ローカル環境での実行用、運用時は削除
 
 for fl in folder:
-    fl = fl.replace('IMG', 'ffmpeg')
+    # fl = fl.replace('IMG', 'ffmpeg')
     fl = fl.replace('MOV', 'json')
     print(fl + 'を処理中...')
     with open(fl, encoding="utf-8") as f:
@@ -68,11 +68,13 @@ for fl in folder:
     diff_tmp = 0
     strange_flag = 0 #最初の2フレームが異常値かどうかの判定結果を格納する変数
     nan_flag = 0     #異常値だった場合にその値を空白にしたという処理をしたことを記録する変数
+    have_got = 0     #取り出した座標を走査する際に値が入ったフレームを見つけたことを記録するフラグ変数
 
     Zlist = []
     y_points = []  #フレームとそのフレームのy座標を格納するリスト
     ans = []       #
     coor_list = [] #座標を格納するリスト
+    strange_list = [] #異常値と思われる座標とその検出回数のリストを格納するリスト
     strange_coor = [] #異常値の基準となる座標を格納するリスト
 
     #===csvから座標を取り出す===
@@ -140,14 +142,85 @@ for fl in folder:
     #         y_points.append([i,np.nan])
     
     # 旧 データ取り出し処理
-    for i in range(1,len(data) - 1):
+    for i in range(0,len(data)):
         triple = '''{}'''.format(data.loc[i,'objects'])
         obj_list = eval(triple)
         if obj_list:
             data.loc[i,'center_y'] = obj_list[0]['relative_coordinates']['center_y']
             data.loc[i,'center_x'] = obj_list[0]['relative_coordinates']['center_x']
             data.loc[i,'original_y'] = obj_list[0]['relative_coordinates']['center_y']
+            data.loc[i, 'original_x'] = obj_list[0]['relative_coordinates']['center_x']
+            coor_list.append([obj_list[0]['relative_coordinates']['center_y'],obj_list[0]['relative_coordinates']['center_x']])
+        else:
+            coor_list.append([np.nan,np.nan])
 
+    data_fig = plt.figure()
+    data_ax = data_fig.add_subplot(1,1,1)
+    data[:].plot('frame_id', 'center_y', c = 'black', ax = data_ax)
+
+    #取り出したデータから異常値をはじく
+    for f in range(0,len(coor_list)):
+        data.loc[f,'original_y'] = coor_list[f][0]
+        data.loc[f,'original_x'] = coor_list[f][1]
+        if not(np.isnan(coor_list[f][0])):
+            if not(have_got):
+                data.loc[f,'center_y'] = coor_list[f][0]
+                data.loc[f,'center_x'] = coor_list[f][1]
+                have_got = 1
+                stack = f
+            else:
+                if(-0.005 < coor_list[stack][0] - coor_list[f][0] and coor_list[stack][0] - coor_list[f][0] < 0.005 or not(have_got)):
+                    data.loc[f,'center_y'] = coor_list[f][0]
+                    data.loc[f,'center_x'] = coor_list[f][1]
+                    stack = f
+                    # print(f"data.loc[{f},'center_y'] in +-0.01")
+                else:
+                    for coor in range(f + 1,len(coor_list)):
+                        if not(np.isnan(coor_list[coor][0])):
+                            nxt_val = coor
+                            break
+                    if(-0.003 < coor_list[f][0] - coor_list[nxt_val][0] and coor_list[f][0] - coor_list[nxt_val][0] < 0.003):
+                        for num,strange in enumerate(strange_list):
+                            if(-0.001 <= strange[0] - coor_list[f][0] and strange[0] - coor_list[f][0] <= 0.001):
+                                strange_list[num][2] += 1
+                                break
+                            if(num == len(strange_list) - 1):
+                                strange_list.append([coor_list[f][0],coor_list[f][1],0])
+                                print(f"[{coor_list[f][0]},{coor_list[f][1]}] was appended to strange_list!(frame = {f}),near:{(-0.003 < coor_list[f][0] - coor_list[nxt_val][0] and coor_list[f][0] - coor_list[nxt_val][0] < 0.003)},near_val:{coor_list[f][0] - coor_list[nxt_val][0]},now_val:{coor_list[f][0]},next_val:{coor_list[nxt_val][0]}")
+                        if not(strange_list):
+                            strange_list.append([coor_list[f][0],coor_list[f][1],0])
+                            # print(f"[{coor_list[f][0]},{coor_list[f][1]}] was appended to strange_list!(frame = {f}),near:{(-0.003 < coor_list[f][0] - coor_list[nxt_val][0] and coor_list[f][0] - coor_list[nxt_val][0] < 0.003)},near_val:{coor_list[f][0] - coor_list[nxt_val][0]},now_val:{coor_list[f][0]},next_val:{coor_list[nxt_val][0]}")
+                        data.loc[f,'center_y'] = coor_list[f][0]
+                        data.loc[f,'center_x'] = coor_list[f][1]
+                    elif((coor_list[stack][0] - coor_list[f][0])*(coor_list[f][0] - coor_list[nxt_val][0]) < 0):
+                        for num,strange in enumerate(strange_list):
+                            if(-0.001 <= strange[0] - coor_list[f][0] and strange[0] - coor_list[f][0] <= 0.001):
+                                strange_list[num][2] += 1
+                                break
+                            if(num == len(strange_list) + 1):
+                                strange_list.append([coor_list[f][0],coor_list[f][1],0])
+                        if not(strange_list):
+                            strange_list.append([coor_list[f][0],coor_list[f][1],0])
+                        # print(f"[{coor_list[f][0]},{coor_list[f][1]}] was appended to strange_list!(frame = {f}),vector:{(coor_list[stack][0] - coor_list[f][0])*(coor_list[f][0] - coor_list[nxt_val][0]) < 0},vector_val:{(coor_list[stack][0] - coor_list[f][0])*(coor_list[f][0] - coor_list[nxt_val][0])},now_val:{coor_list[f][0]},next_val{coor_list[nxt_val][0]}")
+                    else:
+                        data.loc[f,'center_y'] = coor_list[f][0]
+                        data.loc[f,'center_x'] = coor_list[f][1]
+                        stack = f
+                        # print('passed check! near:' + str(coor_list[f][0] - coor_list[nxt_val][0]) + ',vector:' + str(Decimal(str(coor_list[stack][0] - coor_list[f][0]))*(Decimal(str(coor_list[f][0])) - Decimal(str(coor_list[nxt_val][0])))))
+        else:
+            # print('no object!')
+            pass
+
+    #---記録した異常値の候補とそれぞれが検出された回数をもとに異常値を省く---
+    print(strange_list)
+    for coor in strange_list:
+        for i in range(0,len(data)):
+            if(coor[0] - 0.001 <= data.loc[i,'center_y'] and data.loc[i,'center_y'] <= coor[0] + 0.001 and coor[2] >= 2):
+                print('deleted(frame:' + str(i) + ',y:' + str(data.loc[i,'center_y']) + ',x:' + str(data.loc[i,'center_x']) + ')')
+                data.loc[i,'center_y'] = np.nan
+                data.loc[i,'center_x'] = np.nan
+
+    #---データを補完---
     data.loc[:,['center_y']] = data.loc[:,['center_y']].interpolate(axis=0)
     data.loc[:,['center_x']] = data.loc[:,['center_x']].interpolate(axis=0)
 
@@ -201,19 +274,19 @@ for fl in folder:
         diff_x = second_x - first_x
         data.loc[i,'sabun_x'] = float(diff_x)
 
-    oriY_fig = plt.figure()
-    oriY_ax = oriY_fig.add_subplot(1,1,1)
-    data[:].plot('frame_id', 'original_y', c = 'black', ax = oriY_ax)
+    # oriY_fig = plt.figure()
+    # oriY_ax = oriY_fig.add_subplot(1,1,1)
+    # data[:].plot('frame_id', 'original_y', c = 'black', ax = oriY_ax)
 
     cenY_fig = plt.figure()
     cenY_ax = cenY_fig.add_subplot(1,1,1)
     data[:].plot('frame_id', 'center_y', c = 'black', ax = cenY_ax)
     
-    sabY_fig = plt.figure()
-    sabY_ax = sabY_fig.add_subplot(1,1,1)
-    data[:].plot('frame_id', 'sabun_y', c = 'black', ax = sabY_ax)
+    # sabY_fig = plt.figure()
+    # sabY_ax = sabY_fig.add_subplot(1,1,1)
+    # data[:].plot('frame_id', 'sabun_y', c = 'black', ax = sabY_ax)
 
-    # plt.show()
+    plt.show()
 
     #---こっからDB関連---
 

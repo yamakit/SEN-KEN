@@ -31,7 +31,7 @@ print(folder)
 for lap,fl in enumerate(folder):
     fl = fl.replace('IMG','ffmpeg')
     fl = fl.replace('MOV','json')
-    fl = fl.replace('../',"D:\\htdocs\\")
+    fl = fl.replace('../',"D:\\htdocs\\SEN-KEN\\")
     fl = fl.replace('/',"\\")
 
     print(fl + 'を処理中...')
@@ -196,11 +196,11 @@ for lap,fl in enumerate(folder):
                 data.loc[i,'center_x'] = np.nan
 
     # === データの空白を補完 ===
-    data.loc[:,['center_y']] = data.loc[:,['center_y']].interpolate(axis=0)
-    data.loc[:,['center_x']] = data.loc[:,['center_x']].interpolate(axis=0)
+    data.loc[:,'center_y'] = data.loc[:,'center_y'].interpolate(axis=0)
+    data.loc[:,'center_x'] = data.loc[:,'center_x'].interpolate(axis=0)
 
-    data.loc[:,['inped_ori_y']] = data.loc[:,['original_y']].interpolate(axis=0)
-    data.loc[:,['original_x']] = data.loc[:,['original_x']].interpolate(axis=0)
+    data.loc[:,'inped_ori_y'] = data.loc[:,'original_y'].interpolate(axis=0)
+    data.loc[:,'original_x'] = data.loc[:,'original_x'].interpolate(axis=0)
 
     #---グラフ出力、運用時はコメントアウト---
     # fig_list = [None,None,None,None]
@@ -439,6 +439,9 @@ for lap,fl in enumerate(folder):
     x_coordinate2 = float(data.loc[frame2,'original_x'])
     y_coordinate = float(data.loc[frame1,'inped_ori_y'])
     y_coordinate2 = float(data.loc[frame2,'inped_ori_y'])
+
+    print(y_coordinate)
+    print(y_coordinate2)
   
     #ans_idの判定
     if(0 <= x_coordinate2 <= 0.333):
@@ -464,7 +467,7 @@ for lap,fl in enumerate(folder):
             ans_id = 9
     stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame2}, ans_id = {ans_id}, x_coordinate = {x_coordinate}, y_coordinate = {y_coordinate}, yolo_flag = {2} WHERE video_path = '{fl}';"
     print(stmt)
-    cur.execute(stmt)
+    # cur.execute(stmt)
     cur.close()
     conn.commit()
     conn.close()
