@@ -63,6 +63,9 @@ for fl in folder:
     renzoku = 0
     found = 0
     frame1 = 0
+    frame2 = 0
+    exist_cnt = 0
+    exist_frame = 0
     aiuw = 0
     stack = 0
     diff_tmp = 0
@@ -141,7 +144,7 @@ for fl in folder:
     #         coor_list.append([np.nan,np.nan])
     #         y_points.append([i,np.nan])
     
-    # 旧 データ取り出し処理
+    # データ取り出し処理
     for i in range(0,len(data)):
         triple = '''{}'''.format(data.loc[i,'objects'])
         obj_list = eval(triple)
@@ -273,6 +276,20 @@ for fl in folder:
         second_x = Decimal(str(data.loc[i + 1,'MedFilTemp_x']))
         diff_x = second_x - first_x
         data.loc[i,'sabun_x'] = float(diff_x)
+
+    #===frame2検出===
+
+    for i in range(len(data) - 1,0,-1):
+        if not(np.isnan(data.loc[i,'original_y'])):
+            exist_cnt += 1
+            if(exist_cnt == 1):
+                exist_frame = i
+            elif(exist_cnt == 3):
+                frame2 = exist_frame - 4
+                # print(frame2)
+                break
+        else:
+            exist_cnt = 0
 
     # oriY_fig = plt.figure()
     # oriY_ax = oriY_fig.add_subplot(1,1,1)
