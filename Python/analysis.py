@@ -34,10 +34,14 @@ for fl in folder:
 
     
     file_name = fl.replace(".MOV","")
-    print(file_name)
+    print(".MOVを置換" + file_name)
 
+    file_name = file_name.replace("\\", "/")
+    print("\\を/に置換" + file_name)
     file_names = file_name.replace("../", "D:/htdocs/")
-    file_names = file_names.replace("D:/htdocs/SEN-KEN/2021SEN_KEN/volleyball/","")    
+    print("../をD:/htdocsに置換" + file_name)
+    file_names = file_names.replace("D:/htdocs/2021SEN_KEN/volleyball/","")
+    print("置換後のPATH名"  + file_names)  
     person_num = file_names[:2]
     print(person_num)
     video_num = file_names[3:]
@@ -50,4 +54,4 @@ for fl in folder:
     cur.execute(f"UPDATE yolo_video_table SET yolo_flag = 1 WHERE video_path = '{fl}'")
     cur.close
     conn.commit()
-    conn.close()
+    conn.close
