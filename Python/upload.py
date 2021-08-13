@@ -3,7 +3,7 @@ import mysql.connector as mydb
 import os
 
 files = gb.glob("D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\*\\*.MOV")
-conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
+conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='sen-ken')
 
 files1 = []
 files2 = []
@@ -14,8 +14,8 @@ cur.execute("SELECT video_path FROM yolo_video_table")
 rows = cur.fetchall()
 
 for s in files:
-    if 'D:\\htdocs\\' in s:
-        text = s.replace('D:\\htdocs\\', '../')
+    if 'D:\\htdocs\\SEN-KEN\\' in s:
+        text = s.replace('D:\\htdocs\\SEN-KEN\\', '../')
         files1.append(text)
 
 for s in files1:
