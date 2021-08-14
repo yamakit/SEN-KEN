@@ -306,7 +306,7 @@ function compare() {
 // }
 
 function push() {
-    location.href = "http://localhost/SEN-KEN/HTML/home.html?data=" + more + "&" + most;
+    location.href = "../HTML/home.html?data=" + more + "&" + most;
 
 }
 function pup() {

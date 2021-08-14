@@ -56,3 +56,36 @@ function frame() {
         i = 0;
     }
 }
+
+var ctx = document.getElementById("myLineChart");
+var myLineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [
+            {
+                label: '体の開き',
+                data: [33, 1, 37, 1, 34, 5, 8, 25],
+                borderColor: "rgba(128,0,0,1)",
+                backgroundColor: "rgba(0,0,0,0)"
+            },
+        ],
+    },
+    options: {
+        title: {
+            display: false,
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    suggestedMax: 100,
+                    suggestedMin: 0,
+                    stepSize: 5,
+                    callback: function (value, index, values) {
+                        return value
+                    }
+                }
+            }]
+        },
+    }
+});
