@@ -13,7 +13,7 @@ board.addEventListener("click", (e) => {
     setTimeout(hikaku, 100);
 });
 const chara = new Image();
-chara.src = "../img/valley.png";  // 画像のURLを指定
+
 
 var zahyo_x;
 var zahyo_y;
@@ -39,6 +39,13 @@ function cut() {
     console.log("プレイヤーid :", more);
     most = text.split("&")[1];
     console.log("ボールid :", most);
+    if (most == 1) {
+        chara.src = "../img/volley.png";  // 画像のURLを指定
+        a.innerHTML = "ボールをクリックしてください"
+    } else if (most == 2) {
+        chara.src = "../img/bad.png"
+        a.innerHTML = "シャトルをクリックしてください"
+    }
     sent();
 }
 
@@ -76,7 +83,7 @@ function sent() {
 
 function push() {
 
-    for (i = 0; i < 100; i++) {
+    for (i = 0; i < counter.length; i++) {
         zahyo_x = counter[i]['x_coordinate'];
         zahyo_y = counter[i]['y_coordinate'];
         path = counter[i]['video_path'];
@@ -86,7 +93,7 @@ function push() {
 
         zahyo_x = zahyo_x * 1600;
         zahyo_y = zahyo_y * 1000;
-        ctx.drawImage(chara, zahyo_x, zahyo_y, 40, 40);
+        ctx.drawImage(chara, zahyo_x, zahyo_y, 30, 40);
         // ctx.beginPath();
 
         // ctx.arc(zahyo_x, zahyo_y, 15, 0, Math.PI * 2, false);

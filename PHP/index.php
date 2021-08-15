@@ -1,6 +1,6 @@
 <?php
     // include 'db_config.php';
-
+$ball_id = $_GET['ball_id'];
     
 $dsn = 'mysql:dbname=sen-ken;host=localhost';
 $user = 'root';
@@ -12,7 +12,7 @@ try {
 
 // echo "<p>DB接続に成功しました。</p>";
 
-$sql = "SELECT * FROM `yolo_video_table`";
+$sql = "SELECT * FROM `yolo_video_table` WHERE ball_id = $ball_id";
 // $sql = "SELECT * FROM `yolo_video_table` ORDER BY RAND()";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();

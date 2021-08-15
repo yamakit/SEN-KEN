@@ -57,35 +57,98 @@ function frame() {
     }
 }
 
-var ctx = document.getElementById("myLineChart");
-var myLineChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: [],
-        datasets: [
-            {
-                label: '体の開き',
-                data: [33, 1, 37, 1, 34, 5, 8, 25],
-                borderColor: "rgba(128,0,0,1)",
-                backgroundColor: "rgba(0,0,0,0)"
-            },
-        ],
-    },
-    options: {
-        title: {
-            display: false,
-        },
-        scales: {
-            yAxes: [{
-                ticks: {
-                    suggestedMax: 100,
-                    suggestedMin: 0,
-                    stepSize: 5,
-                    callback: function (value, index, values) {
-                        return value
-                    }
+var ctx = document.getElementById('ex_chart');
+
+var data = {
+    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"],
+    datasets: [{
+        label: '顔の向き',
+        data: [50, 90, 50, 50, 90, 50, 50, 50, 50, 90, 10, 50, 50, 50, 50],
+        borderColor: 'rgba(100, 100, 255, 1)',
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3
+    }]
+};
+
+var options = {
+    scales: {
+        xAxes: [{
+            scaleLabel: {
+                display: true,
+                labelString: '秒数'
+            }
+        }],
+        yAxes: [{
+            ticks: {
+                min: 0,
+                max: 100,
+                userCallback: function (tick) {
+                    return tick.toString();
                 }
-            }]
-        },
+            },
+            scaleLabel: {
+                display: true,
+                labelString: '左　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　右'
+            }
+        }]
+    },
+    title: {
+        display: true,
+        text: '顔の向きの推移グラフ'
     }
+};
+var ex_chart = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: options
+});
+
+
+
+var ctxt = document.getElementById('ext_chart');
+
+var datas = {
+    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"],
+    datasets: [{
+        label: '体の開き',
+        data: [30, 30, 50, 30, 30, 30, 40, 40, 40, 50, 50, 50, 50, 50, 50],
+        borderColor: 'rgba(255, 100, 100, 1)',
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3
+    }]
+};
+
+var options = {
+    scales: {
+        xAxes: [{
+            scaleLabel: {
+                display: true,
+                labelString: '秒数'
+            }
+        }],
+        yAxes: [{
+            ticks: {
+                min: 0,
+                max: 100,
+                userCallback: function (tick) {
+                    return tick.toString() + '%';
+                }
+            },
+            scaleLabel: {
+                display: true,
+                labelString: '閉　　　　　　　　　　　　　　　　　　　　　　　　　開'
+            }
+        }]
+    },
+    title: {
+        display: true,
+        text: '体の開き'
+    }
+};
+var ext_chart = new Chart(ctxt, {
+    type: 'line',
+    data: datas,
+    options: options
 });

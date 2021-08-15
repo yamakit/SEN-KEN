@@ -4,6 +4,7 @@ var frame2 = 0;
 var video_path;
 var i = 0;
 var x = 0;
+var y = 0;
 var pop;
 var quiet;
 var button_id = 0;
@@ -111,7 +112,7 @@ function sent() {
         type: "GET",
         url: "../PHP/index.php",
         dataType: "json",
-        data: { 'yolo_video_table': 0 },
+        data: { 'ball_id': most },
     })
         .done(function (data) {
             var mv = document.getElementById("mv");
@@ -145,9 +146,11 @@ function sent() {
             console.log("動画が流れます")
             dofy();
             i = i + 1;
+            y = y + 1;
             console.log("カウンター：", i);
             x = data;
             console.log(x);
+            console.log(x.length);
             a();
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log('通信に失敗しました');
@@ -181,6 +184,7 @@ function a() {
 
 function wille() {
     console.log("wille()が呼び出されました！！");
+
     judge = 0;
     color.style.backgroundColor = '#00aeff5b';
     color2.style.backgroundColor = '#00aeff5b';
@@ -190,35 +194,41 @@ function wille() {
     console.log("正解率：", percentage);
     total.innerHTML = "ボールの予測地点を選んでください   正解率" + percentage + "％：" + kazu + "問中" + result + "問正解";
     stop_renda = 0;
-    console.log(x);
-    frame1 = x[i]['frame1'];
-    frame2 = x[i]['frame2'];
-    video_path = x[i]['video_path'];
-    video_id = x[i]['video_id'];
-    correct = x[i]['ans_id'];
-    x_coordinate = x[i]['x_coordinate'];
-    y_coordinate = x[i]['y_coordinate'];
-    picture_path = x[i]['picture_path'];
-    hitplace = x[i]['hitplace'];
-    console.log('frame1　前: ', frame1);
-    frame1 = frame1 / 29.97;
-    frame1 = frame1 * 1000;
-    frame1 = frame1 - 500;
-    console.log('frame1　後: ', frame1);
-    console.log('DONE', frame2);
-    console.log('DONE', video_path);
-    console.log('DONE', video_id);
-    console.log('正解のボタン', correct);
-    console.log("画像のパス:", picture_path);
-    console.log("x座標：", x_coordinate);
-    console.log("y座標：", y_coordinate);
-    console.log("打つ場所：", hitplace);
-    mv.setAttribute("src", video_path);
-    i = i + 1;
-    console.log("カウンター：", i);
-    dofy();
-    selectdiv.style.display = "block";
-    // console.log("trust :", trust);
+    if (x.length == i) {
+        i = 0
+        sent();
+    } else {
+        console.log(x);
+        frame1 = x[i]['frame1'];
+        frame2 = x[i]['frame2'];
+        video_path = x[i]['video_path'];
+        video_id = x[i]['video_id'];
+        correct = x[i]['ans_id'];
+        x_coordinate = x[i]['x_coordinate'];
+        y_coordinate = x[i]['y_coordinate'];
+        picture_path = x[i]['picture_path'];
+        hitplace = x[i]['hitplace'];
+        console.log('frame1　前: ', frame1);
+        frame1 = frame1 / 29.97;
+        frame1 = frame1 * 1000;
+        frame1 = frame1 - 500;
+        console.log('frame1　後: ', frame1);
+        console.log('DONE', frame2);
+        console.log('DONE', video_path);
+        console.log('DONE', video_id);
+        console.log('正解のボタン', correct);
+        console.log("画像のパス:", picture_path);
+        console.log("x座標：", x_coordinate);
+        console.log("y座標：", y_coordinate);
+        console.log("打つ場所：", hitplace);
+        mv.setAttribute("src", video_path);
+        i = i + 1;
+        y = y + 1;
+        console.log("カウンター：", i);
+        dofy();
+        selectdiv.style.display = "block";
+        // console.log("trust :", trust);
+    }
 }
 
 
@@ -291,7 +301,7 @@ function compare() {
     );
     console.log("まとめ:", array);
     buttonobject = document.getElementById("buttonhere");
-    link = '<button type="button" class="item" id="' + i + '" onclick="look(this)">' + i + '問目</button>';
+    link = '<button type="button" class="item" id="' + y + '" onclick="look(this)">' + y + '問目</button>';
     buttonobject.insertAdjacentHTML('beforeend', link);
 }
 
@@ -366,7 +376,7 @@ function look(ele) {
     console.log("key1 :", key1);
     console.log("key2 :", key2);
 
-    for (let step = 0; step < 100; step++) {
+    for (let step = 0; step < x.length; step++) {
 
         if (x[step]['ans_id'] == key1 && x[step]['hitplace'] == key2) {
 
@@ -416,4 +426,12 @@ function slide() {
     console.log("スライドの値：", varobject.value);
     img_right.setAttribute("src", album[varobject.value]);
 
+}
+
+function ura() {
+    for (k = 0; k < 50; k++) {
+        buttonobject = document.getElementById("buttonhere");
+        link = '<button type="button" class="item" id="' + y + '" onclick="look(this)">' + y + '問目</button>';
+        buttonobject.insertAdjacentHTML('beforeend', link);
+    }
 }
