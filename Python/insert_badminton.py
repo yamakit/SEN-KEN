@@ -23,7 +23,7 @@ conn.commit()
 conn.close()
 rep_chk = 0
 
-folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\badminton\\*\\*.json") #ローカル環境での実行用、運用時は削除
+folder = gb.glob("D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\badminton\\*\\*.json") #ローカル環境での実行用、運用時は削除
 
 for fl in folder:
     # fl = fl.replace('IMG', 'ffmpeg')
@@ -284,12 +284,32 @@ for fl in folder:
             exist_cnt += 1
             if(exist_cnt == 1):
                 exist_frame = i
-            elif(exist_cnt == 3):
-                frame2 = exist_frame - 4
+            elif(exist_cnt == 5):
+                if(exist_frame - frame1 <= 5):
+                    frame2 = exist_frame - 1
+                else:
+                    frame2 = exist_frame - 4
                 # print(frame2)
                 break
         else:
             exist_cnt = 0
+
+    exist_cnt = 0
+    if(frame1 and not(np.isnan(frame1))):
+        for i in range(frame1, len(data) - 1, 1):
+            if(data.loc[i - 1, 'center_y'] - data.loc[i, 'center_y'] == 0):
+                exist_cnt += 1
+                if(exist_cnt == 1):
+                    exist_frame = i
+                elif(exist_cnt == 5):
+                    if(exist_frame != frame1):
+                        if(exist_frame - frame1 <= 5):
+                            frame2 = exist_frame - 1
+                        else:
+                            frame2 = exist_frame - 4
+                    break
+            else:
+                exist_cnt = 0
 
     # oriY_fig = plt.figure()
     # oriY_ax = oriY_fig.add_subplot(1,1,1)
