@@ -430,15 +430,26 @@ for lap,fl in enumerate(folder):
     fl = fl.replace("ffmpeg", "IMG")
     fl = fl.replace("D:/htdocs/", "../")
     # print(fl)
+    
     if(np.isnan(data.loc[frame1, 'original_x'])):
-        data.loc[frame1, 'original_x'] = -1
-    if(np.isnan(data.loc[frame1, 'inped_ori_y'])):
-        data.loc[frame1, 'inped_ori_y'] = -1
-    frame2 = frame1 + 5
-    x_coordinate = float(data.loc[frame1,'original_x'])
-    x_coordinate2 = float(data.loc[frame2,'original_x'])
-    y_coordinate = float(data.loc[frame1,'inped_ori_y'])
-    y_coordinate2 = float(data.loc[frame2,'inped_ori_y'])
+        x_coordinate = data.loc[frame1, 'center_x']
+    else:
+        x_coordinate = data.loc[frame1, 'original_x']
+
+    if(np.isnan(data.loc[frame2, 'original_x'])):
+        x_coordinate2 = data.loc[frame2, 'center_x']
+    else:
+        x_coordinate2 = data.loc[frame2, 'original_x']
+
+    if(np.isnan(data.loc[frame1, 'original_y'])):
+        y_coordinate = data.loc[frame1, 'center_y']
+    else:
+        y_coordinate = data.loc[frame1, 'original_y']
+
+    if(np.isnan(data.loc[frame2, 'original_y'])):
+        y_coordinate2 = data.loc[frame2, 'center_y']
+    else:
+        y_coordinate2 = data.loc[frame2, 'original_y']
 
     print(y_coordinate)
     print(y_coordinate2)
