@@ -314,21 +314,6 @@ for lap,fl in enumerate(folder):
             mes_frame = mes_list[data.loc[mes_list[0][0], 'center_y'] > data.loc[mes_list[1][0], 'center_y']]
         else:
             mes_frame = mes_list[1]
-                    
-
-    # ===frame2取得===
-    for i in range(len(data) - 1,0,-1):
-        if not(np.isnan(data.loc[i,'original_y'])):
-            exist_cnt += 1
-            if(exist_cnt == 1):
-                exist_frame = i
-            elif(exist_cnt == 3):
-                frame2 = exist_frame - 4
-                # print(frame2)
-                break
-        else:
-            exist_cnt = 0
-            exist_frame = 0
 
     # ---差分の移動平均をとる---
     data.loc[:, 'panda_mov5'] = data.loc[:, 'sabun_y']
@@ -367,6 +352,22 @@ for lap,fl in enumerate(folder):
                     # # プロット処理
                     # plt.plot(intsec_frame + 1, data.loc[intsec_frame, 'panda_mov5'], c = '#89f', marker = '.', axes = movaves)                    
                     break
+
+    # ===frame2取得===
+    for i in range(len(data) - 1,0,-1):
+        if not(np.isnan(data.loc[i,'original_y'])):
+            exist_cnt += 1
+            if(exist_cnt == 1):
+                exist_frame = i
+            elif(exist_cnt == 3):
+                frame2 = exist_frame - 4
+                # print(frame2)
+                break
+        else:
+            exist_cnt = 0
+            exist_frame = 0
+    if(frame2 <= frame1):
+        frame2 = frame1 + 10
 
     # data.loc[frame1-1,'vertex_point'] = data.loc[frame1-1, 'sabun_y']
     # data.loc[frame1,'vertex_point'] = data.loc[frame1, 'sabun_y']
