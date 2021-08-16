@@ -86,12 +86,12 @@ function push() {
 
         zahyo_x = zahyo_x * 1600;
         zahyo_y = zahyo_y * 1000;
-        // ctx.drawImage(chara, zahyo_x, zahyo_y, 30, 30);
-        ctx.beginPath();
+        ctx.drawImage(chara, zahyo_x, zahyo_y, 40, 40);
+        // ctx.beginPath();
 
-        ctx.arc(zahyo_x, zahyo_y, 15, 0, Math.PI * 2, false);
-        ctx.fillStyle = "rgba(0,0,0,0.3)"; //青で不透明度0.3で塗り潰す
-        ctx.fill();
+        // ctx.arc(zahyo_x, zahyo_y, 15, 0, Math.PI * 2, false);
+        // ctx.fillStyle = "rgba(0,0,0,0.3)"; //青で不透明度0.3で塗り潰す
+        // ctx.fill();
 
 
         array.push(
@@ -127,7 +127,7 @@ function hikaku() {
 
     text = array[number_r]["path"];
     console.log(array[number_r]["path"]);
-    location.href = "http://localhost/SEN-KEN/HTML/view.html?data=" + text;
+    location.href = "../HTML/view.html?data=" + text;
     // if (number_r) {
     // mv.setAttribute("src", array[number_r]["path"]);
     // plotdiv.style.display = "none";
@@ -184,5 +184,4 @@ function hikaku() {
 // console.log(array[index]);
 // console.log(diff);
 // number_y = index;
-
 
