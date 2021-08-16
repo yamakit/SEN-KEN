@@ -196,11 +196,11 @@ for lap,fl in enumerate(folder):
                 data.loc[i,'center_x'] = np.nan
 
     # === データの空白を補完 ===
-    data.loc[:,['center_y']] = data.loc[:,['center_y']].interpolate(axis=0)
-    data.loc[:,['center_x']] = data.loc[:,['center_x']].interpolate(axis=0)
+    data.loc[:,'center_y'] = data.loc[:,'center_y'].interpolate(axis=0)
+    data.loc[:,'center_x'] = data.loc[:,'center_x'].interpolate(axis=0)
 
-    data.loc[:,['inped_ori_y']] = data.loc[:,['original_y']].interpolate(axis=0)
-    data.loc[:,['original_x']] = data.loc[:,['original_x']].interpolate(axis=0)
+    data.loc[:,'inped_ori_y'] = data.loc[:,'original_y'].interpolate(axis=0)
+    data.loc[:,'original_x'] = data.loc[:,'original_x'].interpolate(axis=0)
 
     #---グラフ出力、運用時はコメントアウト---
     # fig_list = [None,None,None,None]
@@ -314,6 +314,21 @@ for lap,fl in enumerate(folder):
             mes_frame = mes_list[data.loc[mes_list[0][0], 'center_y'] > data.loc[mes_list[1][0], 'center_y']]
         else:
             mes_frame = mes_list[1]
+                    
+
+    # ===frame2取得===
+    for i in range(len(data) - 1,0,-1):
+        if not(np.isnan(data.loc[i,'original_y'])):
+            exist_cnt += 1
+            if(exist_cnt == 1):
+                exist_frame = i
+            elif(exist_cnt == 3):
+                frame2 = exist_frame - 4
+                # print(frame2)
+                break
+        else:
+            exist_cnt = 0
+            exist_frame = 0
 
     # ---差分の移動平均をとる---
     data.loc[:, 'panda_mov5'] = data.loc[:, 'sabun_y']
@@ -403,24 +418,6 @@ for lap,fl in enumerate(folder):
     # print(mes_frame)
     # print(mes_list)
 
-    # ===frame2取得===
-    for i in range(len(data) - 1,0,-1):
-        if not(np.isnan(data.loc[i,'original_y'])):
-            exist_cnt += 1
-            if(exist_cnt == 1):
-                exist_frame = i + 1 #最後に検出されたフレーム(jsonではframe_idは1からの連番、DataFrame(i)では0からの連番なので+1している)
-            elif(exist_cnt == 5):
-                print(f'exist_frame:{exist_frame}')
-                if(frame1 + 10 < exist_frame or frame1 > exist_frame - 2):  #frame1 + 10 の方が、フレームアウトしたフレーム(exist_frame)より先ならばframe2は frame1 + 10
-                    print('frame1 + 10パターン')
-                    frame2 = frame1 + 10
-                else:                           #そうでなければ、frame2はexist_frame
-                    print('exist_frame - 2パターン')
-                    frame2 = exist_frame - 2
-                break
-        else:
-            exist_cnt = 0
-
     #---こっからDB関連---
 
     # コネクションの作成
@@ -431,16 +428,31 @@ for lap,fl in enumerate(folder):
     cur = conn.cursor(buffered=True)
     fl = fl.replace(".json", ".MOV")
     fl = fl.replace("ffmpeg", "IMG")
-    fl = fl.replace("D:/htdocs/SEN-KEN/", "../")
+    fl = fl.replace("D:/htdocs/", "../")
     # print(fl)
+    
     if(np.isnan(data.loc[frame1, 'original_x'])):
-        data.loc[frame1, 'original_x'] = -1
+        x_coordinate = data.loc[frame1, 'center_x']
+    else:
+        x_coordinate = data.loc[frame1, 'original_x']
+
+    if(np.isnan(data.loc[frame2, 'original_x'])):
+        x_coordinate2 = data.loc[frame2, 'center_x']
+    else:
+        x_coordinate2 = data.loc[frame2, 'original_x']
+
     if(np.isnan(data.loc[frame1, 'original_y'])):
-        data.loc[frame1, 'original_y'] = -1
-    x_coordinate = float(data.loc[frame1,'original_x'])
-    x_coordinate2 = float(data.loc[frame2,'original_x'])
-    y_coordinate = float(data.loc[frame1,'original_y'])
-    y_coordinate2 = float(data.loc[frame2,'original_y'])
+        y_coordinate = data.loc[frame1, 'center_y']
+    else:
+        y_coordinate = data.loc[frame1, 'original_y']
+
+    if(np.isnan(data.loc[frame2, 'original_y'])):
+        y_coordinate2 = data.loc[frame2, 'center_y']
+    else:
+        y_coordinate2 = data.loc[frame2, 'original_y']
+
+    print(y_coordinate)
+    print(y_coordinate2)
   
     #ans_idの判定
     if(0 <= x_coordinate2 <= 0.333):
