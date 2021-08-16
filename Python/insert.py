@@ -479,7 +479,7 @@ for lap,fl in enumerate(folder):
             ans_id = 9
     stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame2}, ans_id = {ans_id}, x_coordinate = {x_coordinate}, y_coordinate = {y_coordinate}, yolo_flag = {2} WHERE video_path = '{fl}';"
     print(stmt)
-    # cur.execute(stmt)
+    cur.execute(stmt)
     cur.close()
     conn.commit()
     conn.close()
