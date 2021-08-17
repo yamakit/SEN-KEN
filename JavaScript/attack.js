@@ -41,10 +41,10 @@ function cut() {
     console.log("ボールid :", most);
     if (most == 1) {
         chara.src = "../img/volley.png";  // 画像のURLを指定
-        a.innerHTML = "ボールをクリックしてください"
+        // a.innerHTML = "ボールをクリックしてください"
     } else if (most == 2) {
         chara.src = "../img/bad.png"
-        a.innerHTML = "シャトルをクリックしてください"
+        // a.innerHTML = "シャトルをクリックしてください"
     }
     sent();
 }

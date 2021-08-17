@@ -322,7 +322,7 @@ function push() {
 function pup() {
     front.style.display = "none";
     back.style.display = "block";
-    h1.innerHTML = "あなたは" + kazu + "問中" + result + "問正解しました。正解率は" + percentage + "％です。";
+    h1.innerHTML = "あなたは<span>" + kazu + "</span>問中<span>" + result + "</span>問正解しました。正解率は<span>" + percentage + "</span>％です。"
 }
 
 function send() {

@@ -24,7 +24,7 @@ cur.close
 conn.commit()
 conn.close()
 
-# folder = gb.glob("D:\\htdocs\\2021SEN_KEN\\volleyball\\*\\*.json") #ローカル環境での実行用、運用時は消去
+# folder = gb.glob("D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\*\\*.json") #ローカル環境での実行用、運用時は消去
 
 print(folder)
 
@@ -111,6 +111,12 @@ for lap,fl in enumerate(folder):
     exist_cnt = 0       #frame2を検出する際に値が存在するフレームが連続した回数を保存する変数
     exist_frame = 0     #frame2を検出する際に最初に見つけた、値が存在するフレームを保存する変数
     intsec_frame = 0    #5と50ののグラフの交点のフレーム = frame1
+    sample_frame = 0    #frame1が誤りであるかを判断するための試料となるフレームの範囲を格納する変数
+    wrong_cnt = 0       #差分の変化が十分大きかった回数を格納する変数
+    is_wrong = 0        #frame1が誤りであるかについてのフラグ変数
+    wrong_frame = 0     #frame1が誤りであった場合にframe1を格納する変数
+    loop_cnt = 0        #再検出を繰り返した回数を格納する変数
+    big_diff_frame = 0  #差分の、5と50の移動平均の差が開いたフレームを格納する変数
 
     # ===csvファイルから各フレームごとのデータを取り出す===
     for i in range(0,len(data)):
@@ -135,6 +141,7 @@ for lap,fl in enumerate(folder):
             y_points.append([i,np.nan])
 
     # ===取り出したデータから異常値を省く===
+    # ---異常値の候補をリストに格納---
     for f in range(0,len(coor_list)):
         data.loc[f,'original_y'] = coor_list[f][0]
         data.loc[f,'original_x'] = coor_list[f][1]
@@ -187,6 +194,7 @@ for lap,fl in enumerate(folder):
             # print('no object!')
             pass
 
+    # ---異常値の候補から異常値を判断し空白に置換---
     # print(strange_list)
     for coor in strange_list:
         for i in range(0,len(data)):
@@ -195,7 +203,7 @@ for lap,fl in enumerate(folder):
                 data.loc[i,'center_y'] = np.nan
                 data.loc[i,'center_x'] = np.nan
 
-    # === データの空白を補完 ===
+    # ===データの空白を補完===
     data.loc[:,'center_y'] = data.loc[:,'center_y'].interpolate(axis=0)
     data.loc[:,'center_x'] = data.loc[:,'center_x'].interpolate(axis=0)
 
@@ -314,21 +322,6 @@ for lap,fl in enumerate(folder):
             mes_frame = mes_list[data.loc[mes_list[0][0], 'center_y'] > data.loc[mes_list[1][0], 'center_y']]
         else:
             mes_frame = mes_list[1]
-                    
-
-    # ===frame2取得===
-    for i in range(len(data) - 1,0,-1):
-        if not(np.isnan(data.loc[i,'original_y'])):
-            exist_cnt += 1
-            if(exist_cnt == 1):
-                exist_frame = i
-            elif(exist_cnt == 3):
-                frame2 = exist_frame - 4
-                # print(frame2)
-                break
-        else:
-            exist_cnt = 0
-            exist_frame = 0
 
     # ---差分の移動平均をとる---
     data.loc[:, 'panda_mov5'] = data.loc[:, 'sabun_y']
@@ -368,6 +361,62 @@ for lap,fl in enumerate(folder):
                     # plt.plot(intsec_frame + 1, data.loc[intsec_frame, 'panda_mov5'], c = '#89f', marker = '.', axes = movaves)                    
                     break
 
+    # ===取得したframe1が誤りでないか確認、誤りの場合しきい値を緩くして再検出===
+    # ---frame1が誤りであるかを判断---
+    if(frame1 + 30 > len(data) - 1):
+        sample_frame = len(data) - 1
+    else:
+        sample_frame = frame1 + 30
+
+    for fra in range(frame1 + 1, sample_frame, 1):
+        if(-0.000001 < data.loc[fra, 'sabun_y'] - data.loc[fra - 1, 'sabun_y'] and data.loc[fra, 'sabun_y'] - data.loc[fra - 1, 'sabun_y'] < 0.000001):
+            # print(fra - frame1, data.loc[fra, 'sabun_y'] - data.loc[fra - 1, 'sabun_y'])
+            pass
+        else:
+            # print(data.loc[fra, 'sabun_y'] - data.loc[fra - 1, 'sabun_y'])
+            wrong_cnt += 1
+    
+    if(wrong_cnt <= 3):
+        is_wrong = 1
+        wrong_frame = frame1
+    else:
+        is_wrong = 0
+        wrong_frame = frame1
+
+    # ---frame1を再検出---
+    if(mes_frame):
+        while(is_wrong):
+            loop_cnt += 1
+            for m_frame in range(mes_frame[0], mes_frame[1]):
+                if(data.loc[m_frame, 'panda_mov50'] - data.loc[m_frame, 'panda_mov5'] >= 0.002 - (0.00001*loop_cnt)):
+                    big_diff_frame = m_frame
+                    break
+            for m_frame in range(big_diff_frame - 1, mes_frame[0], -1):
+                if(data.loc[m_frame, 'panda_mov5'] - data.loc[m_frame + 1, 'panda_mov5'] > 0):
+                    if((data.loc[m_frame, 'panda_mov50'] <= data.loc[m_frame, 'panda_mov5'] and data.loc[m_frame + 1, 'panda_mov5'] <= data.loc[m_frame + 1, 'panda_mov50']) or (data.loc[m_frame, 'panda_mov5'] <= data.loc[m_frame , 'panda_mov50'] and data.loc[m_frame + 1, 'panda_mov50'] <= data.loc[m_frame + 1, 'panda_mov5'])):
+                        intsec_frame = m_frame + 1
+                        frame1 = intsec_frame
+                        break
+            if(frame1 != wrong_frame or 0.002 - (0.00001*loop_cnt) == 0):
+                # print(loop_cnt)
+                is_wrong = 0
+    
+    # ===frame2取得===
+    for i in range(len(data) - 1,0,-1):
+        if not(np.isnan(data.loc[i,'original_y'])):
+            exist_cnt += 1
+            if(exist_cnt == 1):
+                exist_frame = i
+            elif(exist_cnt == 3):
+                frame2 = exist_frame - 4
+                # print(frame2)
+                break
+        else:
+            exist_cnt = 0
+            exist_frame = 0
+    if(frame2 <= frame1):
+        frame2 = frame1 + 1
+
     # data.loc[frame1-1,'vertex_point'] = data.loc[frame1-1, 'sabun_y']
     # data.loc[frame1,'vertex_point'] = data.loc[frame1, 'sabun_y']
     # data.loc[frame1+1,'vertex_point'] = data.loc[frame1+1, 'sabun_y']
@@ -379,6 +428,9 @@ for lap,fl in enumerate(folder):
     # #y座標の変位のグラフにframe1などをプロット
     # y_coor = plt.figure()
     # ax_y = y_coor.add_subplot(1,1,1)
+    # data.plot('frame_id', 'center_y', ax=ax_y)
+    # plt.plot(frame1, data.loc[frame1, 'center_y'], marker='.', axes=ax_y)
+
     # data.loc[:,'vertex_point'] = np.nan
     # if(frame1 != 0):
     #     data.loc[frame1-1,'vertex_point'] = data.loc[frame1-1, 'center_y']
@@ -404,9 +456,10 @@ for lap,fl in enumerate(folder):
     
     # ave = plt.figure()
     # aves = ave.add_subplot(1,1,1)
-    # data[:].plot('frame_id', 'movave_5', c = 'red', ax = aves)
+    # data.plot('frame_id', 'panda_mov5', c='red', ax=aves)
     # # data[:].plot('frame_id', 'movave_40', c = 'blue', ax = aves)
-    # data[:].plot('frame_id', 'movave_50', c = 'black', ax = aves)
+    # data.plot('frame_id', 'panda_mov50', c='black', ax=aves)
+    # aves.axvline(frame1, c='#89d')
     # trend_fig = plt.figure()
     # trend = trend_fig.add_subplot(1,1,1)
     # data[:].plot('frame_id', 'trend', c = '#89e' , ax = trend)
@@ -430,18 +483,29 @@ for lap,fl in enumerate(folder):
     fl = fl.replace("ffmpeg", "IMG")
     fl = fl.replace("D:/htdocs/", "../")
     # print(fl)
+    
     if(np.isnan(data.loc[frame1, 'original_x'])):
-        data.loc[frame1, 'original_x'] = -1
-    if(np.isnan(data.loc[frame1, 'inped_ori_y'])):
-        data.loc[frame1, 'inped_ori_y'] = -1
-    frame2 = frame1 + 5
-    x_coordinate = float(data.loc[frame1,'original_x'])
-    x_coordinate2 = float(data.loc[frame2,'original_x'])
-    y_coordinate = float(data.loc[frame1,'inped_ori_y'])
-    y_coordinate2 = float(data.loc[frame2,'inped_ori_y'])
+        x_coordinate = data.loc[frame1, 'center_x']
+    else:
+        x_coordinate = data.loc[frame1, 'original_x']
 
-    print(y_coordinate)
-    print(y_coordinate2)
+    if(np.isnan(data.loc[frame2, 'original_x'])):
+        x_coordinate2 = data.loc[frame2, 'center_x']
+    else:
+        x_coordinate2 = data.loc[frame2, 'original_x']
+
+    if(np.isnan(data.loc[frame1, 'original_y'])):
+        y_coordinate = data.loc[frame1, 'center_y']
+    else:
+        y_coordinate = data.loc[frame1, 'original_y']
+
+    if(np.isnan(data.loc[frame2, 'original_y'])):
+        y_coordinate2 = data.loc[frame2, 'center_y']
+    else:
+        y_coordinate2 = data.loc[frame2, 'original_y']
+
+    # print(y_coordinate)
+    # print(y_coordinate2)
   
     #ans_idの判定
     if(0 <= x_coordinate2 <= 0.333):
@@ -466,8 +530,8 @@ for lap,fl in enumerate(folder):
         else:
             ans_id = 9
     stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame2}, ans_id = {ans_id}, x_coordinate = {x_coordinate}, y_coordinate = {y_coordinate}, yolo_flag = {2} WHERE video_path = '{fl}';"
-    print(stmt)
-    # cur.execute(stmt)
+    # print(stmt)
+    cur.execute(stmt)
     cur.close()
     conn.commit()
     conn.close()
