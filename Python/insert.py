@@ -24,12 +24,12 @@ cur.close
 conn.commit()
 conn.close()
 
-folder = gb.glob("D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\*\\*.json") #ローカル環境での実行用、運用時は消去
+# folder = gb.glob("D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\*\\*.json") #ローカル環境での実行用、運用時は消去
 
 print(folder)
 
 for lap,fl in enumerate(folder):
-    # fl = fl.replace('IMG','ffmpeg')
+    fl = fl.replace('IMG','ffmpeg')
     fl = fl.replace('MOV','json')
     fl = fl.replace('../',"D:\\htdocs\\SEN-KEN\\")
     fl = fl.replace('/',"\\")
