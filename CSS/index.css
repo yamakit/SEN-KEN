@@ -2,27 +2,27 @@ body{
     margin: 0px;
     font-family: "游ゴシック", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
 }
-a{
+.title{
     height: 5%;
     display: block;
     font-size:2.5vw;
     color: rgb(255, 255, 255);
-    background: #2979FF;
+    /* background: #2979FF; */
     position: relative;
     padding: 0 1%;
     background-image: url(../img/aa.png);
     font-weight:bold;
 }
 .home{
-    width: 15vw;
-    height: auto;
+    position: absolute;
+    top: 0.3%;
     right: 2%;
-    top: 7px;
+    width: 22vw;
+    height: auto;
     font-size: 2vw;
     color: #2979FF;
     background: #ffffff;
     border-radius: 5px;
-    position: absolute;
 }
 #mv{
     min-height: 55vw;
@@ -62,15 +62,83 @@ a{
     background: #0033FF80 ! important;
 }
 
-.scroll {
-
-    /* width: 100px;
-    height: 50px; */
+.result01{
+    font-size: 3.5vw;
+    margin: 0% 2%
+}
+span{
+    font-size: 6vw;
+}
+.line{
+    font-size: 3vw;
+    /* top: 20vw; */
+    position: absolute;
+    width: 95%;
+    left: 2%;
+    padding-left: 1%;
+    border-bottom: 4px solid #2979FF;
+}
+.scroll01 {
+    overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
-
+    position: absolute;
+    top: 21vw;
+    margin: 0 1.5%;
+    width: 96.5%;
 }
 
-.scroll .item {
-    display: inline-block;
+.scroll01 .item {
+    /* display: inline-block; */
+    color:#FFFFFF;
+    background:#2979FF;
+    font-size: 2vw;
+    width: 10vw;
+    height: 3.5vw;
+    margin: 0 0.2%;
+    border: none;
+}
+
+ /* Chrome, Safari 対応 */
+.scroll01::-webkit-scrollbar {
+    display:none;
+}
+
+#var{
+    position: absolute;
+    top: 29vw;
+    right: 20%;
+}
+img{
+    position: absolute;
+    top: 30vw;
+    min-height: 30vw;
+    width: 45%;
+    margin: 2%;
+}
+#img_right{
+    right: 0;
+    /* background-color: #2979FF; */
+    /* background-image: url(../img/loading.jpg); */
+}
+#img_left{
+    left: 0;
+    /* background-color: #2979FF; */
+    /* background-image: url(../img/loading.jpg); */
+}
+.left{
+    position: absolute;
+    top: 46vw;
+    right: 43vw;
+    font-size: 2vw;
+    color: #2979FF;
+    background: #ffffff;
+}
+.right{
+    position: absolute;
+    top: 46vw;
+    right: 3%;
+    font-size: 2vw;
+    color: #2979FF;
+    background: #ffffff;
 }

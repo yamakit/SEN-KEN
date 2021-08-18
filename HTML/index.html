@@ -7,7 +7,6 @@
     <meta http-equiv="Cache-Control" content="no-cache">
     <link rel="stylesheet" href="../CSS/index.css">
     <title>SEN-KENレシーバー向け予想クイズ</title>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css"> -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="../Javascript/index.js"></script>
 </head>
@@ -16,10 +15,10 @@
 
 
     <div id="front">
-        <a id="total">ボールの予測地点を選んでください 正解率0％：0問中0問正解</a>
+        <a id="total" class="title">ボールの予測地点を選んでください 正解率0％：0問中0問正解</a>
         <button class="home" onclick="pup()">終わる</button>
 
-        <video id="mv" autobuffer autoplay loop muted controls poster="../img/00.jpg">
+        <video id="mv" autobuffer autoplay loop muted controls poster="../img/loading.jpg">
             <source src="" id="video" controls muted autoplay playinline loop>
         </video>
 
@@ -31,6 +30,8 @@
             <!-- <button id="btn_fast">早送り</button>
                 <button id="btn_veryfast">もっと早送り</button> -->
         </div>
+
+        <!-- <button type="button" onclick="ura()">sss</button> -->
 
         <form>
             <div id="buttondiv" class="content">
@@ -57,16 +58,20 @@
         <audio id="batsu_sound" preload="auto">
             <source src="../img/Wrong_Buzzer3.mp3" type="audio/mp3">
         </audio>
-
     </div>
 
     <div id="back">
-        <a>結果</a>
+        <a class="title">結果</a>
         <button class="home" onclick="push()">ホーム画面へ戻る</button>
-        <h1 id="h1"></h1>
-        <div class="scroll">
-            <div id="buttonhere"></div>
+        <div class="result01">
+            <a id="h1"></a>
         </div>
+        <div class="scroll01">
+            <p></p>
+            <div id="buttonhere"></div>
+            <p></p>
+        </div>
+        <h1 class="line">画像</h1>
         <!-- <button type="button" id="1" onclick="look(this)">1問目</button>
             <button type="button" id="2" onclick="look(this)">2問目</button>
             <button type="button" id="3" onclick="look(this)">3問目</button>
@@ -77,30 +82,18 @@
             <button type="button" id="8" onclick="look(this)">8問目</button>
             <button type="button" id="9" onclick="look(this)">9問目</button>
             <button type="button" id="10" onclick="look(this)">10問目</button> -->
-        <br><br>
-        <img id="img_left" src="" width="" height="">
-
-        <!-- <div class="swiper-container">
-            <div class="swiper-wrapper">
-                <div id="swiperhere"></div>
-                <div class="swiper-slide"><img src="../img/mark_batsu.png" width="400" height="500" alt=""></div>
-                <div class="swiper-slide"><img src="../img/mark_maru.png" width="400" height="500" alt=""></div>
-                <div class="swiper-slide"><img src="../img/画像 -20210611-061000-241c5b65.png" width="400" height="500"
-                        alt=""></div> -->
-        <!-- </div> -->
-        <!-- <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-    </div> -->
+        <div class="scroll02">
+            <img id="img_left" src="" width="" height="">
+        </div>
 
         <img id="img_right" src="" width="" height="">
         <div id="back_most">
-            <button type="button" onclick="prev()">←</button>
-            <button type="button" onclick="next()">→</button>
-            <label><input type="range" id="var" min="0" max="" step="1" value="0">画像スライドバー</label>
+            <button type="button" onclick="prev()" class="left">◁</button>
+            <button type="button" onclick="next()" class="right">▷</button>
+            <label><input type="range" id="var" min="0" max="" step="1" value="0"></label>
         </div>
     </div>
 
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/7.0.0-alpha.12/swiper-bundle.min.js"></script> -->
 </body>
 
 
