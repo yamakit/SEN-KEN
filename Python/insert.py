@@ -471,19 +471,6 @@ for lap,fl in enumerate(folder):
     # print(mes_frame)
     # print(mes_list)
 
-    #---こっからDB関連---
-
-    # コネクションの作成
-    conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
-
-    fl = fl.replace("\\", "/")
-    # DB操作用にカーソルを作成
-    cur = conn.cursor(buffered=True)
-    fl = fl.replace(".json", ".MOV")
-    fl = fl.replace("ffmpeg", "IMG")
-    fl = fl.replace("D:/htdocs/", "../")
-    # print(fl)
-    
     if(np.isnan(data.loc[frame1, 'original_x'])):
         x_coordinate = data.loc[frame1, 'center_x']
     else:
@@ -529,12 +516,27 @@ for lap,fl in enumerate(folder):
             ans_id = 6
         else:
             ans_id = 9
-    stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame2}, ans_id = {ans_id}, x_coordinate = {x_coordinate}, y_coordinate = {y_coordinate}, yolo_flag = {2} WHERE video_path = '{fl}';"
-    # print(stmt)
-    cur.execute(stmt)
-    cur.close()
-    conn.commit()
-    conn.close()
+
+    #---こっからDB関連---
+    if(not(np.isnan(x_coordinate) or np.isnan(y_coordinate))):
+        # コネクションの作成
+        conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
+
+        fl = fl.replace("\\", "/")
+        # DB操作用にカーソルを作成
+        cur = conn.cursor(buffered=True)
+        fl = fl.replace(".json", ".MOV")
+        fl = fl.replace("ffmpeg", "IMG")
+        fl = fl.replace("D:/htdocs/", "../")
+        # print(fl)
+        
+        
+        stmt = f"UPDATE yolo_video_table SET frame1 = {frame1}, frame2 = {frame2}, ans_id = {ans_id}, x_coordinate = {x_coordinate}, y_coordinate = {y_coordinate}, yolo_flag = {2} WHERE video_path = '{fl}';"
+        # print(stmt)
+        cur.execute(stmt)
+        cur.close()
+        conn.commit()
+        conn.close()
 
     print('done!')
 print('All completed!')
