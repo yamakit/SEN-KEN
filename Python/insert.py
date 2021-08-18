@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 from pandas.io.json import json_normalize
 import mysql.connector as mydb
-import glob as gb
 
 ball_id = 1 # バレー:1 バド:2 テニス:3
 player_id = 1 # DBを参照
@@ -73,11 +72,11 @@ for lap,fl in enumerate(folder):
     coor_list = []      #x,y座標のリストが格納されるリスト
     strange_list = []   #異常値の座標とその座標での検出回数のリストを格納するリスト
 
-    nxt_val = 0         #
-    stack = 0           #
-    have_got = 0        #
-    renzoku = 0         #
-    phase = 0           #フラグ変数
+    nxt_val = 0         #あるフレームの次のフレームの座標を格納する変数
+    stack = 0           #最後に値が入っていたフレームを格納する変数
+    have_got = 0        #各フレームの座標を精査していく際、もう値を取得したかのフラグ変数
+    renzoku = 0         #ある条件に適する値が連続した回数を格納する変数
+    phase = 0           #検出の段階を管理するフラグ変数
     frame1 = 0          #スパイクのフレーム
     frame2 = 0          #答え合わせを行うフレーム
     exist_cnt = 0       #frame2を検出する際に値が存在するフレームが連続した回数を保存する変数
@@ -92,11 +91,9 @@ for lap,fl in enumerate(folder):
 
     # ===csvファイルから各フレームごとのデータを取り出す===
     for i in range(0,len(data)):
-        # print(i)
         obj_n = 0
         triple = '''{}'''.format(data.loc[i,'objects'])
         obj_list = eval(triple)
-        # ---1フレームでオブジェクトが複数検出されていたなら座標を比べ適切な方を選択(機能していない)---
         if(obj_list):
             coor_list.append([obj_list[obj_n]['relative_coordinates']['center_y'],obj_list[obj_n]['relative_coordinates']['center_x']])
         else:
