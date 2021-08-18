@@ -527,7 +527,7 @@ for lap,fl in enumerate(folder):
         cur = conn.cursor(buffered=True)
         fl = fl.replace(".json", ".MOV")
         fl = fl.replace("ffmpeg", "IMG")
-        fl = fl.replace("D:/htdocs/", "../")
+        fl = fl.replace("D:/htdocs/SEN-KEN/", "../")
         # print(fl)
         
         

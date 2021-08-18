@@ -37,11 +37,14 @@ for file in files:
             df.loc[index, 'Ymin'] = min(Y_vals)                                                                     #体の下端
             df.loc[index, 'width'] = df.loc[index, 'Xmax'] - df.loc[index, 'Xmin']                                  #体の幅
             df.loc[index, 'height'] = df.loc[index, 'Ymax'] - df.loc[index, 'Ymin']
-            df.loc[index, 'turning_body'] = float(df.loc[index, 'width']) / float(df.loc[index, 'height']) * 100    #体の開き
+            if(df.loc[index, 'height'] != 0):
+                df.loc[index, 'turning_body'] = float(df.loc[index, 'width']) / float(df.loc[index, 'height']) * 100    #体の開き
 
         #===プロット===
         turn_fig = plt.figure()
         turn_ax = turn_fig.add_subplot(1,1,1)
+        df.plot('FrameNo', 'turning_body', c='#000', ax=turn_ax)
+        plt.show()
 
         # #===データベースに送信===
         # # コネクションの作成
