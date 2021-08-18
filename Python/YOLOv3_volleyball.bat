@@ -11,7 +11,7 @@ mkdir %2
 
 rem 作成したフォルダへの連番画像を作成するコマンド
 rem 変えてほしい
-ffmpeg -i D:\htdocs\SEN-KEN\2021SEN_KEN\volleyball\%1\%2.MOV -r 30 D:\htdocs\SEN-KEN\2021SEN_KEN\volleyball\%1\%2\%%05d.jpg 
+ffmpeg -i D:\htdocs\SEN-KEN\2021SEN_KEN\volleyball\%1\%2.MOV -r 30 D:\htdocs\SEN-KEN\2021SEN_KEN\volleyball\%1\%2\%%06d.jpg 
 
 rem 画像へのPATHをテキストファイルに保存
 dir /b /s %2 > %2.txt
