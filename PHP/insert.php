@@ -20,7 +20,7 @@ if(!empty($_GET)){
         
         // echo "<p>DB接続に成功しました。</p>";
 
-        $sql = "INSERT INTO `answer_table`(`ball_id`, `yolo_video_id`, `user_id`, `button_id`, `ans_X_coordinate`, `ans_Y_coordinate`, `judge`, `datetime`) VALUES ($ball_id, $video_id, $user_id, $button_id,  $x_coordinate,  $y_coordinate, $judge, NOW())";
+        $sql = "INSERT INTO `answer_table`(`ball_id`, `yolo_video_id`, `user_id`, `ans_X_coordinate`, `ans_Y_coordinate`, `button_id`, `judge`, `datetime`) VALUES ($ball_id, $video_id, $user_id, $x_coordinate,  $y_coordinate,  $button_id, $judge, NOW())";
         $dbh->exec($sql);
     } catch (Exception $e) {
         // echo "<p>DB接続エラー</p>";
@@ -33,4 +33,3 @@ if(!empty($_GET)){
     // var_dump($result);
 }
 ?>
-
