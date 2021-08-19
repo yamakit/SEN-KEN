@@ -34,7 +34,7 @@ for fl in folder:
 
     file_name = fl.replace(".MOV","")
     file_names = file_name.replace("../", "D:\\htdocs\\")
-    file_names = file_names.replace("D:\\htdocs\\SEN-KEN/2021SEN_KEN/volleyball/","")
+    file_names = file_names.replace("D:\\htdocs\\2021SEN_KEN/volleyball/","")
     print(file_names)
     person_num = file_names[:2]
     print(person_num)
