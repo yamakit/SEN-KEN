@@ -9,10 +9,13 @@ import mysql.connector as mydb
 # files = gb.glob('目的のファイルが入っているフォルダーへのパス\\*.xlsx') #運用時の処理
 files = gb.glob('D:/htdocs/SEN-KEN/2021SEN_KEN/volleyball/03/*.csv')      #ローカル環境での実行用
 
-turning_body_list = []                  #体の開きが入るリストを初期化
-
 #===データを取り出すjsonファイルが入っているフォルダー群を回す===
 for file in files:
+    turning_body_list = []
+    have_got = 0
+    base_frame = 0
+    checker = 0
+    check_frame = 0
     #===フォルダーからcsvファイルを取り出す===
     print(f'{file}を処理')
     
@@ -24,7 +27,7 @@ for file in files:
         Y_columns = [col for index, col in enumerate(columns_list) if (index % 2 == 0 and not index == 0)]
 
         #===データフレームを用意===
-        body_columns = ['Xmax','Xmin','Ymax','Ymin','width','height','turning_body']     #カラム名を用意
+        body_columns = ['Xmax','Xmin','Ymax','Ymin','width','height','turning_body', 'filterd_turning_body']     #カラム名を用意
         df[body_columns] = np.nan                                                        #用意したカラム名の列を作成
 
         for index in range(len(df)):
@@ -40,10 +43,82 @@ for file in files:
             if(df.loc[index, 'height'] != 0):
                 df.loc[index, 'turning_body'] = float(df.loc[index, 'width']) / float(df.loc[index, 'height']) * 100    #体の開き
 
+        # for index in range(len(df)):
+        #     print(index, end=' ')
+        #     if(have_got):
+        #         if(np.isnan(df.loc[index, 'turning_body'])):
+        #             pass
+        #             print('nanpass')
+        #         else:
+        #             if(-5 <= df.loc[base_frame, 'turning_body'] - df.loc[index, 'turning_body'] and df.loc[base_frame, 'turning_body'] - df.loc[index, 'turning_body'] <= 5):
+        #                 base_frame = index
+        #                 df.loc[index, 'filterd_turning_body'] = df.loc[index, 'turning_body']
+        #                 print('hanninai', end=' ')
+        #                 if(checker):
+        #                     df.loc[check_frame, 'filterd_turning_body'] = np.nan
+        #                     print('delete', end='')
+        #                 checker = 0
+        #                 print()
+        #             else:
+        #                 if(checker):
+        #                     if(-5 <= df.loc[check_frame, 'turning_body'] - df.loc[index, 'turning_body'] and df.loc[check_frame, 'turning_body'] - df.loc[index, 'turning_body'] <= 5):
+        #                         base_frame = index
+        #                         df.loc[check_frame, 'filterd_turning_body'] = df.loc[check_frame, 'turning_body']
+        #                         df.loc[index, 'filterd_turning_body'] = df.loc[index, 'turning_body']
+        #                         checker = 0
+        #                         print('kakumei')
+        #                     else:
+        #                         df.loc[check_frame, 'filterd_turning_body'] = np.nan
+        #                         check_frame = index
+        #                         print('umm?')
+        #                 else:
+        #                     checker = 1
+        #                     check_frame = index
+        #                     print('checker on')
+        #     else:
+        #         if(not(np.isnan(df.loc[index, 'turning_body']))):
+        #             have_got = 1
+        #             base_frame = index
+        #             df.loc[index, 'filterd_turning_body'] = df.loc[index, 'turning_body']
+        #             print('start')
+        # df['filterd_turning_body'] = df['filterd_turning_body'].interpolate()
+
+        for index in range(len(df)):
+            print(index, end=' ')
+            if(have_got):
+                if(np.isnan(df.loc[index, 'turning_body'])):
+                    pass
+                    print('nanpass')
+                else:
+                    if(-5 <= df.loc[base_frame, 'turning_body'] - df.loc[index, 'turning_body'] and df.loc[base_frame, 'turning_body'] - df.loc[index, 'turning_body'] <= 5):
+                        base_frame = index
+                        df.loc[index, 'filterd_turning_body'] = df.loc[index, 'turning_body']
+                        print('hanninai')
+                    else:
+                        df.loc[index, 'filterd_turning_body'] = np.nan
+                        print('hannigai')
+            else:
+                if(not(np.isnan(df.loc[index, 'turning_body']))):
+                    have_got = 1
+                    base_frame = index
+                    df.loc[index, 'filterd_turning_body'] = df.loc[index, 'turning_body']
+                    print('start')
+        df['filterd_turning_body'] = df['filterd_turning_body'].interpolate()
+
         #===プロット===
-        turn_fig = plt.figure()
-        turn_ax = turn_fig.add_subplot(1,1,1)
-        df.plot('FrameNo', 'turning_body', c='#000', ax=turn_ax)
+        # turn_fig = plt.figure()
+        # turn_ax = turn_fig.add_subplot(1,1,1)
+        # df.plot('FrameNo', 'turning_body', c='#000', ax=turn_ax)
+
+        # fil_turn_fig = plt.figure()
+        # fil_turn_ax = fil_turn_fig.add_subplot(1,1,1)
+        # df.plot('FrameNo', 'filterd_turning_body', c='#f00', ax=fil_turn_ax)
+
+        both_fig = plt.figure()
+        both_ax = both_fig.add_subplot(1,1,1)
+        df.plot('FrameNo', 'turning_body', c='#000', ax=both_ax)
+        df.plot('FrameNo', 'filterd_turning_body', c='#f00', ax=both_ax)
+
         plt.show()
 
         # #===データベースに送信===
