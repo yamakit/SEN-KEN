@@ -1,9 +1,6 @@
 from decimal import Decimal
-from re import T
-from numpy.core.numeric import NaN
 import pandas as pd
 import numpy as np
-from pandas.io.json import json_normalize
 import mysql.connector as mydb
 
 ball_id = 1 # バレー:1 バド:2 テニス:3
