@@ -19,7 +19,7 @@
         <button class="home" onclick="pup()">終わる</button>
 
         <video id="mv" autobuffer autoplay loop muted controls poster="../img/loading.jpg">
-            <source src="" id="video" controls muted autoplay playinline loop>
+            <source src="" id="video" preload controls muted autoplay playinline loop>
         </video>
 
 
@@ -66,12 +66,19 @@
         <div class="result01">
             <a id="h1"></a>
         </div>
+        <table border="1">
+            <tr>
+                <th>問題</th>
+                <th>合否</th>
+            </tr>
+            <div id="border"></div>
+        </table>
         <div class="scroll01">
             <p></p>
             <div id="buttonhere"></div>
             <p></p>
         </div>
-        <h1 class="line">画像</h1>
+        <h1 class="line">比較画像</h1>
         <!-- <button type="button" id="1" onclick="look(this)">1問目</button>
             <button type="button" id="2" onclick="look(this)">2問目</button>
             <button type="button" id="3" onclick="look(this)">3問目</button>

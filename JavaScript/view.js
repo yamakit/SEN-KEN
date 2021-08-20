@@ -6,7 +6,7 @@ window.onload = function () {
     dofy();
 }
 
-
+var all;
 function dofy() {
     console.log("dofy()が呼び出されました！！");
     var mv = document.getElementById("mv");
@@ -40,6 +40,54 @@ function dofy() {
 
     videoElement.playbackRate = 8.0;
 
+    videoElement.addEventListener('loadedmetadata', function () {
+        all = videoElement.duration;
+        console.log(all);
+
+        for (i = 1; i < all + 1; i++) {
+            data['labels'].push(i); //1個目のデータセットを追加
+            data['datasets'][3]['data'].push(10);
+            datas['labels'].push(i); //1個目のデータセットを追加
+            datas['datasets'][3]['data'].push(10);
+        }
+        console.log(datas['labels']);
+        ext_chart = new Chart(ctxt, {
+            type: 'line',
+            data: datas,
+            options: options
+        });
+    });
+    videoElement.addEventListener("timeupdate", function () {
+        var submit = videoElement.currentTime;
+        console.log(submit);
+        submit = Math.round(submit);
+        console.log(submit);
+        data['datasets'][0]['data'].shift();
+        data['datasets'][1]['data'].shift();
+        data['datasets'][2]['data'].shift();
+        datas['datasets'][0]['data'].shift();
+        datas['datasets'][1]['data'].shift();
+        datas['datasets'][2]['data'].shift();
+        // datas['datasets'][0]['data'].pop();
+        data['datasets'][0]['data'].push({ x: submit, y: data['datasets'][3]['data'][submit] });
+        data['datasets'][1]['data'].push({ x: submit - 1, y: data['datasets'][3]['data'][submit] });
+        data['datasets'][2]['data'].push({ x: submit - 2, y: data['datasets'][3]['data'][submit] });
+        datas['datasets'][0]['data'].push({ x: submit, y: datas['datasets'][3]['data'][submit] });
+        datas['datasets'][1]['data'].push({ x: submit - 1, y: datas['datasets'][3]['data'][submit] });
+        datas['datasets'][2]['data'].push({ x: submit - 2, y: datas['datasets'][3]['data'][submit] });
+        // console.log(datas['datasets'][1]['data'][submit + 1])
+        ex_chart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: option
+        });
+        ext_chart = new Chart(ctxt, {
+            type: 'line',
+            data: datas,
+            options: options
+        });
+    })
+
 }
 
 buttondiv.style.display = "none";
@@ -60,18 +108,50 @@ function frame() {
 var ctx = document.getElementById('ex_chart');
 
 var data = {
-    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"],
+    labels: [],
     datasets: [{
         label: '顔の向き',
-        data: [50, 90, 50, 50, 90, 50, 50, 50, 50, 90, 10, 50, 50, 50, 50],
-        borderColor: 'rgba(100, 100, 255, 1)',
+        data: [],
+        borderColor: 'blue',
+        pointBackgroundColor: 'rgba(255, 100, 100, 1)',
+        pointRadius: 20,
         lineTension: 0,
         fill: false,
         borderWidth: 3
-    }]
+    },
+    {
+        label: '顔の向き',
+        data: [],
+        borderColor: 'blue',
+        pointBackgroundColor: 'rgba(255, 100, 100, 0.7)',
+        pointRadius: 15,
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3
+    },
+    {
+        label: '顔の向き',
+        data: [],
+        borderColor: 'blue',
+        pointBackgroundColor: 'rgba(255, 100, 100, 0.5)',
+        pointRadius: 10,
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3
+    },
+    {
+        label: '顔の向き',
+        data: [],
+        borderColor: 'pink',
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3
+    },
+    ]
 };
 
-var options = {
+var option = {
+    animation: false,
     scales: {
         xAxes: [{
             scaleLabel: {
@@ -101,26 +181,64 @@ var options = {
 var ex_chart = new Chart(ctx, {
     type: 'line',
     data: data,
-    options: options
+    options: option
 });
+
 
 
 
 var ctxt = document.getElementById('ext_chart');
 
 var datas = {
-    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"],
+    labels: [],
     datasets: [{
         label: '体の開き',
-        data: [30, 30, 50, 30, 30, 30, 40, 40, 40, 50, 50, 50, 50, 50, 50],
-        borderColor: 'rgba(255, 100, 100, 1)',
+        data: [{}],
+        borderColor: 'red',
+        // order: 1,
+        pointRadius: 20,
+        pointBackgroundColor: 'rgba(100, 100, 255, 1)',
         lineTension: 0,
         fill: false,
-        borderWidth: 3
-    }]
-};
+        borderWidth: 3,
+    },
+    {
+        label: '体の開き',
+        data: [{}],
+        borderColor: 'red',
+        // order: 1,
+        pointRadius: 15,
+        pointBackgroundColor: 'rgba(100, 100, 255, 0.7)',
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3,
+    },
+    {
+        label: '体の開き',
+        data: [{}],
+        borderColor: 'red',
+        // order: 1,
+        pointRadius: 10,
+        pointBackgroundColor: 'rgba(100, 100, 255, 0.5)',
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3,
+    },
+    {
+        label: '体の開き',
+        data: [],
+        borderColor: 'skyblue',
+        // order: 3,
+        // pointRadius: 20,
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3,
+    }],
+
+}
 
 var options = {
+    animation: false,
     scales: {
         xAxes: [{
             scaleLabel: {
@@ -152,3 +270,4 @@ var ext_chart = new Chart(ctxt, {
     data: datas,
     options: options
 });
+

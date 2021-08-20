@@ -297,12 +297,20 @@ function compare() {
             "ans_id": button_id,
             "hitplace": hitplace,
             "picture_path": picture_path,
+            "flag": judge,
         }
     );
     console.log("まとめ:", array);
     buttonobject = document.getElementById("buttonhere");
     link = '<button type="button" class="item" id="' + y + '" onclick="look(this)">' + y + '問目</button>';
     buttonobject.insertAdjacentHTML('beforeend', link);
+    borderobject = document.getElementById("border");
+    if (judge == 1) {
+        b = '<tr><th>' + y + '問目</th><th>◯</th></tr> ';
+    } else {
+        b = '<tr><th>' + y + '問目</th><th>✖</th></tr> ';
+    }
+    buttonobject.insertAdjacentHTML('beforeend', b);
 }
 
 

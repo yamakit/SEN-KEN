@@ -15,7 +15,7 @@
     <video id="mv" autobuffer autoplay loop muted controls poster="../img/00.jpg">
         <source src="" id="video" controls muted autoplay playinline loop>
     </video>
-
+    <a class="title">アタッカー向け打ち方分析</a>
     <button class="home" onclick="history.back()">プロット画面へ戻る</button>
     <div id="selectdiv">
         <button id="btn_veryslow">もっとスロー</button>
@@ -25,7 +25,6 @@
         <!-- <button id="btn_fast">早送り</button>
             <button id="btn_veryfast">もっと早送り</button> -->
     </div>
-    <button onclick="frame()">枠ON/OFF</button>
 
 
     <div id="buttondiv" class="content">
@@ -41,8 +40,8 @@
             <button class="btn9" id="9" type="button">9</button>
         </div>
     </div>
-    <canvas id="ex_chart"></canvas>
-    <canvas id="ext_chart"></canvas>
+    <canvas id="ex_chart" style="max-width: 40%;"></canvas>
+    <canvas id="ext_chart" style="max-width: 40%;"></canvas>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 </body>
 <script src="../Javascript/view.js"></script>
