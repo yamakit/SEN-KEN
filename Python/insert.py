@@ -22,7 +22,7 @@ conn.close()
 
 print(folder)
 
-for lap,fl in enumerate(folder):
+for fl in folder:
     fl = fl.replace('IMG','ffmpeg')
     fl = fl.replace('MOV','json')
     fl = fl.replace('../',"D:\\htdocs\\SEN-KEN\\")
@@ -30,14 +30,14 @@ for lap,fl in enumerate(folder):
 
     print(fl + 'を処理中...')
 
-    #===jsonファイルのバックスラッシュが一個なら二個に置き換える処理===
+    # ===jsonファイルのバックスラッシュが一個なら二個に置き換える===
     rep_chk = 0  #前のループでバックスラッシュを検出したかどうかのフラグ
 
-    #---jsonファイルの中身を、一文字ずつ要素に入れたリストに変換---
+    # ---jsonファイルの中身を、一文字ずつ要素に入れたリストに変換---
     with open(fl, encoding="utf-8") as f:
         data_lines = f.read()
     chr_list = list(data_lines)
-    #---リストを走査しバックスラッシュを検出、置換する---
+    # ---リストを走査しバックスラッシュを検出、置換する---
     for c in chr_list:
         if(rep_chk == 0 and c == "\\"):
             rep_chk = 1
@@ -48,47 +48,52 @@ for lap,fl in enumerate(folder):
                     f.write(data_lines)
             break
 
-    #===jsonからcsvに変換===
+    # ===jsonからcsvに変換===
     json_path = fl #頂点を取得するjsonファイル
     csv_path = fl.replace('json','csv')
 
-    #---変換したいJSONファイルを読み込む---
+    # ---変換したいJSONファイルを読み込む---
     df = pd.read_json(json_path)
     df.to_csv(csv_path, encoding='utf-8')
 
     data = pd.read_csv(csv_path)
 
-    #===ファイル毎に初期化する変数を宣言===
-    data['center_y'] = np.nan
-    data['center_x'] = np.nan
-    data['original_y'] = np.nan
-    data['original_x'] = np.nan
-    data['sabun_y'] = np.nan
-    data['panda_mov5'] = np.nan 
-    data['panda_mov50'] = np.nan
+    # ===ファイル毎に初期化する変数を宣言===
+    # ---データ取り出し及び異常値検出に使う変数---
+    data['center_y'] = np.nan       # csvから取り出したy座標が格納されるカラム
+    data['center_x'] = np.nan       # csvから取り出したx座標が格納されるカラム
+    data['original_center_y'] = np.nan     # csvから取り出されたままの状態y座標が格納されるカラム
+    data['original_center_x'] = np.nan     # csvから取り出されたままの状態x座標が格納されるカラム
+    coor_list = []      # x,y座標のリストが格納されるリスト
+    nxt_val = 0         # あるフレームの次に値が入っているフレームの座標を格納する変数
+    stack = 0           # 最後に値が入っていたフレームを格納する変数
+    have_got = 0        # 各フレームの座標を走査していく際、一度でも値を取得したかを管理するフラグ変数
 
-    mes_list = []       #ボールの上がり始めたフレームと少し下がり始めるまでフレームを格納するリストを格納するリスト
-    mes_frame = []      #y座標の変位がマイナスからプラスになったフレームと、その次プラスからマイナスになったフレームを格納するリストを格納するリスト
-    coor_list = []      #x,y座標のリストが格納されるリスト
-    strange_list = []   #異常値の座標とその座標での検出回数のリストを格納するリスト
+    # ---frame1検出に使う変数---
+    mes_list = []       # y座標が増加し始めたフレームと減少し始めるまでフレームのリストを格納するリスト  [[y座標が増加し始めたフレーム1, y座標が減少し始めたフレーム1], [y座標が増加し始めたフレーム2, y座標が減少し始めたフレーム2]...]
+    mes_frame = []      # mes_listからframe1が入っている区間と思われるものを格納するリスト
+    strange_list = []   # 異常値の座標とその座標での検出回数のリストを格納するリスト [[異常値の座標1, 異常値の座標1が検出された回数], [異常値の座標2, 異常値の座標2が検出された回数]...]
+    renzoku = 0         # ある条件に適する値が連続した回数を格納する変数
+    phase = 0           # 検出の段階を管理するフラグ変数
+    data['sabun_y'] = np.nan        # center_yのフレーム間のy座標の差を格納するカラム
+    data['sabun_mov5'] = np.nan     # sabun_yを5で移動平均をとったものを格納するカラム
+    data['sabun_mov50'] = np.nan    # sabun_yを50で移動平均をとったものを格納するカラム
+    big_diff_frame = 0  # 5と50の移動平均の差が開いたフレームを格納する変数
+    intsec_frame = 0    # 5と50の移動平均のグラフの交点のフレーム = frame1
+    frame1 = 0          # スパイクのフレーム
 
-    nxt_val = 0         #あるフレームの次のフレームの座標を格納する変数
-    stack = 0           #最後に値が入っていたフレームを格納する変数
-    have_got = 0        #各フレームの座標を精査していく際、もう値を取得したかのフラグ変数
-    renzoku = 0         #ある条件に適する値が連続した回数を格納する変数
-    phase = 0           #検出の段階を管理するフラグ変数
-    frame1 = 0          #スパイクのフレーム
-    frame2 = 0          #答え合わせを行うフレーム
-    exist_cnt = 0       #frame2を検出する際に値が存在するフレームが連続した回数を保存する変数
-    exist_frame = 0     #frame2を検出する際に最初に見つけた、値が存在するフレームを保存する変数
-    intsec_frame = 0    #5と50ののグラフの交点のフレーム = frame1
-    sample_frame = 0    #frame1が誤りであるかを判断するための試料となるフレームの範囲を格納する変数
-    wrong_cnt = 0       #差分の変化が十分大きかった回数を格納する変数
-    is_wrong = 0        #frame1が誤りであるかについてのフラグ変数
-    wrong_frame = 0     #frame1が誤りであった場合にframe1を格納する変数
-    loop_cnt = 0        #再検出を繰り返した回数を格納する変数
-    big_diff_frame = 0  #差分の、5と50の移動平均の差が開いたフレームを格納する変数
+    # ---frame1再検出に使う変数---
+    sample_frame = 0    # frame1が誤りであるかを判断するための試料となるフレームの範囲を格納する変数
+    wrong_cnt = 0       # 差分の変化が十分大きかった回数を格納する変数
+    is_wrong = 0        # frame1が誤りであるかについてのフラグ変数
+    wrong_frame = 0     # frame1が誤りであった場合にframe1を格納する変数
+    loop_cnt = 0        # 再検出を繰り返した回数を格納する変数
 
+    # ---frame2検出に使う変数---
+    frame2 = 0          # 答え合わせを行うフレーム
+    exist_frame = 0     # frame2を検出する際に最初に見つけた、値が存在するフレームを保存する変数
+    exist_cnt = 0       # frame2を検出する際に値が存在するフレームが連続した回数を保存する変数
+    
     # ===csvファイルから各フレームごとのデータを取り出す===
     for i in range(0,len(data)):
         obj_n = 0
@@ -102,8 +107,8 @@ for lap,fl in enumerate(folder):
     # ===取り出したデータから異常値を省く===
     # ---異常値の候補をリストに格納---
     for f in range(0,len(coor_list)):
-        data.loc[f,'original_y'] = coor_list[f][0]
-        data.loc[f,'original_x'] = coor_list[f][1]
+        data.loc[f,'original_center_y'] = coor_list[f][0]
+        data.loc[f,'original_center_x'] = coor_list[f][1]
         if not(np.isnan(coor_list[f][0])):
             if not(have_got):
                 data.loc[f,'center_y'] = coor_list[f][0]
@@ -166,10 +171,10 @@ for lap,fl in enumerate(folder):
     data.loc[:,'center_y'] = data.loc[:,'center_y'].interpolate(axis=0)
     data.loc[:,'center_x'] = data.loc[:,'center_x'].interpolate(axis=0)
 
-    data.loc[:,'original_y'] = data.loc[:,'original_y'].interpolate(axis=0)
-    data.loc[:,'original_x'] = data.loc[:,'original_x'].interpolate(axis=0)
+    data.loc[:,'original_center_y'] = data.loc[:,'original_center_y'].interpolate(axis=0)
+    data.loc[:,'original_center_x'] = data.loc[:,'original_center_x'].interpolate(axis=0)
 
-    # ===スパイク検出===
+    # ===frame1検出===
     # ---平滑化---
     data['MedFilTemp_y'] = data['center_y'].rolling(24, center=True).median()
     data.loc[:,'MedFilTemp_y'] = data.loc[:,['MedFilTemp_y']].interpolate(axis=0,limit_direction='both')
@@ -222,7 +227,7 @@ for lap,fl in enumerate(folder):
             if(i == len(data) - 2 and len(mes_list[-1]) == 1):
                 mes_list[-1].append(i)
 
-    # ---リストに格納されているリストからスパイクが含まれるフレームと思われるものを選択---
+    # ---mes_listからframe1が含まれると思われるものを選択---
     if(mes_list):
         if(len(mes_list) == 1):
             mes_frame = mes_list[0]
@@ -232,23 +237,23 @@ for lap,fl in enumerate(folder):
             mes_frame = mes_list[1]
 
     # ---差分の移動平均をとる---
-    data.loc[:, 'panda_mov5'] = data.loc[:, 'sabun_y']
-    data.loc[:, 'panda_mov50'] = data.loc[:, 'sabun_y']
-    data['panda_mov5'] = data['panda_mov5'].rolling(5, center=False).mean()
-    data['panda_mov50'] = data['panda_mov50'].rolling(50, center=False).mean()
+    data.loc[:, 'sabun_mov5'] = data.loc[:, 'sabun_y']
+    data.loc[:, 'sabun_mov50'] = data.loc[:, 'sabun_y']
+    data['sabun_mov5'] = data['sabun_mov5'].rolling(5, center=False).mean()
+    data['sabun_mov50'] = data['sabun_mov50'].rolling(50, center=False).mean()
     
     # ---選択したフレームの間から5と50の差分の移動平均の差が広がったフレームを選択---
     if(mes_frame):
         for m_frame in range(mes_frame[0], mes_frame[1]):
-            if(data.loc[m_frame, 'panda_mov50'] - data.loc[m_frame, 'panda_mov5'] >= 0.002):
+            if(data.loc[m_frame, 'sabun_mov50'] - data.loc[m_frame, 'sabun_mov5'] >= 0.002):
                 big_diff_frame = m_frame
                 break
 
     # ---選択したフレームから遡り、5と50の移動平均の交点を見つける---
     if(mes_frame):
         for m_frame in range(big_diff_frame - 1, mes_frame[0], -1):
-            if(data.loc[m_frame, 'panda_mov5'] - data.loc[m_frame + 1, 'panda_mov5'] > 0):
-                if((data.loc[m_frame, 'panda_mov50'] <= data.loc[m_frame, 'panda_mov5'] and data.loc[m_frame + 1, 'panda_mov5'] <= data.loc[m_frame + 1, 'panda_mov50']) or (data.loc[m_frame, 'panda_mov5'] <= data.loc[m_frame , 'panda_mov50'] and data.loc[m_frame + 1, 'panda_mov50'] <= data.loc[m_frame + 1, 'panda_mov5'])):
+            if(data.loc[m_frame, 'sabun_mov5'] - data.loc[m_frame + 1, 'sabun_mov5'] > 0):
+                if((data.loc[m_frame, 'sabun_mov50'] <= data.loc[m_frame, 'sabun_mov5'] and data.loc[m_frame + 1, 'sabun_mov5'] <= data.loc[m_frame + 1, 'sabun_mov50']) or (data.loc[m_frame, 'sabun_mov5'] <= data.loc[m_frame , 'sabun_mov50'] and data.loc[m_frame + 1, 'sabun_mov50'] <= data.loc[m_frame + 1, 'sabun_mov5'])):
                     intsec_frame = m_frame + 1
                     frame1 = intsec_frame                 
                     break
@@ -280,12 +285,12 @@ for lap,fl in enumerate(folder):
         while(is_wrong):
             loop_cnt += 1
             for m_frame in range(mes_frame[0], mes_frame[1]):
-                if(data.loc[m_frame, 'panda_mov50'] - data.loc[m_frame, 'panda_mov5'] >= 0.002 - (0.00001*loop_cnt)):
+                if(data.loc[m_frame, 'sabun_mov50'] - data.loc[m_frame, 'sabun_mov5'] >= 0.002 - (0.00001*loop_cnt)):
                     big_diff_frame = m_frame
                     break
             for m_frame in range(big_diff_frame - 1, mes_frame[0], -1):
-                if(data.loc[m_frame, 'panda_mov5'] - data.loc[m_frame + 1, 'panda_mov5'] > 0):
-                    if((data.loc[m_frame, 'panda_mov50'] <= data.loc[m_frame, 'panda_mov5'] and data.loc[m_frame + 1, 'panda_mov5'] <= data.loc[m_frame + 1, 'panda_mov50']) or (data.loc[m_frame, 'panda_mov5'] <= data.loc[m_frame , 'panda_mov50'] and data.loc[m_frame + 1, 'panda_mov50'] <= data.loc[m_frame + 1, 'panda_mov5'])):
+                if(data.loc[m_frame, 'sabun_mov5'] - data.loc[m_frame + 1, 'sabun_mov5'] > 0):
+                    if((data.loc[m_frame, 'sabun_mov50'] <= data.loc[m_frame, 'sabun_mov5'] and data.loc[m_frame + 1, 'sabun_mov5'] <= data.loc[m_frame + 1, 'sabun_mov50']) or (data.loc[m_frame, 'sabun_mov5'] <= data.loc[m_frame , 'sabun_mov50'] and data.loc[m_frame + 1, 'sabun_mov50'] <= data.loc[m_frame + 1, 'sabun_mov5'])):
                         intsec_frame = m_frame + 1
                         frame1 = intsec_frame
                         break
@@ -295,7 +300,7 @@ for lap,fl in enumerate(folder):
     
     # ===frame2取得===
     for i in range(len(data) - 1,0,-1):
-        if not(np.isnan(data.loc[i,'original_y'])):
+        if not(np.isnan(data.loc[i,'original_center_y'])):
             exist_cnt += 1
             if(exist_cnt == 1):
                 exist_frame = i
@@ -309,49 +314,41 @@ for lap,fl in enumerate(folder):
     if(frame2 <= frame1):
         frame2 = frame1 + 1
 
-    # ===original_y,xのframe1,2が欠損値ならばcenter_y,xを適用する===
-    if(np.isnan(data.loc[frame1, 'original_x'])):
+    # ===original_center_y,xのframe1,2が欠損値ならばcenter_y,xを適用する===
+    if(np.isnan(data.loc[frame1, 'original_center_x'])):
         x_coordinate = data.loc[frame1, 'center_x']
     else:
-        x_coordinate = data.loc[frame1, 'original_x']
+        x_coordinate = data.loc[frame1, 'original_center_x']
 
-    if(np.isnan(data.loc[frame2, 'original_x'])):
+    if(np.isnan(data.loc[frame2, 'original_center_x'])):
         x_coordinate2 = data.loc[frame2, 'center_x']
     else:
-        x_coordinate2 = data.loc[frame2, 'original_x']
+        x_coordinate2 = data.loc[frame2, 'original_center_x']
 
-    if(np.isnan(data.loc[frame1, 'original_y'])):
+    if(np.isnan(data.loc[frame1, 'original_center_y'])):
         y_coordinate = data.loc[frame1, 'center_y']
     else:
-        y_coordinate = data.loc[frame1, 'original_y']
+        y_coordinate = data.loc[frame1, 'original_center_y']
 
-    if(np.isnan(data.loc[frame2, 'original_y'])):
+    if(np.isnan(data.loc[frame2, 'original_center_y'])):
         y_coordinate2 = data.loc[frame2, 'center_y']
     else:
-        y_coordinate2 = data.loc[frame2, 'original_y']
+        y_coordinate2 = data.loc[frame2, 'original_center_y']
   
     # ===ans_idの判定===
-    if(0 <= x_coordinate2 <= 0.333):
-        if(0 <= y_coordinate2 <= 0.333):
-            ans_id = 1
-        elif(0.333 < y_coordinate2 <= 0.666):
-            ans_id = 4
-        else:
-            ans_id = 7
-    elif(0.333 <= x_coordinate2 <= 0.666):
-        if(0 <= y_coordinate2 <= 0.333):
-            ans_id = 2
-        elif(0.333 < y_coordinate2 <= 0.666):
-            ans_id = 5
-        else:
-            ans_id = 8
+    if(0 <= y_coordinate2 <= 0.333):
+        ans_id = 1
+    elif(0.333 < y_coordinate2 <= 0.666):
+        ans_id = 4
     else:
-        if(0 <= y_coordinate2 <= 0.333):
-            ans_id = 3
-        elif(0.333 < y_coordinate2 <= 0.666):
-            ans_id = 6
-        else:
-            ans_id = 9
+        ans_id = 7
+
+    if(0 <= x_coordinate2 <= 0.333):
+        ans_id += 0
+    elif(0.333 <= x_coordinate2 <= 0.666):
+        ans_id += 1
+    else:
+        ans_id += 2
 
     # ===DBに送信===
     if(not(np.isnan(x_coordinate) or np.isnan(y_coordinate))):
