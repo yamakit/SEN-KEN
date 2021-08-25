@@ -14,7 +14,7 @@ try {
 
 // <<<<<<< HEAD
     // $sql = "SELECT * FROM `yolo_video_table` WHERE ball_id = $ball_id";
-    $sql = "SELECT * FROM picture as P,yolo_video_table as Y where P.video_id=Y.video_id WHERE ball_id = $ball_id ORDER BY RAND()";
+    $sql = "SELECT * FROM picture as P,yolo_video_table as Y where P.video_id=Y.video_id AND ball_id = $ball_id ORDER BY RAND()";
 
 // $sql = "SELECT * FROM `yolo_video_table` ORDER BY RAND()";
 // =======

@@ -15,8 +15,9 @@ try {
 // echo "<p>DB接続に成功しました。</p>";
 
 
-$sql = "SELECT * FROM `yolo_video_table` WHERE player_id = $player_id ORDER BY RAND() LIMIT 100";
-// $sql = "SELECT * FROM `yolo_video_table` LIMIT 50";
+// $sql = "SELECT * FROM `yolo_video_table` WHERE player_id = $player_id ORDER BY RAND() LIMIT 100";
+
+$sql = "SELECT * FROM `yolo_video_table` WHERE player_id = $player_id ORDER BY `video_id` DESC LIMIT 100";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 $result = $stmt->fetchAll();

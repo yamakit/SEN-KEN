@@ -21,6 +21,7 @@ var path;
 var judge = false;
 var array = [];
 var counter;
+var hitplace;
 // var number_x;
 // var number_y;
 var number_r;
@@ -28,7 +29,7 @@ var r = [];
 var text;
 var more;
 var most;
-
+var add;
 setTimeout(cut, 1);
 
 function cut() {
@@ -87,9 +88,11 @@ function push() {
         zahyo_x = counter[i]['x_coordinate'];
         zahyo_y = counter[i]['y_coordinate'];
         path = counter[i]['video_path'];
+        hitplace = counter[i][`hitplace`];
         console.log(zahyo_x);
         console.log(zahyo_y);
         console.log(path);
+        console.log(hitplace);
 
         zahyo_x = zahyo_x * 1600;
         zahyo_y = zahyo_y * 1000;
@@ -105,7 +108,8 @@ function push() {
             {
                 "x": zahyo_x,
                 "y": zahyo_y,
-                "path": path
+                "path": path,
+                "hitplace": hitplace,
             }
         );
 
@@ -133,8 +137,10 @@ function hikaku() {
     number_r = index;
 
     text = array[number_r]["path"];
-    console.log(array[number_r]["path"]);
-    location.href = "../HTML/view.html?data=" + text;
+    console.log(text);
+    add = array[number_r]["hitplace"];
+    console.log(add);
+    location.href = "../HTML/view.html?data=" + text + "&" + more + "&" + add;
     // if (number_r) {
     // mv.setAttribute("src", array[number_r]["path"]);
     // plotdiv.style.display = "none";

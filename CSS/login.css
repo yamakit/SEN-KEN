@@ -8,7 +8,7 @@ body:before,
 body:after {
 content: "";
   /* background: #2979FF; */
-background-image: url(../img/messageImage_1628738375928.jpg);
+background-image: url(../img/aa.png);
 position: fixed;
 display: block;
 z-index: 1;

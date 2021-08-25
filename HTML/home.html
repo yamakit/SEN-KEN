@@ -22,14 +22,24 @@
         <button type="button" class='quiz' onclick="receive()">予想クイズをする</button>
         <button type="button" class='date' onclick="attack()">打ち方分析を見る</button>
     </div>
-    <form name=form1 class="form">
-        <select class="new" name='pull' onchange="chart(),select()">
+    <!-- <form name=form1 class="form">
+        <select class="new" name='pull' onchange="chart()">
             <option value=10>直近10問</option>
             <option value=50>直近50問</option>
             <option value=100>直近100問</option>
             <option value=300>直近300問</option>
+        </select> -->
+    </form>
+    <form name=form2 class="form">
+        <select class="new" name='pull' onchange="graph()">
+            <option value=3>直近3日</option>
+            <option value=7>直近7日</option>
+            <option value=10>直近10日</option>
+            <option value=14>直近14日</option>
         </select>
     </form>
+
+
 
     <img src="../img/anzai.png" class="face">
     <a class="myself"></br>名前</br>所属</br>ポジション</a>

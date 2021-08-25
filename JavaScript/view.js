@@ -1,9 +1,17 @@
+var more;
+var most;
 window.onload = function () {
     var data = location.href.split("?")[1];
-    var text = data.split("=")[1];
-    console.log(text);
+    var a = data.split("=")[1];
+    console.log(a);
+    var text = a.split("&")[0];
     mv.setAttribute("src", text);
+    more = a.split("&")[1];
+    console.log("プレイヤーid :", more);
+    most = a.split("&")[2];
+    console.log("打つ場所 :", most);
     dofy();
+    send();
 }
 
 var all;
@@ -105,7 +113,28 @@ function frame() {
     }
 }
 
-var ctx = document.getElementById('ex_chart');
+back.style.display = "none";
+function a() {
+    console.log("a()が呼び出されました。")
+    checkValue = '';
+    let Radio = document.getElementsByName('tab_name');
+
+    for (let i = 0; i < Radio.length; i++) {
+        if (Radio.item(i).checked) {
+            checkValue = Radio.item(i).value;
+        }
+        console.log("checkk", checkValue);
+        if (checkValue == 0) {
+            front.style.display = "block";
+            back.style.display = "none";
+        } else if (checkValue == 1) {
+            front.style.display = "none";
+            back.style.display = "block";
+        }
+    }
+}
+
+var ctx = document.getElementById('myChart01');
 
 var data = {
     labels: [],
@@ -163,13 +192,14 @@ var option = {
             ticks: {
                 min: 0,
                 max: 100,
+                stepSize: 10,
                 userCallback: function (tick) {
                     return tick.toString();
                 }
             },
             scaleLabel: {
                 display: true,
-                labelString: '左　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　右'
+                labelString: '左　　　　　　　　　　　　　　　　右'
             }
         }]
     },
@@ -187,7 +217,7 @@ var ex_chart = new Chart(ctx, {
 
 
 
-var ctxt = document.getElementById('ext_chart');
+var ctxt = document.getElementById('myChart02');
 
 var datas = {
     labels: [],
@@ -250,13 +280,14 @@ var options = {
             ticks: {
                 min: 0,
                 max: 100,
+                stepSize: 10,
                 userCallback: function (tick) {
                     return tick.toString() + '%';
                 }
             },
             scaleLabel: {
                 display: true,
-                labelString: '閉　　　　　　　　　　　　　　　　　　　　　　　　　開'
+                labelString: '閉　　　　　　　　　　　　　　　開'
             }
         }]
     },
@@ -271,3 +302,118 @@ var ext_chart = new Chart(ctxt, {
     options: options
 });
 
+// var button1 = [];
+// var button1judge = [];
+// var button2 = [];
+// var button2judge = [];
+// var button3 = [];
+// var button3judge = [];
+// var button4 = [];
+// var button4judge = [];
+// var button5 = [];
+// var button5judge = [];
+// var button6 = [];
+// var button6judge = [];
+// var button7 = [];
+// var button7judge = [];
+// var button8 = [];
+// var button8judge = [];
+// var button9 = [];
+// var button9judge = [];
+function send() {
+    console.log("send()が呼び出されました！！");
+    $.ajax({
+        type: "GET",
+        url: "../PHP/view.php",
+        dataType: "json",
+        data: {
+            'player_id': more,
+            'hitplace': most,
+        },
+    })
+        .done(function (data) {
+            console.log('DONE', data);
+            console.log("通信が成功しました!!!");
+            button1 = 0;
+            // button1judge = [];
+            button2 = 0;
+            // button2judge = [];
+            button3 = 0;
+            // button3judge = [];
+            button4 = 0;
+            // button4judge = [];
+            button5 = 0;
+            // button5judge = [];
+            button6 = 0;
+            // button6judge = [];
+            button7 = 0;
+            // button7judge = [];
+            button8 = 0;
+            // button8judge = [];
+            button9 = 0;
+            // button9judge = [];
+            // console.log(data[2][0]);
+            for (i = 0; i < data.length; i++) {
+                if (data[i]['ans_id'] == 1) {
+                    button1 += 1;
+                } else if (data[i]['ans_id'] == 2) {
+                    button2 += 1;
+                } else if (data[i]['ans_id'] == 3) {
+                    button3 += 1;
+                } else if (data[i]['ans_id'] == 4) {
+                    button4 += 1;
+                } else if (data[i]['ans_id'] == 5) {
+                    button5 += 1;
+                } else if (data[i]['ans_id'] == 6) {
+                    button6 += 1;
+                } else if (data[i]['ans_id'] == 7) {
+                    button7 += 1;
+                } else if (data[i]['ans_id'] == 8) {
+                    button8 += 1;
+                } else if (data[i]['ans_id'] == 9) {
+                    button9 += 1;
+                }
+
+            }
+            if (data.length == 0) {
+                percentage1 = 0;
+                percentage2 = 0;
+                percentage3 = 0;
+                percentage4 = 0;
+                percentage5 = 0;
+                percentage6 = 0;
+                percentage7 = 0;
+                percentage8 = 0;
+                percentage9 = 0;
+            } else {
+                percentage1 = Math.round(button1 / data.length * 100);
+                percentage2 = Math.round(button2 / data.length * 100);
+                percentage3 = Math.round(button3 / data.length * 100);
+                percentage4 = Math.round(button4 / data.length * 100);
+                percentage5 = Math.round(button5 / data.length * 100);
+                percentage6 = Math.round(button6 / data.length * 100);
+                percentage7 = Math.round(button7 / data.length * 100);
+                percentage8 = Math.round(button8 / data.length * 100);
+                percentage9 = Math.round(button9 / data.length * 100);
+            }
+
+
+            document.getElementById("td1").innerHTML = button1 + "/" + data.length + "\n" + percentage1 + "%";
+            document.getElementById("td2").innerHTML = button2 + "/" + data.length + "\n" + percentage2 + "%";
+            document.getElementById("td3").innerHTML = button3 + "/" + data.length + "\n" + percentage3 + "%";
+            document.getElementById("td4").innerHTML = button4 + "/" + data.length + "\n" + percentage4 + "%";
+            document.getElementById("td5").innerHTML = button5 + "/" + data.length + "\n" + percentage5 + "%";
+            document.getElementById("td6").innerHTML = button6 + "/" + data.length + "\n" + percentage6 + "%";
+            document.getElementById("td7").innerHTML = button7 + "/" + data.length + "\n" + percentage7 + "%";
+            document.getElementById("td8").innerHTML = button8 + "/" + data.length + "\n" + percentage8 + "%";
+            document.getElementById("td9").innerHTML = button9 + "/" + data.length + "\n" + percentage9 + "%";
+
+
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log('通信に失敗しました');
+            console.log("XMLHttpRequest : " + XMLHttpRequest.status);
+            console.log("textStatus     : " + textStatus);
+            console.log("errorThrown    : " + errorThrown.message);
+        });
+
+}

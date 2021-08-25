@@ -7,30 +7,10 @@ body{
     margin: 0;
     padding: 0 2%;
     -webkit-text-stroke: 0.1vmin #000000;
-    background-image: url(../img/messageImage_1628738375928.jpg);}
+    background-image: url(../img/aa.png);}
 .line span{
     color: #2979FF;
 }
-/* .img{
-    position: absolute;
-    right: 0%;
-    top: 1%;
-    height: 20%;
-} */
-/* .pic{
-    width: calc(100% / 5);
-    font-size: 20px;
-    color: white;
-    background-color: #2979FF;
-    margin-left: 2%;
-}
-.graph{
-    width: calc(100% / 5);
-    font-size: 20px;
-    color: white;
-    background-color: #2979FF;
-    margin-left: 2%;
-} */
 .button button{
     width: calc(100% / 5);
     height: calc(100% / 12);

@@ -217,6 +217,7 @@ function wille() {
         console.log('DONE', video_path);
         console.log('DONE', video_id);
         console.log('正解のボタン', correct);
+        color2 = document.getElementById(correct);
         console.log("画像のパス:", picture_path);
         console.log("x座標：", x_coordinate);
         console.log("y座標：", y_coordinate);
@@ -277,7 +278,7 @@ function compare() {
         color.style.backgroundColor = '#00FF0080';
         // color.style.backgroundColor = '#00FF99CC';
 
-        document.getElementById('maru_sound').play();
+        // document.getElementById('maru_sound').play();
     }
     else {
         // setTimeout(out, 2000);
@@ -290,7 +291,7 @@ function compare() {
         color2.style.backgroundColor = '#00FF0080';
         // color2.style.backgroundColor = '#00FF99CC';
 
-        document.getElementById('batsu_sound').play();
+        // document.getElementById('batsu_sound').play();
     }
     array.push(
         {
@@ -304,13 +305,20 @@ function compare() {
     buttonobject = document.getElementById("buttonhere");
     link = '<button type="button" class="item" id="' + y + '" onclick="look(this)">' + y + '問目</button>';
     buttonobject.insertAdjacentHTML('beforeend', link);
-    borderobject = document.getElementById("border");
+    let table = document.getElementById('targetTable');
+    let newRow = table.insertRow();
+
+    let newCell = newRow.insertCell();
+    let newText = document.createTextNode(y + '問目');
+    newCell.appendChild(newText);
+
+    newCell = newRow.insertCell();
     if (judge == 1) {
-        b = '<tr><th>' + y + '問目</th><th>◯</th></tr> ';
+        newText = document.createTextNode('◯');
     } else {
-        b = '<tr><th>' + y + '問目</th><th>✖</th></tr> ';
+        newText = document.createTextNode('✖');
     }
-    buttonobject.insertAdjacentHTML('beforeend', b);
+    newCell.appendChild(newText);
 }
 
 

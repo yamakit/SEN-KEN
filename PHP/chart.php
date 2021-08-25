@@ -10,6 +10,7 @@ $db = new PDO(PDO_DSN, DB_USERNAME, DB_PASSWORD);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $begin = $_GET["begin"];
+// $player_id = $_GET["player_id"];
 $stmt = $db->query("SELECT * FROM `answer_table` WHERE `user_id` = 2 LIMIT {$begin}");
 $user_filtered = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
