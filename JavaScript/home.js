@@ -22,10 +22,10 @@ window.onload = function () {
         randnum1 = 1 + Math.floor(Math.random() * 10);
         console.log("randnum1 :", randnum1);
     }
-    if (most == "submit") {
-        sent();
-    }
+    // if (most == "submit") {
+    // }
     graph();
+    sent();
 }
 
 function receive() {
@@ -262,7 +262,7 @@ var option = {
     },
     title: {
         display: true,
-        text: assumed + '日の正解率と日付の関係'
+        text: '3日の正解率と日にちの関係'
     }
 };
 var ex_chart = new Chart(ctx, {
@@ -287,6 +287,7 @@ function graph() {
     assumed = str;
     console.log(assumed);
     sum = 0;
+    option.title.text = assumed + '日の正解率と日にちの関係';
 
     for (i = 0; i < shift; i++) {
         datas['datasets'][0]['data'].shift();
