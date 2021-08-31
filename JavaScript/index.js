@@ -305,20 +305,31 @@ function compare() {
     buttonobject = document.getElementById("buttonhere");
     link = '<button type="button" class="item" id="' + y + '" onclick="look(this)">' + y + '問目</button>';
     buttonobject.insertAdjacentHTML('beforeend', link);
-    let table = document.getElementById('targetTable');
-    let newRow = table.insertRow();
-
-    let newCell = newRow.insertCell();
-    let newText = document.createTextNode(y + '問目');
-    newCell.appendChild(newText);
-
-    newCell = newRow.insertCell();
+    judgeobject = document.getElementById("judgehere");
     if (judge == 1) {
-        newText = document.createTextNode('◯');
+        lank = '<button type="button" class="item" id="' + y + '" onclick="look(this)"> ◯ </button>';
     } else {
-        newText = document.createTextNode('✖');
+        lank = '<button type="button" class="item" id="' + y + '" onclick="look(this)">✖</button>';
+
     }
-    newCell.appendChild(newText);
+    judgeobject.insertAdjacentHTML('beforeend', lank);
+
+
+
+    // let table = document.getElementById('targetTable');
+    // let newRow = table.insertRow();
+
+    // let newCell = newRow.insertCell();
+    // let newText = document.createTextNode(y + '問目');
+    // newCell.appendChild(newText);
+
+    // newCell = newRow.insertCell();
+    // if (judge == 1) {
+    //     newText = document.createTextNode('◯');
+    // } else {
+    //     newText = document.createTextNode('✖');
+    // }
+    // newCell.appendChild(newText);
 }
 
 
@@ -449,5 +460,14 @@ function ura() {
         buttonobject = document.getElementById("buttonhere");
         link = '<button type="button" class="item" id="' + y + '" onclick="look(this)">' + y + '問目</button>';
         buttonobject.insertAdjacentHTML('beforeend', link);
+        judgeobject = document.getElementById("judgehere");
+        if (judge == 1) {
+            lank = '<button type="button" class="item"> ◯ </button>';
+        } else {
+            lank = '<button type="button" class="item">✖</button>';
+
+        }
+        judgeobject.insertAdjacentHTML('beforeend', lank);
+
     }
 }

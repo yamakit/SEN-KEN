@@ -99,6 +99,7 @@ span{
     border: none;
 }
 
+
  /* Chrome, Safari 対応 */
 .scroll01::-webkit-scrollbar {
     display:none;

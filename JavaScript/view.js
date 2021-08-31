@@ -1,10 +1,12 @@
 var more;
 var most;
+var text;
+var da;
 window.onload = function () {
     var data = location.href.split("?")[1];
     var a = data.split("=")[1];
     console.log(a);
-    var text = a.split("&")[0];
+    text = a.split("&")[0];
     mv.setAttribute("src", text);
     more = a.split("&")[1];
     console.log("プレイヤーid :", more);
@@ -12,6 +14,7 @@ window.onload = function () {
     console.log("打つ場所 :", most);
     dofy();
     send();
+    graph();
 }
 
 var all;
@@ -52,13 +55,13 @@ function dofy() {
         all = videoElement.duration;
         console.log(all);
 
-        for (i = 1; i < all + 1; i++) {
-            data['labels'].push(i); //1個目のデータセットを追加
-            data['datasets'][3]['data'].push(10);
-            datas['labels'].push(i); //1個目のデータセットを追加
-            datas['datasets'][3]['data'].push(10);
-        }
-        console.log(datas['labels']);
+        // for (i = 1; i < all + 1; i++) {
+        //     // data['labels'].push(i); //1個目のデータセットを追加
+        //     // data['datasets'][3]['data'].push(10);
+        //     datas['labels'].push(i); //1個目のデータセットを追加
+        //     // datas['datasets'][3]['data'].push(10);
+        // }
+        // console.log(datas['labels']);
         ext_chart = new Chart(ctxt, {
             type: 'line',
             data: datas,
@@ -67,9 +70,11 @@ function dofy() {
     });
     videoElement.addEventListener("timeupdate", function () {
         var submit = videoElement.currentTime;
-        console.log(submit);
+        // submit = submit * 29.97;
+        // console.log(submit);
         submit = Math.round(submit);
         console.log(submit);
+
         data['datasets'][0]['data'].shift();
         data['datasets'][1]['data'].shift();
         data['datasets'][2]['data'].shift();
@@ -81,8 +86,8 @@ function dofy() {
         data['datasets'][1]['data'].push({ x: submit - 1, y: data['datasets'][3]['data'][submit] });
         data['datasets'][2]['data'].push({ x: submit - 2, y: data['datasets'][3]['data'][submit] });
         datas['datasets'][0]['data'].push({ x: submit, y: datas['datasets'][3]['data'][submit] });
-        datas['datasets'][1]['data'].push({ x: submit - 1, y: datas['datasets'][3]['data'][submit] });
-        datas['datasets'][2]['data'].push({ x: submit - 2, y: datas['datasets'][3]['data'][submit] });
+        // datas['datasets'][1]['data'].push({ x: submit - 1, y: datas['datasets'][3]['data'][submit - 1] });
+        // datas['datasets'][2]['data'].push({ x: submit - 2, y: datas['datasets'][3]['data'][submit - 2] });
         // console.log(datas['datasets'][1]['data'][submit + 1])
         ex_chart = new Chart(ctx, {
             type: 'line',
@@ -190,9 +195,9 @@ var option = {
         }],
         yAxes: [{
             ticks: {
-                min: 0,
+                min: -100,
                 max: 100,
-                stepSize: 10,
+                stepSize: 20,
                 userCallback: function (tick) {
                     return tick.toString();
                 }
@@ -257,9 +262,9 @@ var datas = {
     {
         label: '体の開き',
         data: [],
-        borderColor: 'skyblue',
+        borderColor: 'blue',
         // order: 3,
-        // pointRadius: 20,
+        pointRadius: 0.1,
         lineTension: 0,
         fill: false,
         borderWidth: 3,
@@ -273,14 +278,14 @@ var options = {
         xAxes: [{
             scaleLabel: {
                 display: true,
-                labelString: '秒数'
+                labelString: 'フレーム数'
             }
         }],
         yAxes: [{
             ticks: {
-                min: 0,
+                min: -100,
                 max: 100,
-                stepSize: 10,
+                stepSize: 20,
                 userCallback: function (tick) {
                     return tick.toString() + '%';
                 }
@@ -293,7 +298,7 @@ var options = {
     },
     title: {
         display: true,
-        text: '体の開き'
+        text: '体の開きの推移グラフ'
     }
 };
 var ext_chart = new Chart(ctxt, {
@@ -302,24 +307,6 @@ var ext_chart = new Chart(ctxt, {
     options: options
 });
 
-// var button1 = [];
-// var button1judge = [];
-// var button2 = [];
-// var button2judge = [];
-// var button3 = [];
-// var button3judge = [];
-// var button4 = [];
-// var button4judge = [];
-// var button5 = [];
-// var button5judge = [];
-// var button6 = [];
-// var button6judge = [];
-// var button7 = [];
-// var button7judge = [];
-// var button8 = [];
-// var button8judge = [];
-// var button9 = [];
-// var button9judge = [];
 function send() {
     console.log("send()が呼び出されました！！");
     $.ajax({
@@ -334,6 +321,7 @@ function send() {
         .done(function (data) {
             console.log('DONE', data);
             console.log("通信が成功しました!!!");
+            ann.innerHTML = "直近" + data.length + "本打ったコース別の累積";
             button1 = 0;
             // button1judge = [];
             button2 = 0;
@@ -398,15 +386,15 @@ function send() {
             }
 
 
-            document.getElementById("td1").innerHTML = button1 + "/" + data.length + "\n" + percentage1 + "%";
-            document.getElementById("td2").innerHTML = button2 + "/" + data.length + "\n" + percentage2 + "%";
-            document.getElementById("td3").innerHTML = button3 + "/" + data.length + "\n" + percentage3 + "%";
-            document.getElementById("td4").innerHTML = button4 + "/" + data.length + "\n" + percentage4 + "%";
-            document.getElementById("td5").innerHTML = button5 + "/" + data.length + "\n" + percentage5 + "%";
-            document.getElementById("td6").innerHTML = button6 + "/" + data.length + "\n" + percentage6 + "%";
-            document.getElementById("td7").innerHTML = button7 + "/" + data.length + "\n" + percentage7 + "%";
-            document.getElementById("td8").innerHTML = button8 + "/" + data.length + "\n" + percentage8 + "%";
-            document.getElementById("td9").innerHTML = button9 + "/" + data.length + "\n" + percentage9 + "%";
+            document.getElementById("td1").innerHTML = button1 + "本\n" + percentage1 + "%";
+            document.getElementById("td2").innerHTML = button2 + "本\n" + percentage2 + "%";
+            document.getElementById("td3").innerHTML = button3 + "本\n" + percentage3 + "%";
+            document.getElementById("td4").innerHTML = button4 + "本\n" + percentage4 + "%";
+            document.getElementById("td5").innerHTML = button5 + "本\n" + percentage5 + "%";
+            document.getElementById("td6").innerHTML = button6 + "本\n" + percentage6 + "%";
+            document.getElementById("td7").innerHTML = button7 + "本\n" + percentage7 + "%";
+            document.getElementById("td8").innerHTML = button8 + "本\n" + percentage8 + "%";
+            document.getElementById("td9").innerHTML = button9 + "本\n" + percentage9 + "%";
 
 
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
@@ -416,4 +404,45 @@ function send() {
             console.log("errorThrown    : " + errorThrown.message);
         });
 
+}
+
+function graph() {
+    console.log("send()が呼び出されました！！");
+    $.ajax({
+        type: "GET",
+        url: "../PHP/view2.php",
+        dataType: "json",
+        data: {
+            'path': text,
+        },
+    })
+        .done(function (data) {
+            console.log('DONE', data);
+            console.log("通信が成功しました!!!");
+            // console.log(data[0][0]);
+            da = JSON.parse(data[0][0]);
+
+            console.log(da);
+            // console.log(data[0].length);
+            console.log(da[1] * 29.97 - 100);
+
+            for (i = 1; i < Object.keys(da).length / 29.97; i++) {
+                datas['labels'].push(i); //1個目のデータセットを追加
+                datas['datasets'][3]['data'].push(da[Math.round(i * 29.97)] - 100);
+            }
+
+
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log('通信に失敗しました');
+            console.log("XMLHttpRequest : " + XMLHttpRequest.status);
+            console.log("textStatus     : " + textStatus);
+            console.log("errorThrown    : " + errorThrown.message);
+        });
+
+
+    ext_chart = new Chart(ctxt, {
+        type: 'line',
+        data: datas,
+        options: options
+    });
 }

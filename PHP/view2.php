@@ -1,9 +1,8 @@
 <?php
-    // include 'db_config.php';
 
     if(!empty($_GET)){
-        $id = $_GET['player_id'];
-
+        $path = $_GET['path'];
+    
         $dsn = 'mysql:dbname=sen-ken;host=localhost';
         $user = 'root';
         $password = '';
@@ -11,14 +10,13 @@
 
 try {
     $dbh = new PDO($dsn, $user, $password);  
+    $sql = "SELECT `turning_body_list` FROM `turning_body_table` WHERE `video_path` = '$path'";
 
-// echo "<p>DB接続に成功しました。</p>";
-
-$sql = "SELECT * FROM `users` WHERE `id` = $id";
 
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 $result = $stmt->fetchAll();
+
 
 } catch (Exception $e) {
 //   echo "<p>DB接続エラー</p>";
