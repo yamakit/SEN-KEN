@@ -76,15 +76,15 @@ function dofy() {
         console.log(submit);
 
         data['datasets'][0]['data'].shift();
-        data['datasets'][1]['data'].shift();
-        data['datasets'][2]['data'].shift();
+        // data['datasets'][1]['data'].shift();
+        // data['datasets'][2]['data'].shift();
         datas['datasets'][0]['data'].shift();
-        datas['datasets'][1]['data'].shift();
-        datas['datasets'][2]['data'].shift();
+        // datas['datasets'][1]['data'].shift();
+        // datas['datasets'][2]['data'].shift();
         // datas['datasets'][0]['data'].pop();
         data['datasets'][0]['data'].push({ x: submit, y: data['datasets'][3]['data'][submit] });
-        data['datasets'][1]['data'].push({ x: submit - 1, y: data['datasets'][3]['data'][submit] });
-        data['datasets'][2]['data'].push({ x: submit - 2, y: data['datasets'][3]['data'][submit] });
+        // data['datasets'][1]['data'].push({ x: submit - 1, y: data['datasets'][3]['data'][submit] });
+        // data['datasets'][2]['data'].push({ x: submit - 2, y: data['datasets'][3]['data'][submit] });
         datas['datasets'][0]['data'].push({ x: submit, y: datas['datasets'][3]['data'][submit] });
         // datas['datasets'][1]['data'].push({ x: submit - 1, y: datas['datasets'][3]['data'][submit - 1] });
         // datas['datasets'][2]['data'].push({ x: submit - 2, y: datas['datasets'][3]['data'][submit - 2] });
@@ -144,7 +144,7 @@ var ctx = document.getElementById('myChart01');
 var data = {
     labels: [],
     datasets: [{
-        label: '顔の向き',
+        label: '体の開き',
         data: [],
         borderColor: 'blue',
         pointBackgroundColor: 'rgba(255, 100, 100, 1)',
@@ -154,7 +154,7 @@ var data = {
         borderWidth: 3
     },
     {
-        label: '顔の向き',
+        label: '体の開き',
         data: [],
         borderColor: 'blue',
         pointBackgroundColor: 'rgba(255, 100, 100, 0.7)',
@@ -164,7 +164,7 @@ var data = {
         borderWidth: 3
     },
     {
-        label: '顔の向き',
+        label: '体の開き',
         data: [],
         borderColor: 'blue',
         pointBackgroundColor: 'rgba(255, 100, 100, 0.5)',
@@ -174,7 +174,7 @@ var data = {
         borderWidth: 3
     },
     {
-        label: '顔の向き',
+        label: '体の開き',
         data: [],
         borderColor: 'pink',
         lineTension: 0,
@@ -186,99 +186,12 @@ var data = {
 
 var option = {
     animation: false,
+    events: [],
     scales: {
         xAxes: [{
             scaleLabel: {
                 display: true,
                 labelString: '秒数'
-            }
-        }],
-        yAxes: [{
-            ticks: {
-                min: -100,
-                max: 100,
-                stepSize: 20,
-                userCallback: function (tick) {
-                    return tick.toString();
-                }
-            },
-            scaleLabel: {
-                display: true,
-                labelString: '左　　　　　　　　　　　　　　　　右'
-            }
-        }]
-    },
-    title: {
-        display: true,
-        text: '顔の向きの推移グラフ'
-    }
-};
-var ex_chart = new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: option
-});
-
-
-
-
-var ctxt = document.getElementById('myChart02');
-
-var datas = {
-    labels: [],
-    datasets: [{
-        label: '体の開き',
-        data: [{}],
-        borderColor: 'red',
-        // order: 1,
-        pointRadius: 20,
-        pointBackgroundColor: 'rgba(100, 100, 255, 1)',
-        lineTension: 0,
-        fill: false,
-        borderWidth: 3,
-    },
-    {
-        label: '体の開き',
-        data: [{}],
-        borderColor: 'red',
-        // order: 1,
-        pointRadius: 15,
-        pointBackgroundColor: 'rgba(100, 100, 255, 0.7)',
-        lineTension: 0,
-        fill: false,
-        borderWidth: 3,
-    },
-    {
-        label: '体の開き',
-        data: [{}],
-        borderColor: 'red',
-        // order: 1,
-        pointRadius: 10,
-        pointBackgroundColor: 'rgba(100, 100, 255, 0.5)',
-        lineTension: 0,
-        fill: false,
-        borderWidth: 3,
-    },
-    {
-        label: '体の開き',
-        data: [],
-        borderColor: 'blue',
-        // order: 3,
-        pointRadius: 0.1,
-        lineTension: 0,
-        fill: false,
-        borderWidth: 3,
-    }],
-
-}
-
-var options = {
-    animation: false,
-    scales: {
-        xAxes: [{
-            scaleLabel: {
-                display: true,
-                labelString: 'フレーム数'
             }
         }],
         yAxes: [{
@@ -299,6 +212,95 @@ var options = {
     title: {
         display: true,
         text: '体の開きの推移グラフ'
+    }
+};
+var ex_chart = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: option
+});
+
+
+
+
+var ctxt = document.getElementById('myChart02');
+
+var datas = {
+    labels: [],
+    datasets: [{
+        label: '顔の向き',
+        data: [{}],
+        borderColor: 'red',
+        // order: 1,
+        pointRadius: 7,
+        pointBackgroundColor: 'rgba(255, 100, 100, 1)',
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3,
+    },
+    {
+        label: '顔の向き',
+        data: [{}],
+        borderColor: 'red',
+        // order: 1,
+        pointRadius: 15,
+        pointBackgroundColor: 'rgba(100, 100, 255, 0.7)',
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3,
+    },
+    {
+        label: '顔の向き',
+        data: [{}],
+        borderColor: 'red',
+        // order: 1,
+        pointRadius: 10,
+        pointBackgroundColor: 'rgba(100, 100, 255, 0.5)',
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3,
+    },
+    {
+        label: '顔の向き',
+        data: [],
+        borderColor: 'blue',
+        // order: 3,
+        pointRadius: 0.1,
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3,
+    }],
+
+}
+
+var options = {
+    animation: false,
+    events: [],
+    scales: {
+        xAxes: [{
+            scaleLabel: {
+                display: true,
+                labelString: '秒数'
+            }
+        }],
+        yAxes: [{
+            ticks: {
+                min: -100,
+                max: 100,
+                stepSize: 20,
+                userCallback: function (tick) {
+                    return tick.toString() + '%';
+                }
+            },
+            scaleLabel: {
+                display: true,
+                labelString: '左　　　　　　　　　　　　　　　　右'
+            }
+        }]
+    },
+    title: {
+        display: true,
+        text: '顔の向きの推移グラフ'
     }
 };
 var ext_chart = new Chart(ctxt, {

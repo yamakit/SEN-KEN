@@ -1,10 +1,9 @@
 
 var more;
 let most;
-var randnum = 1 + Math.floor(Math.random() * 10);
-var randnum1 = 1 + Math.floor(Math.random() * 10);
-console.log("randnum :", randnum);
-console.log("randnum1 :", randnum1);
+var randoms = [];
+var randnumarray = [0, 0, 0, 0];
+
 window.onload = function () {
     var data = location.href.split("?")[1];
     console.log(data);
@@ -14,13 +13,35 @@ window.onload = function () {
     console.log("プレイヤーid :", more);
     most = text.split("&")[1];
     console.log("ボールid :", most);
-    if (randnum == more) {
-        randnum = 1 + Math.floor(Math.random() * 10);
-        console.log("randnum :", randnum);
+    if (more < 11) {
+        var min = 1, max = 10;
+    } else if (more < 20) {
+        var min = 11, max = 20;
+    } else {
+        var min = 21, max = 30;
     }
-    if (randnum1 == more) {
-        randnum1 = 1 + Math.floor(Math.random() * 10);
-        console.log("randnum1 :", randnum1);
+    for (i = min; i <= max; i++) {
+        while (true) {
+            var tmp = intRandom(min, max);
+            if (!randoms.includes(tmp)) {
+                randoms.push(tmp);
+                break;
+            }
+        }
+    }
+    console.log(randoms);
+
+    function intRandom(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    for (i = 0; i < randnumarray.length; i++) {
+        randnumarray[i] = randoms[i];
+        if (randnumarray[i] == more) {
+            randoms.shift();
+            randnumarray[i] = randoms[i];
+        }
+        console.log(randnumarray[i]);
     }
     // if (most == "submit") {
     // }
@@ -38,22 +59,39 @@ function attack() {
 var name;
 var affiliation;
 var position;
+var u;
 function sent() {
     console.log("sent()が呼び出されました！！");
     $.ajax({
         type: "GET",
         url: "../PHP/home.php",
         dataType: "json",
-        data: { 'player_id': more },
+        data: {
+            'player_id': more,
+            'randnum0': randnumarray[0],
+            'randnum1': randnumarray[1],
+            'randnum2': randnumarray[2],
+            'randnum3': randnumarray[3],
+        },
     })
         .done(function (data) {
             console.log('DONE', data);
             console.log("通信が成功しました!!!");
-            most = data[0][1];
+            most = data[0][0][1];
             detailobject = document.getElementById("detail");
-            link = ' <a class="myself"></br>名前：' + data[0][2] + '</br > 所属：' + data[0][3] + '</br > ポジション：' + data[0][4] + '</a >';
+            link = ' <a class="myself"></br>名前：' + data[0][0][2] + '</br > 所属：' + data[0][0][3] + '</br > ポジション：' + data[0][0][4] + '</a >';
             detailobject.insertAdjacentHTML('beforeend', link);
             console.log("ボールid :", most);
+            // console.log(data[2][0][0]);
+            datas['datasets'][0]['label'] = data[0][0][2];
+            datas['datasets'][1]['label'] = data[1][0][0];
+            datas['datasets'][2]['label'] = data[2][0][0];
+            datas['datasets'][3]['label'] = data[3][0][0];
+            datas['datasets'][4]['label'] = data[4][0][0];
+            // datas.datasets.label = assumed + '日の正解率と日にちの関係';
+            // option.title.text = assumed + '日の正解率と日にちの関係';
+            // option.title.text = assumed + '日の正解率と日にちの関係';
+            // u = data;
 
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log('通信に失敗しました');
@@ -204,7 +242,7 @@ const ctx = document.getElementById('myChart');
 var datas = {
     labels: [],
     datasets: [{
-        label: '自分',
+        label: '',
         data: [],
         borderColor: 'red',
         // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
@@ -214,7 +252,7 @@ var datas = {
         borderWidth: 3
     },
     {
-        label: '二人目',
+        label: '',
         data: [],
         borderColor: 'blue',
         // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
@@ -224,9 +262,29 @@ var datas = {
         borderWidth: 3
     },
     {
-        label: '三人目',
+        label: '',
         data: [],
         borderColor: 'yellow',
+        // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
+        pointRadius: 7,
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3
+    },
+    {
+        label: '',
+        data: [],
+        borderColor: 'green',
+        // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
+        pointRadius: 7,
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3
+    },
+    {
+        label: '',
+        data: [],
+        borderColor: 'purple',
         // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
         pointRadius: 7,
         lineTension: 0,
@@ -238,6 +296,7 @@ var datas = {
 
 var option = {
     animation: false,
+    events: [],
     scales: {
         xAxes: [{
             scaleLabel: {
@@ -271,12 +330,8 @@ var ex_chart = new Chart(ctx, {
     options: option
 });
 
-var sum = 0;
-var sum2 = 0;
-var sum3 = 0;
-var k;
-var l;
-var m;
+var sumarray = [];
+var dataarray = [0, 0, 0, 0, 0];
 var shift = 0;
 function graph() {
     console.log("graph()が呼び出されました！！");
@@ -289,12 +344,20 @@ function graph() {
     sum = 0;
     option.title.text = assumed + '日の正解率と日にちの関係';
 
-    for (i = 0; i < shift; i++) {
-        datas['datasets'][0]['data'].shift();
-        datas['datasets'][1]['data'].shift();
-        datas['datasets'][2]['data'].shift();
-        datas['labels'].shift();
-    }
+    // for (i = 0; i < shift; i++) {
+    //     datas['datasets'][0]['data'].pop();
+    //     datas['datasets'][1]['data'].pop();
+    //     datas['datasets'][2]['data'].pop();
+    //     datas['datasets'][3]['data'].pop();
+    //     datas['datasets'][4]['data'].pop();
+    //     datas['labels'].shift();
+    // }
+    datas['datasets'][0]['data'].length = 0;
+    datas['datasets'][1]['data'].length = 0;
+    datas['datasets'][2]['data'].length = 0;
+    datas['datasets'][3]['data'].length = 0;
+    datas['datasets'][4]['data'].length = 0;
+    datas['labels'].length = 0;
 
 
     $.ajax({
@@ -303,77 +366,66 @@ function graph() {
         dataType: "json",
         data: {
             'player_id': more,
+            'randnum0': randnumarray[0],
+            'randnum1': randnumarray[1],
+            'randnum2': randnumarray[2],
+            'randnum3': randnumarray[3],
             'day': str,
         },
     })
         .done(function (data) {
-            console.log('DONE1', data);
+            console.log('DONE', data);
             console.log("通信が成功しました!!!");
 
+            sumarray = [0, 0, 0, 0, 0];
+            console.log(data[0].length);
             for (i = 0; i < data.length; i++) {
+                for (j = 0; j < data[i].length; j++) {
+                    sumarray[i] = sumarray[i] + Number(data[i][j]);
+                }
+                dataarray[i] = data[i];
+            }
+            console.log(dataarray);
+            console.log(sumarray);
+            for (i = 0; i < data[0].length; i++) {
                 sum = sum + Number(data[i]);
             }
-            k = data;
-            console.log("sum :", sum);
+            // k = data;
+            // console.log("sum :", sum);
 
-        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log('通信に失敗しました');
-            console.log("XMLHttpRequest : " + XMLHttpRequest.status);
-            console.log("textStatus     : " + textStatus);
-            console.log("errorThrown    : " + errorThrown.message);
-        });
+            // for (i = 0; i < data.length; i++) {
+            //     sum2 = sum2 + Number(data[i]);
+            // }
+            // l = data;
+            // console.log("sum2", sum2);
+
+            // for (i = 0; i < data.length; i++) {
+            //     sum3 = sum3 + Number(data[i]);
+            // }
+            // m = data;
+            // console.log("sum3", sum3);
 
 
+            // for (i = 0; i < data.length; i++) {
+            //     sum4 = sum4 + Number(data[i]);
+            // }
+            // n = data;
+            // console.log("sum4", sum4);
 
 
-
-
-
-    $.ajax({
-        type: "GET",
-        url: "../PHP/home2.php",
-        dataType: "json",
-        data: {
-            'player_id': randnum,
-            'day': str,
-        },
-    })
-        .done(function (data) {
-            console.log('DONE2', data);
-            console.log("通信が成功しました!!!");
-
-            for (i = 0; i < data.length; i++) {
-                sum2 = sum2 + Number(data[i]);
+            // for (i = 0; i < data.length; i++) {
+            //     sum5 = sum5 + Number(data[i]);
+            // }
+            // o = data;
+            // console.log("sum5", sum5);
+            var p = 0;
+            for (i = 0; i < sumarray.length; i++) {
+                p = p + sumarray[i];
             }
-            l = data;
-            console.log("sum2", sum2);
-
-        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log('通信に失敗しました');
-            console.log("XMLHttpRequest : " + XMLHttpRequest.status);
-            console.log("textStatus     : " + textStatus);
-            console.log("errorThrown    : " + errorThrown.message);
-        });
-
-
-    $.ajax({
-        type: "GET",
-        url: "../PHP/home2.php",
-        dataType: "json",
-        data: {
-            'player_id': randnum1,
-            'day': str,
-        },
-    })
-        .done(function (data) {
-            console.log('DONE3', data);
-            console.log("通信が成功しました!!!");
-
-            for (i = 0; i < data.length; i++) {
-                sum3 = sum3 + Number(data[i]);
+            console.log(p);
+            if (p == 0) {
+                nan.innerHTML = "※表示できるデータがありません。";
             }
-            m = data;
-            console.log("sum3", sum3);
 
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log('通信に失敗しました');
@@ -383,10 +435,6 @@ function graph() {
         });
 
 
-
-    // if (sum == 0 && sum2 == 0 && sum3 == 0) {
-    //     nan.innerHTML = "※表示できるデータがありません。";
-    // }
 
 
     a = Number(str) + 1;
@@ -407,7 +455,16 @@ function send() {
         dataType: "json",
         data: {
             'player_id': more,
-            'sum': sum,
+            'randnum0': randnumarray[0],
+            'randnum1': randnumarray[1],
+            'randnum2': randnumarray[2],
+            'randnum3': randnumarray[3],
+            'sum': sumarray[0],
+            'sum2': sumarray[1],
+            'sum3': sumarray[2],
+            'sum4': sumarray[3],
+            'sum5': sumarray[4],
+
         },
     })
         .done(function (data) {
@@ -433,28 +490,28 @@ function send() {
             button9 = [];
             button9judge = [];
 
-            // console.log(data[2]['button_id']);
-            for (i = 0; i < data.length; i++) {
-                if (data[i]['button_id'] == 1) {
-                    button1.push(data[i]['judge']);
-                } else if (data[i]['button_id'] == 2) {
-                    button2.push(data[i]['judge']);
-                } else if (data[i]['button_id'] == 3) {
-                    button3.push(data[i]['judge']);
-                } else if (data[i]['button_id'] == 4) {
-                    button4.push(data[i]['judge']);
-                } else if (data[i]['button_id'] == 5) {
-                    button5.push(data[i]['judge']);
-                } else if (data[i]['button_id'] == 6) {
-                    button6.push(data[i]['judge']);
-                } else if (data[i]['button_id'] == 7) {
-                    button7.push(data[i]['judge']);
-                } else if (data[i]['button_id'] == 8) {
-                    button8.push(data[i]['judge']);
-                } else if (data[i]['button_id'] == 9) {
-                    button9.push(data[i]['judge']);
-                }
 
+
+            for (i = 0; i < data[0].length; i++) {
+                if (data[0][i]['button_id'] == 1) {
+                    button1.push(data[0][i]['judge']);
+                } else if (data[0][i]['button_id'] == 2) {
+                    button2.push(data[0][i]['judge']);
+                } else if (data[0][i]['button_id'] == 3) {
+                    button3.push(data[0][i]['judge']);
+                } else if (data[0][i]['button_id'] == 4) {
+                    button4.push(data[0][i]['judge']);
+                } else if (data[0][i]['button_id'] == 5) {
+                    button5.push(data[0][i]['judge']);
+                } else if (data[0][i]['button_id'] == 6) {
+                    button6.push(data[0][i]['judge']);
+                } else if (data[0][i]['button_id'] == 7) {
+                    button7.push(data[0][i]['judge']);
+                } else if (data[0][i]['button_id'] == 8) {
+                    button8.push(data[0][i]['judge']);
+                } else if (data[0][i]['button_id'] == 9) {
+                    button9.push(data[0][i]['judge']);
+                }
             }
             for (i = 0; i < button1.length; i++) {
                 if (button1[i] == 1) {
@@ -558,127 +615,75 @@ function send() {
                 }
 
             }
-            // if (button1.length == 0) {
-            // } else if (percentage1 < 20) {
-            //     color1.style.backgroundColor = c5;
-            // } else if (percentage1 < 40) {
-            //     color1.style.backgroundColor = c4;
-            // } else if (percentage1 < 60) {
-            //     color1.style.backgroundColor = c3;
-            // } else if (percentage1 < 80) {
-            //     color1.style.backgroundColor = c2;
-            // } else {
-            //     color1.style.backgroundColor = c1;
+
+
+            for (f = 0; f < data.length; f++) {
+                console.log(f + 1, "人目");
+
+                for (p = 0; p < assumed; p++) {
+                    arr = 0;
+                    for (i = 0; i < dataarray[f][p]; i++) {
+                        if (data[f][i]['judge'] == 1) {
+                            arr = arr + 1;
+                        }
+                    }
+                    var one = arr / dataarray[f][p] * 100;
+                    datas['datasets'][f]['data'].push(one);
+                    console.log(one);
+                    console.log(datas['datasets'][f]['data']);
+                }
+            }
+            // for (p = 0; p < assumed; p++) {
+            //     arr = 0;
+            //     for (i = 0; i < dataarray[1][p]; i++) {
+            //         if (data[i]['judge'] == 1) {
+            //             arr = arr + 1;
+            //         }
+            //     }
+            //     var two = arr / dataarray[1][p] * 100;
+            //     datas['datasets'][1]['data'].push(two);
+            //     console.log(two);
+            //     console.log(datas['datasets'][1]['data']);
             // }
-            // if (button2.length == 0) {
-            // } else if (percentage2 < 20) {
-            //     color2.style.backgroundColor = c5;
-            // } else if (percentage2 < 40) {
-            //     color2.style.backgroundColor = c4;
-            // } else if (percentage2 < 60) {
-            //     color2.style.backgroundColor = c3;
-            // } else if (percentage2 < 80) {
-            //     color2.style.backgroundColor = c2;
-            // } else {
-            //     color2.style.backgroundColor = c1;
+            // for (p = 0; p < assumed; p++) {
+            //     arr = 0;
+            //     for (i = 0; i < dataarray[2][p]; i++) {
+            //         if (data[i]['judge'] == 1) {
+            //             arr = arr + 1;
+            //         }
+            //     }
+            //     var three = arr / dataarray[2][p] * 100;
+            //     datas['datasets'][2]['data'].push(three);
+            //     console.log(three);
+            //     console.log(datas['datasets'][2]['data']);
             // }
-            // if (button3.length == 0) {
-            // } else if (percentage3 < 20) {
-            //     color3.style.backgroundColor = c5;
-            // } else if (percentage3 < 40) {
-            //     color3.style.backgroundColor = c4;
-            // } else if (percentage3 < 60) {
-            //     color3.style.backgroundColor = c3;
-            // } else if (percentage3 < 80) {
-            //     color3.style.backgroundColor = c2;
-            // } else {
-            //     color3.style.backgroundColor = c1;
-            // }
-            // if (button4.length == 0) {
-            // } else if (percentage4 < 20) {
-            //     color4.style.backgroundColor = c5;
-            // } else if (percentage4 < 40) {
-            //     color4.style.backgroundColor = c4;
-            // } else if (percentage4 < 60) {
-            //     color4.style.backgroundColor = c3;
-            // } else if (percentage4 < 80) {
-            //     color4.style.backgroundColor = c2;
-            // } else {
-            //     color4.style.backgroundColor = c1;
-            // }
-            // if (button5.length == 0) {
-            // } else if (percentage5 < 20) {
-            //     color5.style.backgroundColor = c5;
-            // } else if (percentage5 < 40) {
-            //     color5.style.backgroundColor = c4;
-            // } else if (percentage5 < 60) {
-            //     color5.style.backgroundColor = c3;
-            // } else if (percentage5 < 80) {
-            //     color5.style.backgroundColor = c2;
-            // } else {
-            //     color5.style.backgroundColor = c1;
-            // }
-            // if (button6.length == 0) {
-            // } else if (percentage6 < 20) {
-            //     color6.style.backgroundColor = c5;
-            // } else if (percentage6 < 40) {
-            //     color6.style.backgroundColor = c4;
-            // } else if (percentage6 < 60) {
-            //     color6.style.backgroundColor = c3;
-            // } else if (percentage6 < 80) {
-            //     color6.style.backgroundColor = c2;
-            // } else {
-            //     color6.style.backgroundColor = c1;
-            // }
-            // if (button7.length == 0) {
-            // } else if (percentage7 < 20) {
-            //     color7.style.backgroundColor = c5;
-            // } else if (percentage7 < 40) {
-            //     color7.style.backgroundColor = c4;
-            // } else if (percentage7 < 60) {
-            //     color7.style.backgroundColor = c3;
-            // } else if (percentage7 < 80) {
-            //     color7.style.backgroundColor = c2;
-            // } else {
-            //     color7.style.backgroundColor = c1;
-            // }
-            // if (button8.length == 0) {
-            // } else if (percentage8 < 20) {
-            //     color8.style.backgroundColor = c5;
-            // } else if (percentage8 < 40) {
-            //     color8.style.backgroundColor = c4;
-            // } else if (percentage8 < 60) {
-            //     color8.style.backgroundColor = c3;
-            // } else if (percentage8 < 80) {
-            //     color8.style.backgroundColor = c2;
-            // } else {
-            //     color8.style.backgroundColor = c1;
-            // }
-            // if (button9.length == 0) {
-            // } else if (percentage9 < 20) {
-            //     color9.style.backgroundColor = c5;
-            // } else if (percentage9 < 40) {
-            //     color9.style.backgroundColor = c4;
-            // } else if (percentage9 < 60) {
-            //     color9.style.backgroundColor = c3;
-            // } else if (percentage9 < 80) {
-            //     color9.style.backgroundColor = c2;
-            // } else {
-            //     color9.style.backgroundColor = c1;
+            // for (p = 0; p < assumed; p++) {
+            //     arr = 0;
+            //     for (i = 0; i < dataarray[3][p]; i++) {
+            //         if (data[i]['judge'] == 1) {
+            //             arr = arr + 1;
+            //         }
+            //     }
+            //     var four = arr / dataarray[3][p] * 100;
+            //     datas['datasets'][2]['data'].push(four);
+            //     console.log(four);
+            //     console.log(datas['datasets'][3]['data']);
             // }
 
-            for (p = 0; p < assumed; p++) {
-                arr = 0;
-                for (i = 0; i < k[p]; i++) {
-                    if (data[i]['judge'] == 1) {
-                        arr = arr + 1;
-                    }
-                }
-                var one = arr / k[p] * 100;
-                datas['datasets'][0]['data'].push(one);
-                console.log(one);
-                console.log(datas['datasets'][0]['data']);
-            }
+            // for (p = 0; p < assumed; p++) {
+            //     arr = 0;
+            //     for (i = 0; i < dataarray[4][p]; i++) {
+            //         if (data[i]['judge'] == 1) {
+            //             arr = arr + 1;
+            //         }
+            //     }
+            //     var five = arr / dataarray[4][p] * 100;
+            //     datas['datasets'][4]['data'].push(five);
+            //     console.log(five);
+            //     console.log(datas['datasets'][4]['data']);
+            // }
+
+
             shift = assumed;
             // console.log(datas);
             ex_chart = new Chart(ctx, {
@@ -694,81 +699,5 @@ function send() {
         });
 
 
-    $.ajax({
-        type: "GET",
-        url: "../PHP/home3.php",
-        dataType: "json",
-        data: {
-            'player_id': randnum,
-            'sum': sum2,
-        },
-    })
-        .done(function (data) {
-            console.log('DONE', data);
-            console.log("通信が成功しました!!!");
 
-            for (p = 0; p < assumed; p++) {
-                arr = 0;
-                for (i = 0; i < l[p]; i++) {
-                    if (data[i]['judge'] == 1) {
-                        arr = arr + 1;
-                    }
-                }
-                var two = arr / l[p] * 100;
-                datas['datasets'][1]['data'].push(two);
-                console.log(two);
-                console.log(datas['datasets'][1]['data']);
-            }
-
-
-            ex_chart = new Chart(ctx, {
-                type: 'line',
-                data: datas,
-                options: option
-            });
-        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log('通信に失敗しました');
-            console.log("XMLHttpRequest : " + XMLHttpRequest.status);
-            console.log("textStatus     : " + textStatus);
-            console.log("errorThrown    : " + errorThrown.message);
-        });
-
-    $.ajax({
-        type: "GET",
-        url: "../PHP/home3.php",
-        dataType: "json",
-        data: {
-            'player_id': randnum1,
-            'sum': sum3,
-        },
-    })
-        .done(function (data) {
-            console.log('DONE', data);
-            console.log("通信が成功しました!!!");
-
-            for (p = 0; p < assumed; p++) {
-                arr = 0;
-                for (i = 0; i < m[p]; i++) {
-                    if (data[i]['judge'] == 1) {
-                        arr = arr + 1;
-                    }
-                }
-                var three = arr / m[p] * 100;
-                datas['datasets'][2]['data'].push(three);
-                console.log(three);
-                console.log(datas['datasets'][2]['data']);
-            }
-
-
-            ex_chart = new Chart(ctx, {
-                type: 'line',
-                data: datas,
-                options: option
-            });
-        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log('通信に失敗しました');
-            console.log("XMLHttpRequest : " + XMLHttpRequest.status);
-            console.log("textStatus     : " + textStatus);
-            console.log("errorThrown    : " + errorThrown.message);
-        });
 }

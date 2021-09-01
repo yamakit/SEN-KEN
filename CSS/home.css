@@ -7,7 +7,9 @@ body{
     margin: 0;
     padding: 0 2%;
     -webkit-text-stroke: 0.1vmin #000000;
-    background-image: url(../img/aa.png);}
+    background-image: url(../img/aa.png);
+    background-size: cover;
+}
 .line span{
     color: #2979FF;
 }
@@ -59,6 +61,7 @@ button:hover{
     position: absolute;
     top: 30%;
     font-size: 3vh;
+    left: 25vh;
 }
 .stick{
     position: absolute;

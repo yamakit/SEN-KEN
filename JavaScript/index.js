@@ -278,7 +278,7 @@ function compare() {
         color.style.backgroundColor = '#00FF0080';
         // color.style.backgroundColor = '#00FF99CC';
 
-        // document.getElementById('maru_sound').play();
+        document.getElementById('maru_sound').play();
     }
     else {
         // setTimeout(out, 2000);
@@ -291,7 +291,7 @@ function compare() {
         color2.style.backgroundColor = '#00FF0080';
         // color2.style.backgroundColor = '#00FF99CC';
 
-        // document.getElementById('batsu_sound').play();
+        document.getElementById('batsu_sound').play();
     }
     array.push(
         {
