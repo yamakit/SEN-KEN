@@ -72,7 +72,7 @@ button:hover{
 }
 .math{     /*ここ変更*/
     position: absolute;
-    font-size: 180%;
+    font-size: 2vw;
     height: 25vw;
     width: 45%;
     right: 0;

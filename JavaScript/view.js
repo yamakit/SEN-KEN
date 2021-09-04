@@ -40,6 +40,24 @@ function dofy() {
         videoElement.playbackRate = 8.0;
     });
 
+    // while (judge == 0) {
+
+    //     pop = 0;
+    //     if (pop > all) {
+    //         pop = 0;
+    //     }
+    //     pop++;
+    //     datas['datasets'][0]['data'].shift();
+    //     datas['datasets'][0]['data'].push({ x: pop, y: datas['datasets'][1]['data'][pop - 1] });
+    //     ext_chart = new Chart(ctxt, {
+    //         type: 'line',
+    //         data: datas,
+    //         options: options
+    //     });
+    //     console.log(judge);
+    // }
+
+
 
     // btn_fast.addEventListener("click", (e) => {
     //     videoElement.playbackRate = 5.0;
@@ -50,6 +68,7 @@ function dofy() {
     // });
 
     videoElement.playbackRate = 8.0;
+
 
     videoElement.addEventListener('loadedmetadata', function () {
         all = videoElement.duration;
@@ -75,25 +94,25 @@ function dofy() {
         submit = Math.round(submit);
         console.log(submit);
 
-        data['datasets'][0]['data'].shift();
+        // data['datasets'][0]['data'].shift();
         // data['datasets'][1]['data'].shift();
         // data['datasets'][2]['data'].shift();
         datas['datasets'][0]['data'].shift();
         // datas['datasets'][1]['data'].shift();
         // datas['datasets'][2]['data'].shift();
         // datas['datasets'][0]['data'].pop();
-        data['datasets'][0]['data'].push({ x: submit, y: data['datasets'][3]['data'][submit] });
+        // data['datasets'][0]['data'].push({ x: submit, y: data['datasets'][3]['data'][submit] });
         // data['datasets'][1]['data'].push({ x: submit - 1, y: data['datasets'][3]['data'][submit] });
         // data['datasets'][2]['data'].push({ x: submit - 2, y: data['datasets'][3]['data'][submit] });
-        datas['datasets'][0]['data'].push({ x: submit, y: datas['datasets'][3]['data'][submit] });
+        datas['datasets'][0]['data'].push({ x: submit, y: datas['datasets'][1]['data'][submit - 1] });
         // datas['datasets'][1]['data'].push({ x: submit - 1, y: datas['datasets'][3]['data'][submit - 1] });
         // datas['datasets'][2]['data'].push({ x: submit - 2, y: datas['datasets'][3]['data'][submit - 2] });
         // console.log(datas['datasets'][1]['data'][submit + 1])
-        ex_chart = new Chart(ctx, {
-            type: 'line',
-            data: data,
-            options: option
-        });
+        // ex_chart = new Chart(ctx, {
+        //     type: 'line',
+        //     data: data,
+        //     options: option
+        // });
         ext_chart = new Chart(ctxt, {
             type: 'line',
             data: datas,
@@ -102,6 +121,7 @@ function dofy() {
     })
 
 }
+
 
 buttondiv.style.display = "none";
 var i = 0;
@@ -153,26 +173,26 @@ var data = {
         fill: false,
         borderWidth: 3
     },
-    {
-        label: '体の開き',
-        data: [],
-        borderColor: 'blue',
-        pointBackgroundColor: 'rgba(255, 100, 100, 0.7)',
-        pointRadius: 15,
-        lineTension: 0,
-        fill: false,
-        borderWidth: 3
-    },
-    {
-        label: '体の開き',
-        data: [],
-        borderColor: 'blue',
-        pointBackgroundColor: 'rgba(255, 100, 100, 0.5)',
-        pointRadius: 10,
-        lineTension: 0,
-        fill: false,
-        borderWidth: 3
-    },
+    // {
+    //     label: '体の開き',
+    //     data: [],
+    //     borderColor: 'blue',
+    //     pointBackgroundColor: 'rgba(255, 100, 100, 0.7)',
+    //     pointRadius: 15,
+    //     lineTension: 0,
+    //     fill: false,
+    //     borderWidth: 3
+    // },
+    // {
+    //     label: '体の開き',
+    //     data: [],
+    //     borderColor: 'blue',
+    //     pointBackgroundColor: 'rgba(255, 100, 100, 0.5)',
+    //     pointRadius: 10,
+    //     lineTension: 0,
+    //     fill: false,
+    //     borderWidth: 3
+    // },
     {
         label: '体の開き',
         data: [],
@@ -238,28 +258,28 @@ var datas = {
         fill: false,
         borderWidth: 3,
     },
-    {
-        label: '顔の向き',
-        data: [{}],
-        borderColor: 'red',
-        // order: 1,
-        pointRadius: 15,
-        pointBackgroundColor: 'rgba(100, 100, 255, 0.7)',
-        lineTension: 0,
-        fill: false,
-        borderWidth: 3,
-    },
-    {
-        label: '顔の向き',
-        data: [{}],
-        borderColor: 'red',
-        // order: 1,
-        pointRadius: 10,
-        pointBackgroundColor: 'rgba(100, 100, 255, 0.5)',
-        lineTension: 0,
-        fill: false,
-        borderWidth: 3,
-    },
+    // {
+    //     label: '顔の向き',
+    //     data: [{}],
+    //     borderColor: 'red',
+    //     // order: 1,
+    //     pointRadius: 15,
+    //     pointBackgroundColor: 'rgba(100, 100, 255, 0.7)',
+    //     lineTension: 0,
+    //     fill: false,
+    //     borderWidth: 3,
+    // },
+    // {
+    //     label: '顔の向き',
+    //     data: [{}],
+    //     borderColor: 'red',
+    //     // order: 1,
+    //     pointRadius: 10,
+    //     pointBackgroundColor: 'rgba(100, 100, 255, 0.5)',
+    //     lineTension: 0,
+    //     fill: false,
+    //     borderWidth: 3,
+    // },
     {
         label: '顔の向き',
         data: [],
@@ -325,23 +345,14 @@ function send() {
             console.log("通信が成功しました!!!");
             ann.innerHTML = "直近" + data.length + "本打ったコース別の累積";
             button1 = 0;
-            // button1judge = [];
             button2 = 0;
-            // button2judge = [];
             button3 = 0;
-            // button3judge = [];
             button4 = 0;
-            // button4judge = [];
             button5 = 0;
-            // button5judge = [];
             button6 = 0;
-            // button6judge = [];
             button7 = 0;
-            // button7judge = [];
             button8 = 0;
-            // button8judge = [];
             button9 = 0;
-            // button9judge = [];
             // console.log(data[2][0]);
             for (i = 0; i < data.length; i++) {
                 if (data[i]['ans_id'] == 1) {
@@ -387,16 +398,69 @@ function send() {
                 percentage9 = Math.round(button9 / data.length * 100);
             }
 
+            color1 = document.getElementById("td1");
+            color2 = document.getElementById("td2");
+            color3 = document.getElementById("td3");
+            color4 = document.getElementById("td4");
+            color5 = document.getElementById("td5");
+            color6 = document.getElementById("td6");
+            color7 = document.getElementById("td7");
+            color8 = document.getElementById("td8");
+            color9 = document.getElementById("td9");
+            var tdArray = [color1, color2, color3, color4, color5, color6, color7, color8, color9];
 
-            document.getElementById("td1").innerHTML = button1 + "本\n" + percentage1 + "%";
-            document.getElementById("td2").innerHTML = button2 + "本\n" + percentage2 + "%";
-            document.getElementById("td3").innerHTML = button3 + "本\n" + percentage3 + "%";
-            document.getElementById("td4").innerHTML = button4 + "本\n" + percentage4 + "%";
-            document.getElementById("td5").innerHTML = button5 + "本\n" + percentage5 + "%";
-            document.getElementById("td6").innerHTML = button6 + "本\n" + percentage6 + "%";
-            document.getElementById("td7").innerHTML = button7 + "本\n" + percentage7 + "%";
-            document.getElementById("td8").innerHTML = button8 + "本\n" + percentage8 + "%";
-            document.getElementById("td9").innerHTML = button9 + "本\n" + percentage9 + "%";
+            color1.innerHTML = button1 + "本\n" + percentage1 + "%";
+            color2.innerHTML = button2 + "本\n" + percentage2 + "%";
+            color3.innerHTML = button3 + "本\n" + percentage3 + "%";
+            color4.innerHTML = button4 + "本\n" + percentage4 + "%";
+            color5.innerHTML = button5 + "本\n" + percentage5 + "%";
+            color6.innerHTML = button6 + "本\n" + percentage6 + "%";
+            color7.innerHTML = button7 + "本\n" + percentage7 + "%";
+            color8.innerHTML = button8 + "本\n" + percentage8 + "%";
+            color9.innerHTML = button9 + "本\n" + percentage9 + "%";
+
+
+            var percentageArray = [percentage1, percentage2, percentage3, percentage4, percentage5, percentage6, percentage7, percentage8, percentage9];
+            var orderArray = [percentage1, percentage2, percentage3, percentage4, percentage5, percentage6, percentage7, percentage8, percentage9];
+            console.log(orderArray);
+            c1 = '#ff000080';
+            c2 = '#ffff0080';
+            c3 = '#0033FF80';
+            var y = 0;
+            var z = 0;
+            var colorArray = [c3, c2, c1];
+            percentageArray.sort(function (a, b) { return (b - a); });
+            console.log(percentageArray);
+            for (i = 0; i < percentageArray.length; i++) {
+                var search = orderArray.indexOf(percentageArray[i]);
+                console.log(search);
+                if (y == 0) {
+                    if (i < 3) {
+                        z = 0;
+                    } else if (i < 6) {
+                        z = 1;
+                    } else {
+                        z = 2;
+                    }
+                    tdArray[search].style.backgroundColor = colorArray[z];
+                    console.log(search + 1, "のパネルが変えられたよ");
+                    orderArray[search] = 1000;
+                    console.log(orderArray);
+                    var search2 = orderArray.indexOf(percentageArray[i]);
+                    console.log(search2);
+                    if (search2 == -1) {
+                    } else {
+                        tdArray[search2].style.backgroundColor = colorArray[z];
+                        // orderArray[search2] = 1000;
+                        console.log(search2 + 1, "のパネルが変えられたよ -- search2");
+                        y = 1;
+                    }
+                } else {
+                    y = 0;
+                }
+
+            }
+
 
 
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
@@ -409,7 +473,7 @@ function send() {
 }
 
 function graph() {
-    console.log("send()が呼び出されました！！");
+    console.log("graph()が呼び出されました！！");
     $.ajax({
         type: "GET",
         url: "../PHP/view2.php",
@@ -430,7 +494,7 @@ function graph() {
 
             for (i = 1; i < Object.keys(da).length / 29.97; i++) {
                 datas['labels'].push(i); //1個目のデータセットを追加
-                datas['datasets'][3]['data'].push(da[Math.round(i * 29.97)] - 100);
+                datas['datasets'][1]['data'].push(da[Math.round(i * 29.97)] - 100);
             }
 
 

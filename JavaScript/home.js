@@ -80,18 +80,15 @@ function sent() {
             most = data[0][0][1];
             detailobject = document.getElementById("detail");
             link = ' <a class="myself"></br>名前：' + data[0][0][2] + '</br > 所属：' + data[0][0][3] + '</br > ポジション：' + data[0][0][4] + '</a >';
+            face.setAttribute("src", data[0][0][5]);
             detailobject.insertAdjacentHTML('beforeend', link);
             console.log("ボールid :", most);
             // console.log(data[2][0][0]);
-            datas['datasets'][0]['label'] = data[0][0][2];
-            datas['datasets'][1]['label'] = data[1][0][0];
-            datas['datasets'][2]['label'] = data[2][0][0];
-            datas['datasets'][3]['label'] = data[3][0][0];
-            datas['datasets'][4]['label'] = data[4][0][0];
-            // datas.datasets.label = assumed + '日の正解率と日にちの関係';
-            // option.title.text = assumed + '日の正解率と日にちの関係';
-            // option.title.text = assumed + '日の正解率と日にちの関係';
-            // u = data;
+            // datas['datasets'][0]['label'] = data[0][0][2];
+            // datas['datasets'][1]['label'] = data[1][0][0];
+            // datas['datasets'][2]['label'] = data[2][0][0];
+            // datas['datasets'][3]['label'] = data[3][0][0];
+            // datas['datasets'][4]['label'] = data[4][0][0];
 
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log('通信に失敗しました');
@@ -580,7 +577,7 @@ function send() {
             color8 = document.getElementById("td8");
             color9 = document.getElementById("td9");
             var tdArray = [color1, color2, color3, color4, color5, color6, color7, color8, color9];
-            var buttonjudgeArray = [button1judge, button2judge, button3judge, button4judge, button5judge, button6judge, button7judge, button8judge, button9judge];
+            // var buttonjudgeArray = [button1judge, button2judge, button3judge, button4judge, button5judge, button6judge, button7judge, button8judge, button9judge];
             var buttonArray = [button1, button2, button3, button4, button5, button6, button7, button8, button9];
             var percentageArray = [percentage1, percentage2, percentage3, percentage4, percentage5, percentage6, percentage7, percentage8, percentage9];
 
