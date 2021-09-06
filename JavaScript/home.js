@@ -84,11 +84,11 @@ function sent() {
             detailobject.insertAdjacentHTML('beforeend', link);
             console.log("ボールid :", most);
             // console.log(data[2][0][0]);
-            // datas['datasets'][0]['label'] = data[0][0][2];
-            // datas['datasets'][1]['label'] = data[1][0][0];
-            // datas['datasets'][2]['label'] = data[2][0][0];
-            // datas['datasets'][3]['label'] = data[3][0][0];
-            // datas['datasets'][4]['label'] = data[4][0][0];
+            datas['datasets'][0]['label'] = data[0][0][2];
+            datas['datasets'][1]['label'] = data[1][0][0];
+            datas['datasets'][2]['label'] = data[2][0][0];
+            datas['datasets'][3]['label'] = data[3][0][0];
+            datas['datasets'][4]['label'] = data[4][0][0];
 
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log('通信に失敗しました');
@@ -601,9 +601,10 @@ function send() {
             var colorArray = [c1, c2, c3, c4, c5];
 
             for (let item in buttonArray) {
-                if (buttonArray[item].length == 0) {
-                    tdArray[item].style.backgroundColor = c0;
-                } else if (percentageArray[item] == 100) {
+                // if (buttonArray[item].length == 0) {
+                //     tdArray[item].style.backgroundColor = c0;
+                // } else
+                if (percentageArray[item] == 100) {
                     tdArray[item].style.backgroundColor = colorArray[4];
                 } else {
 

@@ -17,11 +17,14 @@ window.onload = function () {
     graph();
 }
 
+
 var all;
+var judge = 0;
+var submit;
 function dofy() {
     console.log("dofy()が呼び出されました！！");
     var mv = document.getElementById("mv");
-    mv.controls = false;
+    // mv.controls = false;
     videoElement = document.querySelector("video");
     const btn_slow = document.getElementById("btn_slow");
     const btn_normal = document.getElementById("btn_normal");
@@ -34,28 +37,13 @@ function dofy() {
 
     btn_slow.addEventListener("click", (e) => {
         videoElement.playbackRate = 4.0;
+        judge = 1;
     });
 
     btn_normal.addEventListener("click", (e) => {
         videoElement.playbackRate = 8.0;
     });
 
-    // while (judge == 0) {
-
-    //     pop = 0;
-    //     if (pop > all) {
-    //         pop = 0;
-    //     }
-    //     pop++;
-    //     datas['datasets'][0]['data'].shift();
-    //     datas['datasets'][0]['data'].push({ x: pop, y: datas['datasets'][1]['data'][pop - 1] });
-    //     ext_chart = new Chart(ctxt, {
-    //         type: 'line',
-    //         data: datas,
-    //         options: options
-    //     });
-    //     console.log(judge);
-    // }
 
 
 
@@ -70,30 +58,31 @@ function dofy() {
     videoElement.playbackRate = 8.0;
 
 
-    videoElement.addEventListener('loadedmetadata', function () {
-        all = videoElement.duration;
-        console.log(all);
+    //     videoElement.addEventListener('loadedmetadata', function () {
+    //         all = videoElement.duration;
+    //         console.log(all);
 
-        // for (i = 1; i < all + 1; i++) {
-        //     // data['labels'].push(i); //1個目のデータセットを追加
-        //     // data['datasets'][3]['data'].push(10);
-        //     datas['labels'].push(i); //1個目のデータセットを追加
-        //     // datas['datasets'][3]['data'].push(10);
-        // }
-        // console.log(datas['labels']);
-        ext_chart = new Chart(ctxt, {
-            type: 'line',
-            data: datas,
-            options: options
-        });
-    });
+    //         // for (i = 1; i < all + 1; i++) {
+    //         //     // data['labels'].push(i); //1個目のデータセットを追加
+    //         //     // data['datasets'][3]['data'].push(10);
+    //         //     datas['labels'].push(i); //1個目のデータセットを追加
+    //         //     // datas['datasets'][3]['data'].push(10);
+    //         // }
+    //         // console.log(datas['labels']);
+    //         ext_chart = new Chart(ctxt, {
+    //             type: 'line',
+    //             data: datas,
+    //             options: options
+    //         });
+    //     });
     videoElement.addEventListener("timeupdate", function () {
-        var submit = videoElement.currentTime;
+        submit = videoElement.currentTime;
         // submit = submit * 29.97;
         // console.log(submit);
         submit = Math.round(submit);
         console.log(submit);
-
+        let Day = new Date();
+        console.log(Day.getMilliseconds());
         // data['datasets'][0]['data'].shift();
         // data['datasets'][1]['data'].shift();
         // data['datasets'][2]['data'].shift();
@@ -118,23 +107,42 @@ function dofy() {
             data: datas,
             options: options
         });
+        // ext_chart.update();
+
+        // setTimeout(plus(), 125);
+        // plus();
     })
 
 }
 
 
+// function plus() {
+//     console.log("plus()が呼び出されました。")
+//     datas['datasets'][0]['data'].shift();
+//     datas['datasets'][0]['data'].push({ x: submit + 1, y: datas['datasets'][1]['data'][submit] });
+//     console.log("＋いちぃいい", submit + 1);
+//     ext_chart.update();
+
+//     // ext_chart = new Chart(ctxt, {
+//     //     type: 'line',
+//     //     data: datas,
+//     //     options: options
+//     //     });
+// }
+
+
 buttondiv.style.display = "none";
-var i = 0;
+var rr = 0;
 function frame() {
     console.log("frame()が呼び出されました。");
-    if (i == 0) {
+    if (rr == 0) {
         buttondiv.style.display = "block";
         console.log("ON!");
-        i = 1;
+        rr = 1;
     } else {
         buttondiv.style.display = "none";
         console.log("OFF!");
-        i = 0;
+        rr = 0;
     }
 }
 
@@ -164,7 +172,7 @@ var ctx = document.getElementById('myChart01');
 var data = {
     labels: [],
     datasets: [{
-        label: '体の開き',
+        label: '現在の動画の体の開き',
         data: [],
         borderColor: 'blue',
         pointBackgroundColor: 'rgba(255, 100, 100, 1)',
@@ -196,7 +204,7 @@ var data = {
     {
         label: '体の開き',
         data: [],
-        borderColor: 'pink',
+        borderColor: 'red',
         lineTension: 0,
         fill: false,
         borderWidth: 3
@@ -225,7 +233,7 @@ var option = {
             },
             scaleLabel: {
                 display: true,
-                labelString: '閉　　　　　　　　　　　　　　　開'
+                labelString: '閉　　　　　　　　　　　　開'
             }
         }]
     },
@@ -248,7 +256,7 @@ var ctxt = document.getElementById('myChart02');
 var datas = {
     labels: [],
     datasets: [{
-        label: '顔の向き',
+        label: '現在の動画の顔の向き',
         data: [{}],
         borderColor: 'red',
         // order: 1,
@@ -314,7 +322,7 @@ var options = {
             },
             scaleLabel: {
                 display: true,
-                labelString: '左　　　　　　　　　　　　　　　　右'
+                labelString: '左　　　　　　　　　　　右'
             }
         }]
     },
@@ -448,7 +456,10 @@ function send() {
                     console.log(orderArray);
                     var search2 = orderArray.indexOf(percentageArray[i]);
                     console.log(search2);
-                    if (search2 == -1) {
+                    if (percentageArray[i] == 0) {
+                        console.log("00000000000000000000000");
+                        tdArray[search].style.backgroundColor = colorArray[2];
+                    } else if (search2 == -1) {
                     } else {
                         tdArray[search2].style.backgroundColor = colorArray[z];
                         // orderArray[search2] = 1000;
@@ -458,6 +469,7 @@ function send() {
                 } else {
                     y = 0;
                 }
+
 
             }
 

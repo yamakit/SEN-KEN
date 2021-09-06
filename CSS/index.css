@@ -71,7 +71,7 @@ span{
 }
 .line{
     font-size: 3vw;
-    /* top: 20vw; */
+    top: 17vw;
     position: absolute;
     width: 95%;
     left: 2%;
@@ -83,13 +83,14 @@ span{
     overflow-y: hidden;
     white-space: nowrap;
     position: absolute;
-    top: 21vw;
+    top: 23vw;
     margin: 0 1.5%;
     width: 96.5%;
 }
 
 .scroll01 .item {
     /* display: inline-block; */
+    margin: 0.1% 0.2%;
     color:#FFFFFF;
     background:#2979FF;
     font-size: 2vw;
@@ -112,7 +113,7 @@ span{
 }
 img{
     position: absolute;
-    top: 30vw;
+    top: 32vw;
     min-height: 30vw;
     width: 45%;
     margin: 2%;
