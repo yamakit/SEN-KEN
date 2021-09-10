@@ -3,9 +3,9 @@ var y;
 // videodiv.style.display = "none";
 // buttondiv.style.display = "none";
 // canvas準備
-const board = document.querySelector("#board");  //getElementById()等でも可。オブジェクトが取れれば良い。
+const board = document.querySelector("#board");
 const ctx = board.getContext("2d");
-board.addEventListener("click", (e) => {
+board.addEventListener("click", (e) => {  //クリックしたマウス座標を取得
     var rect = e.target.getBoundingClientRect()
     x = e.clientX - rect.left
     y = e.clientY - rect.top
@@ -32,7 +32,7 @@ var most;
 var add;
 setTimeout(cut, 1);
 
-function cut() {
+function cut() {　// リンクからプレイヤーidとボールidを取得
     var data = location.href.split("?")[1];
     text = data.split("=")[1];
     console.log(text);
@@ -51,7 +51,7 @@ function cut() {
 }
 
 
-function sent() {
+function sent() {　//データベースからデータを取得
     console.log("sent()が呼び出されました！！");
     $.ajax({
         type: "GET",
@@ -82,7 +82,7 @@ function sent() {
 }
 
 
-function push() {
+function push() {　//バレーボールの画像をプロット
 
     for (i = 0; i < counter.length; i++) {
         zahyo_x = counter[i]['x_coordinate'];
@@ -118,7 +118,7 @@ function push() {
     }
 }
 
-function hikaku() {
+function hikaku() {　//マウス座標から一番近い画像を検索、その画像の動画を再生
 
     var value = Math.sqrt(x * x + y * y);
     console.log(value);

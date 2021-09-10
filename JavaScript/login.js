@@ -1,6 +1,6 @@
 window.onload = getPrefData();
 
-function getPrefData() {
+function getPrefData() {  // JSON データを option に展開生成
     $.ajax({
         type: "POST",
         url: "../PHP/login.php",
@@ -11,7 +11,6 @@ function getPrefData() {
             // select の内容削除
             $("#SelectPref").empty();
             var append = '<option value=""></option>&#10;';
-            // JSON データを option に展開生成
             for (var i = 0; i < PrefData.length; i++) {
                 append += '<option value="' + PrefData[i].id + '" >';
                 append += PrefData[i].name;

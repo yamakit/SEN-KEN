@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <link rel="stylesheet" href="../CSS/register.css">
+    <title>SEN-KEN登録</title>
+    <script src="../Javascript/register.js"></script>
+</head>
+
+<body>
+    <h1 class="title">SEN-<span>K</span>EN </h1>
+    <form action="../PHP/register.php" method="GET" ;>
+        <label>名前：<input type=" text" name="name" size="12" placeholder="名前を入力"></label><br>
+        <label>名前(英語で)：<input type=" text" name="roma" size="12" placeholder="英語で名前を入力"></label><br>
+
+
+        <label>所属：<select name="club">
+                <option value="バレーボール">バレー部</option>
+                <option value="バドミントン">バドミントン部</option>
+                <option value="ソフトテニス">ソフトテニス部</option>
+            </select></label><br>
+        <label>一言：<input type="text" name="free" size="20" placeholder="ケーキが好きです！！"></label><br>
+        <input type="file" name="upimg"><br>
+        <input type="submit" name="submit" value="登録する" />
+        <!-- <input type="file" name="avatar" accept="image/png, image/jpeg"> -->
+
+    </form>
+
+</body>
+
+</html>

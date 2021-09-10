@@ -22,7 +22,7 @@ var array = [];
 var picture_path;
 var hitplace = 0;
 
-function dofy() {
+function dofy() {　//動画の再生速度を変更
     buttondiv.style.display = "none";
     console.log("dofy()が呼び出されました！！");
     videoElement = document.querySelector("video");
@@ -58,7 +58,7 @@ var stop_renda = 0;
 var color;
 var color2;
 
-function getId(ele) {
+function getId(ele) {　//押したボタンのidを取得
     console.log("getId(ele)が呼び出されました！！");
     if (stop_renda == 0) {
         button_id = ele.getAttribute("id"); // input要素のid属性の値を取得
@@ -72,7 +72,7 @@ function getId(ele) {
 
 setTimeout(cut, 1);
 
-function cut() {
+function cut() {   //リンクからプレイヤーidとボールidを取得
     console.log("cut()が呼び出されました！！");
     var data = location.href.split("?")[1];
     var text = data.split("=")[1];
@@ -104,7 +104,7 @@ function cut() {
 }
 
 
-function sent() {
+function sent() {　　//データベースからデータを取得
     console.log("sent()が呼び出されました！！");
     back.style.display = "none";
     back_most.style.display = "none";
@@ -161,7 +161,7 @@ function sent() {
 }
 
 var trust = 0;
-function a() {
+function a() {　　//ボールが打たれる直前で動画を停止
     console.log("a()が呼び出されました！！");
     console.log(frame1);
     videoElement.addEventListener("timeupdate", function () {
@@ -182,9 +182,9 @@ function a() {
 }
 
 
-function wille() {
+function wille() {　//2回目以降のデータを取得
     console.log("wille()が呼び出されました！！");
-
+    buttondiv.style.pointerEvents = "auto";
     judge = 0;
     color.style.backgroundColor = '#00aeff5b';
     color2.style.backgroundColor = '#00aeff5b';
@@ -233,8 +233,9 @@ function wille() {
 }
 
 
-function apple() {
+function apple() { //ボールが答えのとこに来たら動画を停止
     if (stop_renda == 0) {
+        buttondiv.style.pointerEvents = "none";
         stop_renda = 1;
         console.log("apple()が呼び出されました！！");
         console.log('frame2　前: ', frame2);
@@ -252,7 +253,7 @@ function apple() {
     }
 }
 
-function movplay(num) {
+function movplay(num) {　//動画の再生と停止の切り替え
     var obj = document.getElementById("mv");
     var n = parseInt(num);
     if (n == 0) {
@@ -264,7 +265,7 @@ function movplay(num) {
     }
 }
 
-function compare() {
+function compare() {　//正解、不正解の判定
     console.log("compare()が呼び出されました！！");
     if (correct === button_id) {
         trust = 0;
@@ -342,17 +343,17 @@ function compare() {
 
 // }
 
-function push() {
+function push() { 　　//ホーム画面へ遷移
     location.href = "../HTML/home.html?data=" + more + "&" + most;
 
 }
-function pup() {
+function pup() {　//クイズ画面から結果画面への切り替え
     front.style.display = "none";
     back.style.display = "block";
     h1.innerHTML = "あなたは<span>" + kazu + "</span>問中<span>" + result + "</span>問正解しました。正解率は<span>" + percentage + "</span>％です。"
 }
 
-function send() {
+function send() {　  //ユーザーが解いた情報をデータベースへ送る
     console.log("send()が呼び出されました！！");
     $.ajax({
         type: "GET",
@@ -380,7 +381,7 @@ function send() {
 
 var mam = 0;
 
-function look(ele) {
+function look(ele) {　 //◯問目の比較画像を表示
     console.log("look(ele)が呼び出されました！！");
     mam = -1;
     back_most.style.display = "block";
@@ -402,19 +403,20 @@ function look(ele) {
     key2 = array[z]["hitplace"];
     console.log("key1 :", key1);
     console.log("key2 :", key2);
+    answer.innerHTML = key1 + "番";
 
     for (let step = 0; step < x.length; step++) {
 
         if (x[step]['ans_id'] == key1 && x[step]['hitplace'] == key2) {
 
             album.push(x[step]["picture_path"]);
-            console.log(album);
             // links = '<div class="swiper-slide"><img src="' + x[step]["picture_path"] + '" width="400" height="500" alt=""></div>';
             // swiperobject.insertAdjacentHTML('beforeend', links);
             mam = mam + 1;
         }
         varobject.setAttribute("max", mam);
     }
+    console.log(album);
     console.log("mam :", mam);
     // mySwiper = new Swiper('.swiper-container', {
     //     navigation: {
@@ -433,7 +435,7 @@ function look(ele) {
 }
 
 var da = 0;
-function next() {
+function next() { //次の画像を表示
     da = da + 1;
     if (da > mam) {
         da = 0;
@@ -441,7 +443,7 @@ function next() {
     img_right.setAttribute("src", album[da]);
 }
 
-function prev() {
+function prev() {　//前の画像を表示
     da = da - 1;
     if (da < 0) {
         da = mam;
@@ -449,25 +451,25 @@ function prev() {
     img_right.setAttribute("src", album[da]);
 }
 
-function slide() {
+function slide() {　　//スライドバーの値に応じた画像を表示
     console.log("スライドの値：", varobject.value);
     img_right.setAttribute("src", album[varobject.value]);
 
 }
 
-function ura() {
-    for (k = 0; k < 50; k++) {
-        buttonobject = document.getElementById("buttonhere");
-        link = '<button type="button" class="item" id="' + y + '" onclick="look(this)">' + y + '問目</button>';
-        buttonobject.insertAdjacentHTML('beforeend', link);
-        judgeobject = document.getElementById("judgehere");
-        if (judge == 1) {
-            lank = '<button type="button" class="item"> ◯ </button>';
-        } else {
-            lank = '<button type="button" class="item">✖</button>';
+// function ura() {
+//     for (k = 0; k < 50; k++) {
+//         buttonobject = document.getElementById("buttonhere");
+//         link = '<button type="button" class="item" id="' + y + '" onclick="look(this)">' + y + '問目</button>';
+//         buttonobject.insertAdjacentHTML('beforeend', link);
+//         judgeobject = document.getElementById("judgehere");
+//         if (judge == 1) {
+//             lank = '<button type="button" class="item"> ◯ </button>';
+//         } else {
+//             lank = '<button type="button" class="item">✖</button>';
 
-        }
-        judgeobject.insertAdjacentHTML('beforeend', lank);
+//         }
+//         judgeobject.insertAdjacentHTML('beforeend', lank);
 
-    }
-}
+//     }
+// }

@@ -4,7 +4,7 @@ let most;
 var randoms = [];
 var randnumarray = [0, 0, 0, 0];
 
-window.onload = function () {
+window.onload = function () {　//リンクからプレイヤーidとボールidを取得
     var data = location.href.split("?")[1];
     console.log(data);
     var text = data.split("=")[1];
@@ -13,54 +13,23 @@ window.onload = function () {
     console.log("プレイヤーid :", more);
     most = text.split("&")[1];
     console.log("ボールid :", most);
-    if (more < 11) {
-        var min = 1, max = 10;
-    } else if (more < 20) {
-        var min = 11, max = 20;
-    } else {
-        var min = 21, max = 30;
-    }
-    for (i = min; i <= max; i++) {
-        while (true) {
-            var tmp = intRandom(min, max);
-            if (!randoms.includes(tmp)) {
-                randoms.push(tmp);
-                break;
-            }
-        }
-    }
-    console.log(randoms);
-
-    function intRandom(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    for (i = 0; i < randnumarray.length; i++) {
-        randnumarray[i] = randoms[i];
-        if (randnumarray[i] == more) {
-            randoms.shift();
-            randnumarray[i] = randoms[i];
-        }
-        console.log(randnumarray[i]);
-    }
     // if (most == "submit") {
     // }
-    graph();
     sent();
 }
 
-function receive() {
+function receive() {　//予想クイズへ遷移
     location.href = "../HTML/index.html?data=" + more + "&" + most;
 }
 
-function attack() {
+function attack() {　//打ち方分析へ遷移
     location.href = "../HTML/attack.html?data=" + more + "&" + most;
 }
 var name;
 var affiliation;
 var position;
 var u;
-function sent() {
+function sent() {　//データベースからユーザーの情報を取得
     console.log("sent()が呼び出されました！！");
     $.ajax({
         type: "GET",
@@ -68,10 +37,7 @@ function sent() {
         dataType: "json",
         data: {
             'player_id': more,
-            'randnum0': randnumarray[0],
-            'randnum1': randnumarray[1],
-            'randnum2': randnumarray[2],
-            'randnum3': randnumarray[3],
+            'ball_id': most,
         },
     })
         .done(function (data) {
@@ -79,16 +45,18 @@ function sent() {
             console.log("通信が成功しました!!!");
             most = data[0][0][1];
             detailobject = document.getElementById("detail");
-            link = ' <a class="myself"></br>名前：' + data[0][0][2] + '</br > 所属：' + data[0][0][3] + '</br > ポジション：' + data[0][0][4] + '</a >';
+            link = ' <a class="myself"></br>名前：' + data[0][0][2] + '</br > 所属：' + data[0][0][3] + '</br > 一言：' + data[0][0][4] + '</a >';
             face.setAttribute("src", data[0][0][5]);
             detailobject.insertAdjacentHTML('beforeend', link);
             console.log("ボールid :", most);
-            // console.log(data[2][0][0]);
             datas['datasets'][0]['label'] = data[0][0][2];
-            datas['datasets'][1]['label'] = data[1][0][0];
-            datas['datasets'][2]['label'] = data[2][0][0];
-            datas['datasets'][3]['label'] = data[3][0][0];
-            datas['datasets'][4]['label'] = data[4][0][0];
+            datas['datasets'][1]['label'] = data[1][0][2];
+            datas['datasets'][2]['label'] = data[1][1][2];
+            datas['datasets'][3]['label'] = data[1][2][2];
+            datas['datasets'][4]['label'] = data[1][3][2];
+            randnumarray = [data[1][0][0], data[1][1][0], data[1][2][0], data[1][3][0]]
+            console.log(randnumarray);
+            graph();
 
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log('通信に失敗しました');
@@ -330,7 +298,7 @@ var ex_chart = new Chart(ctx, {
 var sumarray = [];
 var dataarray = [0, 0, 0, 0, 0];
 var shift = 0;
-function graph() {
+function graph() {   //データベースから直近◯日分のデータの数を取得
     console.log("graph()が呼び出されました！！");
     const question = document.form2.pull;//要素を取得
     const num = question.selectedIndex;//選択されている要素の番号を格納する
@@ -444,7 +412,7 @@ function graph() {
 
 
 
-function send() {
+function send() {　　　 //データベースから直近◯日分のデータの数だけデータを取得、グラフを描画、表に数字を表示
     console.log("send()が呼び出されました！！");
     $.ajax({
         type: "GET",
@@ -614,7 +582,7 @@ function send() {
 
             }
 
-
+            console.log(data[0]);
             for (f = 0; f < data.length; f++) {
                 console.log(f + 1, "人目");
 

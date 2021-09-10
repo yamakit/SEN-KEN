@@ -93,6 +93,7 @@ body{
 }
 .math{     /*ここ変更*/
     position: absolute;
+    top:10vw;
     font-size: 3vh;
     height: 25vw;
     width: 45vw;
@@ -112,8 +113,8 @@ body{
 }
 .graph canvas{
     height: 80%;
-    margin: 2%;
-    border: solid 0.2vw;
+    margin: 10% 0;
+    border: solid 0.11vw;
     /* width: 22vw;
     height: 18vw;
     padding: 2%; */
@@ -134,14 +135,14 @@ body{
 input:checked + .tab_class {
     background-color: #2979FF;
     color: #ffffff;
-    border: solid 0.2vw #111111;
+    border: solid 0.1vw #111111;
     border-bottom:none ;
     z-index: 1;
 }
 #face{
     position: absolute;
     right: 1.8%;
-    top: 33.4vw;
+    top: 37vw;
     padding: 0 2%;
     font-size: 1.7vw;
     border: solid 0.2vw #111111;
@@ -156,7 +157,7 @@ input:checked + .tab_class {
 #body{
     position: absolute;
     right: 12%;
-    top: 33.4vw;
+    top: 37vw;
     padding: 0 2%;
     font-size: 1.7vw;
     border: solid 0.2vw #111111;

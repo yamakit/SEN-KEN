@@ -2,7 +2,7 @@ var more;
 var most;
 var text;
 var da;
-window.onload = function () {
+window.onload = function () {   //リンクから動画のsrc、プレイヤーid、打つ場所を取得
     var data = location.href.split("?")[1];
     var a = data.split("=")[1];
     console.log(a);
@@ -21,10 +21,10 @@ window.onload = function () {
 var all;
 var judge = 0;
 var submit;
-function dofy() {
+function dofy() {　//動画の再生速度を変更、動画の現在の秒数を取得しグラフに描画
     console.log("dofy()が呼び出されました！！");
     var mv = document.getElementById("mv");
-    // mv.controls = false;
+    mv.controls = false;
     videoElement = document.querySelector("video");
     const btn_slow = document.getElementById("btn_slow");
     const btn_normal = document.getElementById("btn_normal");
@@ -83,25 +83,25 @@ function dofy() {
         console.log(submit);
         let Day = new Date();
         console.log(Day.getMilliseconds());
-        // data['datasets'][0]['data'].shift();
-        // data['datasets'][1]['data'].shift();
-        // data['datasets'][2]['data'].shift();
+        datass['datasets'][0]['data'].shift();
+        // datass['datasets'][1]['data'].shift();
+        // datass['datasets'][2]['data'].shift();
         datas['datasets'][0]['data'].shift();
         // datas['datasets'][1]['data'].shift();
         // datas['datasets'][2]['data'].shift();
         // datas['datasets'][0]['data'].pop();
-        // data['datasets'][0]['data'].push({ x: submit, y: data['datasets'][3]['data'][submit] });
-        // data['datasets'][1]['data'].push({ x: submit - 1, y: data['datasets'][3]['data'][submit] });
-        // data['datasets'][2]['data'].push({ x: submit - 2, y: data['datasets'][3]['data'][submit] });
+        datass['datasets'][0]['data'].push({ x: submit, y: datass['datasets'][1]['data'][submit - 1] });
+        // datass['datasets'][1]['data'].push({ x: submit - 1, y: data['datasets'][3]['data'][submit] });
+        // datass['datasets'][2]['data'].push({ x: submit - 2, y: data['datasets'][3]['data'][submit] });
         datas['datasets'][0]['data'].push({ x: submit, y: datas['datasets'][1]['data'][submit - 1] });
         // datas['datasets'][1]['data'].push({ x: submit - 1, y: datas['datasets'][3]['data'][submit - 1] });
         // datas['datasets'][2]['data'].push({ x: submit - 2, y: datas['datasets'][3]['data'][submit - 2] });
         // console.log(datas['datasets'][1]['data'][submit + 1])
-        // ex_chart = new Chart(ctx, {
-        //     type: 'line',
-        //     data: data,
-        //     options: option
-        // });
+        ex_chart = new Chart(ctx, {
+            type: 'line',
+            data: datass,
+            options: option
+        });
         ext_chart = new Chart(ctxt, {
             type: 'line',
             data: datas,
@@ -133,7 +133,7 @@ function dofy() {
 
 buttondiv.style.display = "none";
 var rr = 0;
-function frame() {
+function frame() {　//動画の枠のON、OFFの切り替え
     console.log("frame()が呼び出されました。");
     if (rr == 0) {
         buttondiv.style.display = "block";
@@ -147,14 +147,14 @@ function frame() {
 }
 
 back.style.display = "none";
-function a() {
+function a() {　//体の開きのグラフ、顔の向きのグラフの表示の切り替え
     console.log("a()が呼び出されました。")
     checkValue = '';
     let Radio = document.getElementsByName('tab_name');
 
-    for (let i = 0; i < Radio.length; i++) {
-        if (Radio.item(i).checked) {
-            checkValue = Radio.item(i).value;
+    for (let u = 0; u < Radio.length; u++) {
+        if (Radio.item(u).checked) {
+            checkValue = Radio.item(u).value;
         }
         console.log("checkk", checkValue);
         if (checkValue == 0) {
@@ -168,15 +168,15 @@ function a() {
 }
 
 var ctx = document.getElementById('myChart01');
-
-var data = {
+ctx.style.backgroundColor = "#EEEEEE";
+var datass = {
     labels: [],
     datasets: [{
         label: '現在の動画の体の開き',
         data: [],
         borderColor: 'blue',
-        pointBackgroundColor: 'rgba(255, 100, 100, 1)',
-        pointRadius: 20,
+        pointBackgroundColor: 'rgba(100, 100, 255, 1)',
+        pointRadius: 7,
         lineTension: 0,
         fill: false,
         borderWidth: 3
@@ -205,6 +205,7 @@ var data = {
         label: '体の開き',
         data: [],
         borderColor: 'red',
+        pointRadius: 0.1,
         lineTension: 0,
         fill: false,
         borderWidth: 3
@@ -212,11 +213,15 @@ var data = {
     ]
 };
 
+
 var option = {
     animation: false,
     events: [],
     scales: {
         xAxes: [{
+            ticks: {
+                maxTicksLimit: 10
+            },
             scaleLabel: {
                 display: true,
                 labelString: '秒数'
@@ -233,18 +238,19 @@ var option = {
             },
             scaleLabel: {
                 display: true,
-                labelString: '閉　　　　　　　　　　　　開'
+                labelString: '閉　　　　　　　　　　　　　　　　　　　　　開'
             }
         }]
     },
     title: {
         display: true,
-        text: '体の開きの推移グラフ'
+        // text: '体の開きの推移グラフ'
+        text: ''
     }
 };
 var ex_chart = new Chart(ctx, {
     type: 'line',
-    data: data,
+    data: datass,
     options: option
 });
 
@@ -252,7 +258,7 @@ var ex_chart = new Chart(ctx, {
 
 
 var ctxt = document.getElementById('myChart02');
-
+ctxt.style.backgroundColor = "#E9E9E9";
 var datas = {
     labels: [],
     datasets: [{
@@ -306,6 +312,9 @@ var options = {
     events: [],
     scales: {
         xAxes: [{
+            ticks: {
+                maxTicksLimit: 10
+            },
             scaleLabel: {
                 display: true,
                 labelString: '秒数'
@@ -322,13 +331,14 @@ var options = {
             },
             scaleLabel: {
                 display: true,
-                labelString: '左　　　　　　　　　　　右'
+                labelString: '左　　　　　　　　　　　　　　　　　　　　　　　右'
             }
         }]
     },
     title: {
         display: true,
-        text: '顔の向きの推移グラフ'
+        // text: '顔の向きの推移グラフ'
+        text: ''
     }
 };
 var ext_chart = new Chart(ctxt, {
@@ -337,7 +347,8 @@ var ext_chart = new Chart(ctxt, {
     options: options
 });
 
-function send() {
+
+function send() {　　　　//データベースからデータを取得、表に数字を表示
     console.log("send()が呼び出されました！！");
     $.ajax({
         type: "GET",
@@ -484,7 +495,7 @@ function send() {
 
 }
 
-function graph() {
+function graph() {　//データベースから顔の向きのデータを取得、グラフに描画
     console.log("graph()が呼び出されました！！");
     $.ajax({
         type: "GET",
@@ -507,6 +518,8 @@ function graph() {
             for (i = 1; i < Object.keys(da).length / 29.97; i++) {
                 datas['labels'].push(i); //1個目のデータセットを追加
                 datas['datasets'][1]['data'].push(da[Math.round(i * 29.97)] - 100);
+                datass['labels'].push(i); //1個目のデータセットを追加
+                datass['datasets'][1]['data'].push(da[Math.round(i * 29.97)] - 100);
             }
 
 
@@ -522,5 +535,11 @@ function graph() {
         type: 'line',
         data: datas,
         options: options
+    });
+
+    ext_chart = new Chart(ctxt, {
+        type: 'line',
+        data: datass,
+        options: option
     });
 }
