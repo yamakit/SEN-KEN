@@ -35,21 +35,21 @@ body{
 .content{
     position: absolute;
     top: 14vw;
-    left: 2%;
-    width: 50vw;
+    left: 3%;
+    width: 48vw;
 }
 .inner{
-    height: 30vw;
+    height: 29vw;
     display: flex;
     flex-wrap: wrap;
 }
 .inner button{
     width: calc(100% / 3);
     height: calc(100% / 3);
-    /* font-size:6vw; */
-    /* color:hsl(0, 0%, 100%); */
-    background:#ffffff00;
-    border: solid 0.1vw #ffffff;
+    color:hsl(0, 0%, 100%);
+    background:#00aeff5b;
+    border-radius: 5%;
+    border: solid #ffffff 0.1vw;
 }
 .bt{
     position: absolute;
@@ -114,7 +114,7 @@ body{
 .graph canvas{
     height: 80%;
     margin: 10% 0;
-    border: solid 0.11vw;
+    border: solid #778899 0.2vw;
     /* width: 22vw;
     height: 18vw;
     padding: 2%; */
@@ -145,7 +145,7 @@ input:checked + .tab_class {
     top: 37vw;
     padding: 0 2%;
     font-size: 1.7vw;
-    border: solid 0.2vw #111111;
+    border: solid #778899 0.2vw;
     border-bottom: none;
 }
 #tab1{
@@ -160,7 +160,7 @@ input:checked + .tab_class {
     top: 37vw;
     padding: 0 2%;
     font-size: 1.7vw;
-    border: solid 0.2vw #111111;
+    border: solid #778899 0.2vw;
     border-bottom: none;
 }
 /* .next{

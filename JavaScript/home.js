@@ -1,13 +1,12 @@
 
 var more;
 let most;
-var randoms = [];
 var randnumarray = [0, 0, 0, 0];
 
 window.onload = function () {　//リンクからプレイヤーidとボールidを取得
-    var data = location.href.split("?")[1];
-    console.log(data);
-    var text = data.split("=")[1];
+    var date = location.href.split("?")[1];
+    console.log(date);
+    var text = date.split("=")[1];
     console.log(text);
     more = text.split("&")[0];
     console.log("プレイヤーid :", more);
@@ -25,10 +24,8 @@ function receive() {　//予想クイズへ遷移
 function attack() {　//打ち方分析へ遷移
     location.href = "../HTML/attack.html?data=" + more + "&" + most;
 }
-var name;
-var affiliation;
-var position;
-var u;
+
+
 function sent() {　//データベースからユーザーの情報を取得
     console.log("sent()が呼び出されました！！");
     $.ajax({
@@ -37,7 +34,6 @@ function sent() {　//データベースからユーザーの情報を取得
         dataType: "json",
         data: {
             'player_id': more,
-            'ball_id': most,
         },
     })
         .done(function (data) {
@@ -582,17 +578,21 @@ function send() {　　　 //データベースから直近◯日分のデータ
 
             }
 
-            console.log(data[0]);
+            console.log(data);
             for (f = 0; f < data.length; f++) {
                 console.log(f + 1, "人目");
-
+                var post = 0;
                 for (p = 0; p < assumed; p++) {
                     arr = 0;
                     for (i = 0; i < dataarray[f][p]; i++) {
-                        if (data[f][i]['judge'] == 1) {
+                        if (data[f][post]['judge'] == 1) {
                             arr = arr + 1;
                         }
+                        post = post + 1;
                     }
+                    console.log("post!!", post);
+                    console.log("check:", arr);
+                    console.log("hooooooooooo", dataarray[f][p])
                     var one = arr / dataarray[f][p] * 100;
                     datas['datasets'][f]['data'].push(one);
                     console.log(one);

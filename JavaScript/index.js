@@ -403,7 +403,7 @@ function look(ele) {　 //◯問目の比較画像を表示
     key2 = array[z]["hitplace"];
     console.log("key1 :", key1);
     console.log("key2 :", key2);
-    answer.innerHTML = key1 + "番";
+    answer.innerHTML = key1 + "番が正解です。";
 
     for (let step = 0; step < x.length; step++) {
 

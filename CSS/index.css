@@ -64,7 +64,7 @@ body{
 }
 
 .result01{
-    font-size: 3.5vw;
+    font-size: 3vw;
     margin: 0% 2%
 }
 span{
@@ -118,6 +118,11 @@ img{
     min-height: 30vw;
     width: 45%;
     margin: 2%;
+}
+.answer{
+    position: absolute;
+    top: 24vw;
+    right: 19%;
 }
 #img_right{
     right: 0;

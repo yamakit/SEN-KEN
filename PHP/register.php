@@ -1,24 +1,24 @@
 <?php
 
-if(!empty($_GET)){
-    $name = $_GET['name'];
-    $affiliation = $_GET['club'];
-    $position = $_GET['free'];
-    $roma = $_GET['roma'];
-    // $face_image = $_FILES['upimg']['name'];
+if(!empty($_POST)){
+    var_dump($name = $_POST['name']);
+    var_dump($affiliation = $_POST['club']);
+    var_dump($position = $_POST['free']);
+    var_dump($roma = $_POST['roma']);
+    $face_image = "../img/" . $_FILES['upimg']['name'];
     // move_uploaded_file($_FILES['upimg']['tmp_name'], './upload/' . $face_image);
     // echo '<img src="img.php?img_name=' . $face_image . '">';
 
     if( !empty($_FILES['upimg']['tmp_name']) && is_uploaded_file($_FILES['upimg']['tmp_name']) ) {
 
         // ファイルを指定したパスへ保存する
-        if( move_uploaded_file( $_FILES['upimg']['tmp_name'], $path.'../img/'.$roma.'.jpg') ) {
+        if( move_uploaded_file( $_FILES['upimg']['tmp_name'], '../img/'. $face_image) ) {
             echo 'アップロードされたファイルを保存しました。';
         } else {
             echo 'アップロードされたファイルの保存に失敗しました。';
         }
     }
-        // echo $path;
+    //     // echo $path;
 
 
 
@@ -39,7 +39,7 @@ try {
     $dbh = new PDO($dsn, $user, $password);  
 
 
-    $sql = "INSERT INTO `users`(`ball_id`, `name`, `affiliation`, `position`, `face_image`) VALUES ($ball_id, '$name', '$affiliation', '$position', 1)";
+    $sql = "INSERT INTO `users`(`ball_id`, `name`, `affiliation`, `position`, `face_image`) VALUES ($ball_id, '$name', '$affiliation', '$position', '$face_image')";
     $dbh -> query($sql);
     $id = $dbh -> lastInsertId();
     echo $id;
@@ -51,5 +51,5 @@ exit();
 
 }
 
-header("Location:../HTML/home.html?SelectPref=".$id."=&submit");
+header("Location:../HTML/home.html?SelectPref=".$id."&".$ball_id);
 ?>
