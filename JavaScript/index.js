@@ -98,7 +98,6 @@ function cut() {   //リンクからプレイヤーidとボールidを取得
         console.log("正解率：", percentage);
     }
 
-    total.innerHTML = "ボールの予測地点を選んでください   正解率" + percentage + "％：" + kazu + "問中" + result + "問正解";
 
     sent();
 }
@@ -188,10 +187,7 @@ function wille() {　//2回目以降のデータを取得
     judge = 0;
     color.style.backgroundColor = '#00aeff5b';
     color2.style.backgroundColor = '#00aeff5b';
-    percentage = result / kazu * 100;
-    console.log("正解率：", percentage);
-    percentage = Math.round(percentage);
-    console.log("正解率：", percentage);
+
     total.innerHTML = "ボールの予測地点を選んでください   正解率" + percentage + "％：" + kazu + "問中" + result + "問正解";
     stop_renda = 0;
     if (x.length == i) {
@@ -280,6 +276,7 @@ function compare() {　//正解、不正解の判定
         // color.style.backgroundColor = '#00FF99CC';
 
         document.getElementById('maru_sound').play();
+
     }
     else {
         // setTimeout(out, 2000);
@@ -315,6 +312,11 @@ function compare() {　//正解、不正解の判定
     }
     judgeobject.insertAdjacentHTML('beforeend', lank);
 
+    percentage = result / kazu * 100;
+    console.log("正解率：", percentage);
+    percentage = Math.round(percentage);
+    console.log("正解率：", percentage);
+    total.innerHTML = "ボールの予測地点を選んでください   正解率" + percentage + "％：" + kazu + "問中" + result + "問正解";
 
 
     // let table = document.getElementById('targetTable');
@@ -403,7 +405,7 @@ function look(ele) {　 //◯問目の比較画像を表示
     key2 = array[z]["hitplace"];
     console.log("key1 :", key1);
     console.log("key2 :", key2);
-    answer.innerHTML = key1 + "番が正解です。";
+    answer.innerHTML = z + 1 + "問目の正解番号：" + x[z][8];
 
     for (let step = 0; step < x.length; step++) {
 

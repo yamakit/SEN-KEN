@@ -1,0 +1,21 @@
+body{
+    text-align: center;
+    margin: 25%;
+}
+.title{
+    font-size: 10vw;
+    margin: 5% 0;
+    -webkit-text-stroke: 1px #212641;
+}
+.title span{
+    color: #2979FF;
+}
+.in{
+    font-size:2vw;
+    color:#FFFFFF;
+    background:#2979FF;
+    margin: 5% 0;
+    box-shadow: rgb(124, 124, 124) 0.5vw 0.5vw;
+    border: none;
+    border-radius: 0.2vw;
+}

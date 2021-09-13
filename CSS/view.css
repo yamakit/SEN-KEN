@@ -110,6 +110,8 @@ body{
     right: 2%;
     width: 45vw;
     height: 28vw;
+    /* background-color: blueviolet; */
+    z-index: -1;
 }
 .graph canvas{
     height: 80%;
@@ -125,9 +127,9 @@ body{
 #myChart02{
     background-color: #ffffff;
 }
-.tab_class{
+/* .tab_class{
     order: -1;
-}
+} */
 /* input[name="tab_name"] {
     display: none;
 } */

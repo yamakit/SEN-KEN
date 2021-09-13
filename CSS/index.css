@@ -32,6 +32,9 @@ body{
     color: #2979FF;
     background: #ffffff;
     border-radius: 2%;
+    box-shadow: rgb(124, 124, 124) 0.5vw 0.5vw;
+    border: none;
+    border-radius: 0.2vw;
 }
 .content{
     position: absolute;
@@ -69,6 +72,9 @@ body{
 }
 span{
     font-size: 6vw;
+}
+.h1{
+    font-family: auto;
 }
 .line{
     font-size: 3vw;
@@ -119,6 +125,7 @@ img{
     width: 45%;
     margin: 2%;
 }
+
 .answer{
     position: absolute;
     top: 24vw;
@@ -141,6 +148,10 @@ img{
     font-size: 2vw;
     color: #2979FF;
     background: #ffffff;
+    border-radius: 2%;
+    box-shadow: rgb(124, 124, 124) 0.5vw 0.5vw;
+    border: none;
+    border-radius: 0.2vw;
 }
 .right{
     position: absolute;
@@ -149,4 +160,8 @@ img{
     font-size: 2vw;
     color: #2979FF;
     background: #ffffff;
+    border-radius: 2%;
+    box-shadow: rgb(124, 124, 124) 0.5vw 0.5vw;
+    border: none;
+    border-radius: 0.2vw;
 }
