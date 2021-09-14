@@ -81,8 +81,8 @@ function dofy() {　//動画の再生速度を変更、動画の現在の秒数�
         // console.log(submit);
         submit = Math.round(submit);
         console.log(submit);
-        let Day = new Date();
-        console.log(Day.getMilliseconds());
+        // let Day = new Date();
+        // console.log(Day.getMilliseconds());
         datass['datasets'][0]['data'].shift();
         // datass['datasets'][1]['data'].shift();
         // datass['datasets'][2]['data'].shift();
@@ -107,21 +107,12 @@ function dofy() {　//動画の再生速度を変更、動画の現在の秒数�
             data: datas,
             options: options
         });
-        // ext_chart.update();
 
-        // setTimeout(plus(), 125);
-        // plus();
     })
 
 }
 
 
-// function plus() {
-//     console.log("plus()が呼び出されました。")
-//     datas['datasets'][0]['data'].shift();
-//     datas['datasets'][0]['data'].push({ x: submit + 1, y: datas['datasets'][1]['data'][submit] });
-//     console.log("＋いちぃいい", submit + 1);
-//     ext_chart.update();
 
 //     // ext_chart = new Chart(ctxt, {
 //     //     type: 'line',

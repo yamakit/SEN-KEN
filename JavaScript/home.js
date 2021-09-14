@@ -258,6 +258,9 @@ var datas = {
 var option = {
     animation: false,
     events: [],
+    // legend: {
+    //     display: true,
+    // },
     scales: {
         xAxes: [{
             scaleLabel: {
