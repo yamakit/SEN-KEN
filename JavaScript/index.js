@@ -397,8 +397,8 @@ function look(ele) {　 //◯問目の比較画像を表示
     console.log(array[z]["ans_id"]);
     console.log(array[z]["hitplace"]);
     img_left.setAttribute("src", array[z]["picture_path"]);
-    img_left.setAttribute("width", 300);
-    img_left.setAttribute("height", 500);
+    // img_left.setAttribute("width", 300);
+    // img_left.setAttribute("height", 500);
 
     album = [];
     key1 = array[z]["ans_id"];
@@ -429,8 +429,8 @@ function look(ele) {　 //◯問目の比較画像を表示
     // });
     varobject.addEventListener('input', slide);
     img_right.setAttribute("src", album[0]);
-    img_right.setAttribute("width", 300);
-    img_right.setAttribute("height", 500);
+    // img_right.setAttribute("width", 300);
+    // img_right.setAttribute("height", 500);
     // }
 
 

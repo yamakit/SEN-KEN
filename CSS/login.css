@@ -20,7 +20,7 @@ html:before {
     top: 0;
     
 }
-  /* 下 */
+
 body:before {
     height: 10vw;
     width: 100vw;
@@ -45,9 +45,42 @@ h1{
 .select{
     display: inline-block;
     margin: 0 auto;
-    width: 25vw;
+    /* width: 25vw; */
+    height: 3vw;
+    width: 34vw;
+    font-size: 20px;
+    
 }
 .button{
     display: inline-block;
     margin: 0 auto;
+    /* width: auto;
+    height: auto; */
+    width: 10vw;
+    height: 3vw;
+    font-size: 20px;
+    color: white;
+    background-color: #2979FF;
+    box-shadow: rgb(179, 179, 179) 0.2vw 0.2vw;
+    border: none;
+    border-radius: 0.2vw;
+}
+.button:hover{
+    background-color: orange;
+}
+.entry{
+    display: flex;
+    margin: 10% auto;
+    width: 15vw;
+    height: 3vw;
+    font-size: 25px;
+    color: #FFFFFF;
+    background-color: #2979FF;
+    box-shadow: rgb(179, 179, 179) 0.2vw 0.2vw;
+    border: none;
+    border-radius: 0.2vw;
+}
+.entry:hover{
+    background-color: orange;
+    /* color: #FFFFFF; */
 }

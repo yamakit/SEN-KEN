@@ -19,15 +19,19 @@ body{
 }
 .home{
     position: absolute;
-    top: 0.3%;
+    top: 0.3vw;
     right: 2%;
-    width: 22vw;
+    width: auto;
     height: auto;
     font-size: 2vw;
     color: #2979FF;
     background: #ffffff;
-    border-radius: 5px;
+    border: solid 0.1vw rgb(124, 124, 124);
+    box-shadow: rgb(179, 179, 179) 0.2vw 0.2vw;
+    border-radius: 3%;
+    padding: 0 2%;
 }
+
 .resalt{
     width: 100%;
     height: 50vw;
@@ -38,14 +42,9 @@ body{
     width: 100%;
     height: 93%;
     z-index: 1;
+    /* background-color: blueviolet; */
 }
-.back{
-    position: absolute;
-    top: 6%;
-    width: 98%;
-    height: 93%;
-    /* margin: 1%; */
-}
+
 
 /* wrong */
 
@@ -89,4 +88,15 @@ body{
     height: auto;
     font-size: 1.5vw;
     margin: 0 2% 0px 83%;
+}
+.frame{
+    position: absolute;
+    height: 70.8vw;
+    width: 100vw;
+    left: 0;
+    margin: 0;
+    top: 4vw;
+}
+.frame td{
+    border: solid 2px black;
 }

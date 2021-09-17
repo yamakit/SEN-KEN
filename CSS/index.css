@@ -15,26 +15,35 @@ body{
 }
 .home{
     position: absolute;
-    top: 0.3%;
+    top: 0.3vw;
     right: 2%;
-    width: 22vw;
+    width: auto;
     height: auto;
     font-size: 2vw;
     color: #2979FF;
     background: #ffffff;
-    border-radius: 5px;
+    border: solid 0.1vw rgb(124, 124, 124);
+    box-shadow: rgb(179, 179, 179) 0.2vw 0.2vw;
+    border-radius: 3%;
+    padding: 0 2%;
 }
 #mv{
     min-height: 55vw;
     width: 100%;
 }
 #selectdiv button{
-    color: #2979FF;
-    background: #ffffff;
+    color: #ffffff;
+    background: #2979FF;
     border-radius: 2%;
-    box-shadow: rgb(124, 124, 124) 0.5vw 0.5vw;
-    border: none;
+    box-shadow: rgb(124, 124, 124) 0.2vw 0.2vw;
+    border: solid 0.1vw rgb(124, 124, 124);
     border-radius: 0.2vw;
+}
+/* #selectdiv button:active{
+    background-color: orange;
+} */
+#selectdiv button:hover{
+    background-color: orange;
 }
 .content{
     position: absolute;
@@ -78,7 +87,7 @@ span{
 }
 .line{
     font-size: 3vw;
-    top: 17vw;
+    top: 12vw;
     position: absolute;
     width: 95%;
     left: 2%;
@@ -90,7 +99,7 @@ span{
     overflow-y: hidden;
     white-space: nowrap;
     position: absolute;
-    top: 23vw;
+    top: 20vw;
     margin: 0 1.5%;
     width: 96.5%;
 }
@@ -115,21 +124,21 @@ span{
 
 #var{
     position: absolute;
-    top: 29vw;
+    top: 35vw;
     right: 20%;
 }
 img{
     position: absolute;
-    top: 32vw;
-    min-height: 30vw;
+    top: 37vw;
+    min-height: 25.3vw;
     width: 45%;
     margin: 2%;
 }
 
 .answer{
     position: absolute;
-    top: 24vw;
-    right: 19%;
+    top: 33vw;
+    left: 17%;
 }
 #img_right{
     right: 0;
@@ -143,8 +152,8 @@ img{
 }
 .left{
     position: absolute;
-    top: 46vw;
-    right: 43vw;
+    top: 51vw;
+    right: 44vw;
     font-size: 2vw;
     color: #2979FF;
     background: #ffffff;
@@ -155,8 +164,8 @@ img{
 }
 .right{
     position: absolute;
-    top: 46vw;
-    right: 3%;
+    top: 51vw;
+    right: 2.4vw;
     font-size: 2vw;
     color: #2979FF;
     background: #ffffff;

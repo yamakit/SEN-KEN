@@ -19,17 +19,17 @@ window.onload = function () {   //リンクから動画のsrc、プレイヤーi
 
 
 var all;
-var judge = 0;
 var submit;
 function dofy() {　//動画の再生速度を変更、動画の現在の秒数を取得しグラフに描画
     console.log("dofy()が呼び出されました！！");
     var mv = document.getElementById("mv");
     mv.controls = false;
     videoElement = document.querySelector("video");
+    const btn_veryslow = document.getElementById("btn_veryslow");
     const btn_slow = document.getElementById("btn_slow");
     const btn_normal = document.getElementById("btn_normal");
-    const btn_fast = document.getElementById("btn_fast");
-    const btn_veryfast = document.getElementById("btn_veryfast");
+    const stop = document.getElementById("stop");
+    // const btn_veryfast = document.getElementById("btn_veryfast");
 
     btn_veryslow.addEventListener("click", (e) => {
         videoElement.playbackRate = 2.0;
@@ -37,14 +37,11 @@ function dofy() {　//動画の再生速度を変更、動画の現在の秒数�
 
     btn_slow.addEventListener("click", (e) => {
         videoElement.playbackRate = 4.0;
-        judge = 1;
     });
 
     btn_normal.addEventListener("click", (e) => {
         videoElement.playbackRate = 8.0;
     });
-
-
 
 
     // btn_fast.addEventListener("click", (e) => {
@@ -159,7 +156,7 @@ function a() {　//体の開きのグラフ、顔の向きのグラフの表示�
 }
 
 var ctx = document.getElementById('myChart01');
-ctx.style.backgroundColor = "#EEEEEE";
+// ctx.style.backgroundColor = "#EEEEEE";
 var datass = {
     labels: [],
     datasets: [{
@@ -223,20 +220,22 @@ var option = {
                 min: -100,
                 max: 100,
                 stepSize: 20,
+                fontSize: 10,
                 userCallback: function (tick) {
                     return tick.toString() + '%';
                 }
             },
             scaleLabel: {
                 display: true,
-                labelString: '閉　　　　　　　　　　　　　　　　　　　　　開'
+                labelString: '閉　　　　　　　　　　　　　　　　　開'
             }
         }]
     },
     title: {
         display: true,
         // text: '体の開きの推移グラフ'
-        text: ''
+        text: '',
+        fontSize: 16,
     }
 };
 var ex_chart = new Chart(ctx, {
@@ -249,7 +248,7 @@ var ex_chart = new Chart(ctx, {
 
 
 var ctxt = document.getElementById('myChart02');
-ctxt.style.backgroundColor = "#E9E9E9";
+// ctxt.style.backgroundColor = "#E9E9E9";
 var datas = {
     labels: [],
     datasets: [{
@@ -316,20 +315,22 @@ var options = {
                 min: -100,
                 max: 100,
                 stepSize: 20,
+                fontSize: 10,
                 userCallback: function (tick) {
                     return tick.toString() + '%';
                 }
             },
             scaleLabel: {
                 display: true,
-                labelString: '左　　　　　　　　　　　　　　　　　　　　　　　右'
+                labelString: '左　　　　　　　　　　　　　　　　　　右'
             }
         }]
     },
     title: {
         display: true,
         // text: '顔の向きの推移グラフ'
-        text: ''
+        text: '',
+        fontSize: 16,
     }
 };
 var ext_chart = new Chart(ctxt, {
@@ -337,6 +338,19 @@ var ext_chart = new Chart(ctxt, {
     data: datas,
     options: options
 });
+
+var n = 1;
+function mov() {　//動画の再生と停止の切り替え
+    var obj = document.getElementById("mv");
+    if (n == 0) {
+        obj.play();
+        n = 1;
+    }
+    else {
+        obj.pause();
+        n = 0;
+    }
+}
 
 
 function send() {　　　　//データベースからデータを取得、表に数字を表示
@@ -534,3 +548,5 @@ function graph() {　//データベースから顔の向きのデータを取得
         options: option
     });
 }
+
+

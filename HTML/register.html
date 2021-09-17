@@ -14,17 +14,17 @@
 <body>
     <h1 class="title">SEN-<span>K</span>EN </h1>
     <form action="../PHP/register.php" method="POST" enctype="multipart/form-data">
-        <label>名前：<input type=" text" name="name" size="12" placeholder="名前を入力"></label><br>
+        <label>名前：<input class="name" type=" text" name="name" size="40" placeholder="名前を入力"></label><br>
 
 
-        <label>所属：<select name="club">
+        <label>所属：<select name="club" class="box">
                 <option value="バレーボール">バレー部</option>
                 <option value="バドミントン">バドミントン部</option>
                 <option value="ソフトテニス">ソフトテニス部</option>
             </select></label><br>
-        <label>一言：<input type="text" name="free" size="20" placeholder="ケーキが好きです！！"></label><br>
-        <input type="file" name="upimg"><br>
-        <input class="in" type="submit" name="submit" value="登録する" />
+        <label>一言：<input class="Word" type="text" name="free" size="40" placeholder="ケーキが好きです！！"></label><br>
+        <label>画像：<input type="file" name="upimg" class="picture"><br>
+            <input class="in" type="submit" name="submit" value="登録する" /></label><br>
         <!-- <input type="file" name="avatar" accept="image/png, image/jpeg"> -->
 
     </form>

@@ -18,13 +18,15 @@ body{
 }
 .home{
     position: absolute;
-    top: 0.2vw;
-    right: 5%;
+    top: 0.3vw;
+    right: 2%;
     width: auto;
     height: auto;
     font-size: 2vw;
     color: #2979FF;
     background: #ffffff;
+    border: solid 0.1vw rgb(124, 124, 124);
+    box-shadow: rgb(179, 179, 179) 0.2vw 0.2vw;
     border-radius: 3%;
     padding: 0 2%;
 }
@@ -34,9 +36,9 @@ body{
 } */
 .content{
     position: absolute;
-    top: 14vw;
-    left: 3%;
-    width: 48vw;
+    top: 14.3vw;
+    left: 2%;
+    width: 50vw;
 }
 .inner{
     height: 29vw;
@@ -58,21 +60,46 @@ body{
 }
 .bt button{
     font-size: 1.5vw;
-    color: #2979FF;
-    background: #ffffff;
+    color: #ffffff;
+    background: #2979FF;
     border-radius: 3%;
     width: auto;
     height: auto;
 }
+.bt button:hover{
+    background-color: orange;
+}
 #selectdiv button{
     position: relative;
     left: 10vw;
+    color: #ffffff;
+    background: #2979FF;
+    border-radius: 2%;
+    box-shadow: rgb(124, 124, 124) 0.2vw 0.2vw;
+    border: solid 0.1vw rgb(124, 124, 124);
+    border-radius: 0.2vw;
+}
+/* #selectdiv button:active{
+    background-color: oldlace;
+} */
+#selectdiv button:hover{
+    background-color: orange;
 }
 .none{
     position: absolute;
     right: 0;
     top: 0vw;
+    color: #ffffff;
+    background: #2979FF;
+    border-radius: 2%;
+    box-shadow: rgb(124, 124, 124) 0.2vw 0.2vw;
+    border: solid 0.1vw rgb(124, 124, 124);
+    border-radius: 0.2vw;
 }
+
+/* .none:active{
+    background-color: oldlace;
+} */
 #board{
     position: absolute;
     top: 6%;
@@ -97,8 +124,7 @@ body{
     font-size: 3vh;
     height: 25vw;
     width: 45vw;
-    right: 1%;
-    top: 6.5vw;
+    right: 2%;
 }
 .math td{
     border: solid 2px black;
@@ -109,7 +135,7 @@ body{
     top: 35vw;
     right: 2%;
     width: 45vw;
-    height: 28vw;
+    height: 27vw;
     /* background-color: blueviolet; */
     z-index: -1;
 }
@@ -177,7 +203,7 @@ input:checked + .tab_class {
 
 .myself{
     position: absolute;
-    top: 9%;
+    top: 8%;
     font-size: 3vh;
-    right: 12%;
+    right: 8%;
 }

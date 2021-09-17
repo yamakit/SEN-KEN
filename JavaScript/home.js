@@ -205,7 +205,9 @@ var datas = {
     datasets: [{
         label: '',
         data: [],
-        borderColor: 'red',
+        // borderColor: 'red',
+        borderColor: '#ff000080',
+
         // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
         pointRadius: 7,
         lineTension: 0,
@@ -215,7 +217,9 @@ var datas = {
     {
         label: '',
         data: [],
-        borderColor: 'blue',
+        // borderColor: 'blue',
+        borderColor: '#ffa50080',
+
         // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
         pointRadius: 7,
         lineTension: 0,
@@ -225,7 +229,11 @@ var datas = {
     {
         label: '',
         data: [],
-        borderColor: 'yellow',
+        // borderColor: 'yellow',
+        borderColor: '#ffff0080',
+
+
+
         // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
         pointRadius: 7,
         lineTension: 0,
@@ -235,7 +243,10 @@ var datas = {
     {
         label: '',
         data: [],
-        borderColor: 'green',
+        // borderColor: 'green',
+        borderColor: '#00FF0080',
+
+
         // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
         pointRadius: 7,
         lineTension: 0,
@@ -245,7 +256,9 @@ var datas = {
     {
         label: '',
         data: [],
-        borderColor: 'purple',
+        // borderColor: 'purple',
+        borderColor: '#0033FF80',
+
         // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
         pointRadius: 7,
         lineTension: 0,
@@ -272,7 +285,7 @@ var option = {
             ticks: {
                 min: 0,
                 max: 100,
-                stepSize: 10,
+                stepSize: 20,
                 userCallback: function (tick) {
                     return tick.toString() + '%';
                 }
@@ -285,7 +298,10 @@ var option = {
     },
     title: {
         display: true,
-        text: '3日の正解率と日にちの関係'
+        text: '3日の正解率と日にちの関係',
+        fontSize: 20,
+        fontFamily: "HGゴシックE", "ヒラギノ角ゴ Pro W3": "メイリオ",
+        // fontStyle: "bold", 
     }
 };
 var ex_chart = new Chart(ctx, {
