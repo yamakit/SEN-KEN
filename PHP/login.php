@@ -1,7 +1,6 @@
 <?php
-    // include 'db_config.php';
 
-    $dsn = 'mysql:dbname=sen-ken;host=localhost';
+$dsn = 'mysql:dbname=sen-ken;host=localhost';
 $user = 'root';
 $password = '';
 $result = array();
@@ -9,6 +8,7 @@ $result = array();
 try {
     $dbh = new PDO($dsn, $user, $password);  
 
+  // データベースにあるすべての名前、ball_idなどの値を取得
   $sql = "SELECT * FROM `users`";
   $stmt = ($dbh->prepare($sql));
   $stmt->execute();

@@ -1,7 +1,5 @@
 var x;
 var y;
-// videodiv.style.display = "none";
-// buttondiv.style.display = "none";
 // canvas準備
 const board = document.querySelector("#board");
 const ctx = board.getContext("2d");
@@ -42,10 +40,8 @@ function cut() {　// リンクからプレイヤーidとボールidを取得
     console.log("ボールid :", most);
     if (most == 1) {
         chara.src = "../img/volley.png";  // 画像のURLを指定
-        // a.innerHTML = "ボールをクリックしてください"
     } else if (most == 2) {
         chara.src = "../img/bad.png"
-        // a.innerHTML = "シャトルをクリックしてください"
     }
     sent();
 }
@@ -64,14 +60,7 @@ function sent() {　//データベースからデータを取得
             console.log("通信が成功しました!!!");
             counter = data;
             push();
-            // zahyo_x = data[i]['x_coordinate'];
-            // zahyo_y = data[i]['y_coordinate'];
-            // path = data[i]['video_path'];
-            // console.log('DONE', zahyo_x);
-            // console.log('DONE', zahyo_y);
-            // console.log('DONE', path);
-            // judge = true;
-            // i = i + 1;
+
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log('通信に失敗しました');
             console.log("XMLHttpRequest : " + XMLHttpRequest.status);
@@ -141,22 +130,8 @@ function hikaku() {　//マウス座標から一番近い画像を検索、そ�
     add = array[number_r]["hitplace"];
     console.log(add);
     location.href = "../HTML/view.html?data=" + text + "&" + more + "&" + add;
-    // if (number_r) {
-    // mv.setAttribute("src", array[number_r]["path"]);
-    // plotdiv.style.display = "none";
-    // videodiv.style.display = "block";
-    // buttondiv.style.display = "block";
-
-    // } else {
-    //     console.log("これじゃあ動画は再生できないね！！")
-    // }
-
-
 }
 
-// function push() {
-//     location.href = "http://localhost/HTML/home.html?data=" + more;
-// }
 
 
 // var text = document.getElementById("sendText").value;

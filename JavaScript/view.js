@@ -7,6 +7,7 @@ window.onload = function () {   //リンクから動画のsrc、プレイヤーi
     var a = data.split("=")[1];
     console.log(a);
     text = a.split("&")[0];
+    console.log("動画のパス :", text);
     mv.setAttribute("src", text);
     more = a.split("&")[1];
     console.log("プレイヤーid :", more);
@@ -43,14 +44,6 @@ function dofy() {　//動画の再生速度を変更、動画の現在の秒数�
         videoElement.playbackRate = 8.0;
     });
 
-
-    // btn_fast.addEventListener("click", (e) => {
-    //     videoElement.playbackRate = 5.0;
-    // });
-
-    // btn_veryfast.addEventListener("click", (e) => {
-    //     videoElement.playbackRate = 10.0;
-    // });
 
     videoElement.playbackRate = 8.0;
 

@@ -35,7 +35,7 @@ $result = array();
 try {
     $dbh = new PDO($dsn, $user, $password);  
 
-
+    // データベースへ名前、ball_idなどの値をインサート
     $sql = "INSERT INTO `users`(`ball_id`, `name`, `affiliation`, `position`, `face_image`) VALUES ($ball_id, '$name', '$affiliation', '$position', '$face_image')";
     $dbh -> query($sql);
     $id = $dbh -> lastInsertId();

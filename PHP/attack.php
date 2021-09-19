@@ -1,5 +1,4 @@
 <?php
-    // include 'db_config.php';
 
 
 $player_id = $_GET['player_id'];
@@ -12,25 +11,21 @@ $result = array();
 try {
     $dbh = new PDO($dsn, $user, $password);  
 
-// echo "<p>DB接続に成功しました。</p>";
 
 
-// $sql = "SELECT * FROM `yolo_video_table` WHERE player_id = $player_id ORDER BY RAND() LIMIT 100";
-
+//直近100本の動画のパス、ボールが通った座標などの値を取得
 $sql = "SELECT * FROM `yolo_video_table` WHERE player_id = $player_id ORDER BY `video_id` DESC LIMIT 100";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 $result = $stmt->fetchAll();
 
 } catch (Exception $e) {
-//   echo "<p>DB接続エラー</p>";
   echo $e->getMessage();
   exit();
 }
 
 header('Content-type: application/json');
 echo json_encode($result,JSON_UNESCAPED_UNICODE);
-// var_dump($result);
     
 ?>
 

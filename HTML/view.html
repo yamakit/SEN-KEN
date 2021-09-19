@@ -19,11 +19,12 @@
         <button class="home" onclick="history.back()">プロット画面へ戻る</button>
 
 
-
+        <!-- 動画を表示 -->
         <video id="mv" autobuffer autoplay loop muted controls poster="../img/00.jpg">
             <source src="" id="video" controls muted autoplay playinline loop>
         </video>
 
+        <!-- 枠を表示 -->
         <div id="buttondiv" class="content">
             <div class="inner">
                 <button class="btn1" id="1" type="button"></button>
@@ -42,12 +43,12 @@
                 <button id="btn_veryslow">もっとスロー</button>
                 <button id="btn_slow">スロー</button>
                 <button id="btn_normal">通常</button>
-                <!-- <button id="btn_fast">早送り</button>
-                    <button id="btn_veryfast">もっと早送り</button> -->
                 <button onclick="mov()">再生/一時停止</button>
             </div>
             <button onclick="frame()" class="none">枠ON/OFF</button>
         </div>
+
+        <!-- 直近◯本のコース別累積図を表示 -->
         <table class="math">
             <tr>
                 <td id="td1" style="width:33%;"></td>
@@ -65,6 +66,8 @@
                 <td id="td9"></td>
             </tr>
         </table>
+
+        <!-- 顔の向き、体の開きのグラフを表示 -->
         <div class="area">
             <input type="radio" name="tab_name" id="tab2" onclick="a()" value=0 checked>
             <label class="tab_class" for="tab2" id="body">顔の向き</label>

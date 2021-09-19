@@ -43,13 +43,7 @@ function dofy() {　//動画の再生速度を変更
         videoElement.playbackRate = 8.0;
     });
 
-    // btn_fast.addEventListener("click", (e) => {
-    //     videoElement.playbackRate = 12.0;
-    // });
 
-    // btn_veryfast.addEventListener("click", (e) => {
-    //     videoElement.playbackRate = 15.0;
-    // });
     videoElement.playbackRate = 8.0;
 
 }
@@ -81,10 +75,6 @@ function cut() {   //リンクからプレイヤーidとボールidを取得
     console.log("プレイヤーid :", more);
     most = text.split("&")[1];
     console.log("ボールid :", most);
-    // kazu = text.split("|")[1];
-    // console.log("解いた問題数：", kazu);
-    // result = text.split("|")[2];
-    // console.log("正解した数：", result);
 
 
     if (kazu == 0) {
@@ -175,7 +165,6 @@ function a() {　　//ボールが打たれる直前で動画を停止
             setTimeout(movplay, hold);
             trust = 1;
 
-            // console.log("trust :", trust);
         }
     });
 }
@@ -224,7 +213,6 @@ function wille() {　//2回目以降のデータを取得
         console.log("カウンター：", i);
         dofy();
         selectdiv.style.display = "block";
-        // console.log("trust :", trust);
     }
 }
 
@@ -279,7 +267,6 @@ function compare() {　//正解、不正解の判定
 
     }
     else {
-        // setTimeout(out, 2000);
         console.log("まちがってるよ！！！");
         kazu += 1;
         setTimeout(send, 100);
@@ -319,31 +306,7 @@ function compare() {　//正解、不正解の判定
     total.innerHTML = "ボールの予測地点を選んでください   正解率" + percentage + "％：" + kazu + "問中" + result + "問正解";
 
 
-    // let table = document.getElementById('targetTable');
-    // let newRow = table.insertRow();
-
-    // let newCell = newRow.insertCell();
-    // let newText = document.createTextNode(y + '問目');
-    // newCell.appendChild(newText);
-
-    // newCell = newRow.insertCell();
-    // if (judge == 1) {
-    //     newText = document.createTextNode('◯');
-    // } else {
-    //     newText = document.createTextNode('✖');
-    // }
-    // newCell.appendChild(newText);
 }
-
-
-
-
-
-// function out() {
-//     console.log("out()が呼び出されました！！");
-//     location.href = "http://localhost/SEN-KEN/HTML/study.html?data=" + more + "|" + correct + "|" + kazu + "|" + result;
-
-// }
 
 function push() { 　　//ホーム画面へ遷移
     location.href = "../HTML/home.html?data=" + more + "&" + most;
@@ -387,8 +350,6 @@ function look(ele) {　 //◯問目の比較画像を表示
     console.log("look(ele)が呼び出されました！！");
     mam = -1;
     back_most.style.display = "block";
-    // swiperobject = document.getElementById("swiperhere");
-    // swiperobject.remove();
     varobject = document.getElementById("var");
 
     z = ele.getAttribute("id"); // input要素のid属性の値を取得
@@ -412,21 +373,12 @@ function look(ele) {　 //◯問目の比較画像を表示
         if (x[step]['ans_id'] == key1 && x[step]['hitplace'] == key2) {
 
             album.push(x[step]["picture_path"]);
-            // links = '<div class="swiper-slide"><img src="' + x[step]["picture_path"] + '" width="400" height="500" alt=""></div>';
-            // swiperobject.insertAdjacentHTML('beforeend', links);
             mam = mam + 1;
         }
         varobject.setAttribute("max", mam);
     }
     console.log(album);
     console.log("mam :", mam);
-    // mySwiper = new Swiper('.swiper-container', {
-    //     navigation: {
-    //         nextEl: '.swiper-button-next',
-    //         prevEl: '.swiper-button-prev',
-    //     },
-    //     loop: true,
-    // });
     varobject.addEventListener('input', slide);
     img_right.setAttribute("src", album[0]);
     // img_right.setAttribute("width", 300);
@@ -459,19 +411,3 @@ function slide() {　　//スライドバーの値に応じた画像を表示
 
 }
 
-// function ura() {
-//     for (k = 0; k < 50; k++) {
-//         buttonobject = document.getElementById("buttonhere");
-//         link = '<button type="button" class="item" id="' + y + '" onclick="look(this)">' + y + '問目</button>';
-//         buttonobject.insertAdjacentHTML('beforeend', link);
-//         judgeobject = document.getElementById("judgehere");
-//         if (judge == 1) {
-//             lank = '<button type="button" class="item"> ◯ </button>';
-//         } else {
-//             lank = '<button type="button" class="item">✖</button>';
-
-//         }
-//         judgeobject.insertAdjacentHTML('beforeend', lank);
-
-//     }
-// }

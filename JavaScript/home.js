@@ -208,8 +208,9 @@ var datas = {
         // borderColor: 'red',
         borderColor: '#ff000080',
 
-        // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
+        // pointBackgroundColor: '#ff000080',
         pointRadius: 7,
+        order: 0,
         lineTension: 0,
         fill: false,
         borderWidth: 3
@@ -220,8 +221,9 @@ var datas = {
         // borderColor: 'blue',
         borderColor: '#ffa50080',
 
-        // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
+        // pointBackgroundColor: '#ffa50080',
         pointRadius: 7,
+        order: 0,
         lineTension: 0,
         fill: false,
         borderWidth: 3
@@ -234,8 +236,9 @@ var datas = {
 
 
 
-        // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
+        // pointBackgroundColor: '#ffff0080',
         pointRadius: 7,
+        order: 0,
         lineTension: 0,
         fill: false,
         borderWidth: 3
@@ -247,8 +250,9 @@ var datas = {
         borderColor: '#00FF0080',
 
 
-        // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
+        // pointBackgroundColor: '#00FF0080',
         pointRadius: 7,
+        order: 0,
         lineTension: 0,
         fill: false,
         borderWidth: 3
@@ -259,8 +263,9 @@ var datas = {
         // borderColor: 'purple',
         borderColor: '#0033FF80',
 
-        // pointBackgroundColor: 'rgba(255, 100, 100, 1)',
+        // pointBackgroundColor: '#0033FF80',
         pointRadius: 7,
+        order: 0,
         lineTension: 0,
         fill: false,
         borderWidth: 3
@@ -324,14 +329,6 @@ function graph() {   //データベースから直近◯日分のデータの数
     sum = 0;
     option.title.text = assumed + '日の正解率と日にちの関係';
 
-    // for (i = 0; i < shift; i++) {
-    //     datas['datasets'][0]['data'].pop();
-    //     datas['datasets'][1]['data'].pop();
-    //     datas['datasets'][2]['data'].pop();
-    //     datas['datasets'][3]['data'].pop();
-    //     datas['datasets'][4]['data'].pop();
-    //     datas['labels'].shift();
-    // }
     datas['datasets'][0]['data'].length = 0;
     datas['datasets'][1]['data'].length = 0;
     datas['datasets'][2]['data'].length = 0;
@@ -370,34 +367,8 @@ function graph() {   //データベースから直近◯日分のデータの数
             for (i = 0; i < data[0].length; i++) {
                 sum = sum + Number(data[i]);
             }
-            // k = data;
-            // console.log("sum :", sum);
-
-            // for (i = 0; i < data.length; i++) {
-            //     sum2 = sum2 + Number(data[i]);
-            // }
-            // l = data;
-            // console.log("sum2", sum2);
-
-            // for (i = 0; i < data.length; i++) {
-            //     sum3 = sum3 + Number(data[i]);
-            // }
-            // m = data;
-            // console.log("sum3", sum3);
 
 
-            // for (i = 0; i < data.length; i++) {
-            //     sum4 = sum4 + Number(data[i]);
-            // }
-            // n = data;
-            // console.log("sum4", sum4);
-
-
-            // for (i = 0; i < data.length; i++) {
-            //     sum5 = sum5 + Number(data[i]);
-            // }
-            // o = data;
-            // console.log("sum5", sum5);
             var p = 0;
             for (i = 0; i < sumarray.length; i++) {
                 p = p + sumarray[i];
@@ -597,6 +568,15 @@ function send() {　　　 //データベースから直近◯日分のデータ
 
             }
 
+            // var uarray = [];
+            // for (d = 0; d < assumed; d++) {
+            //     sortArray = [dataarray[0][d], dataarray[1][d], dataarray[2][d], dataarray[3][d], dataarray[4][d]];
+            //     sortArray.sort(function (a, b) { return (b - a); });
+            //     uarray.push(sortArray);
+            // }
+            // console.log(uarray);
+
+
             console.log(data);
             for (f = 0; f < data.length; f++) {
                 console.log(f + 1, "人目");
@@ -611,63 +591,55 @@ function send() {　　　 //データベースから直近◯日分のデータ
                     }
                     console.log("post!!", post);
                     console.log("check:", arr);
-                    console.log("hooooooooooo", dataarray[f][p])
+                    console.log("hooooooooooo", dataarray[f][p]);
                     var one = arr / dataarray[f][p] * 100;
                     datas['datasets'][f]['data'].push(one);
                     console.log(one);
                     console.log(datas['datasets'][f]['data']);
+                    // datas['datasets'][f]['pointRadius'] = dataarray[f][p] / 10 + 3;
+                    // console.log("pointRadius", dataarray[f][p] / 10 + 3);
+                    // var search = uarray[p].indexOf(dataarray[f][p]);
+                    // console.log(search);
+                    // datas['datasets'][f]['order'] = search;
+
+                    // ex_chart = new Chart(ctx, {
+                    //     type: 'line',
+                    //     data: datas,
+                    //     options: option
+                    // });
                 }
             }
-            // for (p = 0; p < assumed; p++) {
-            //     arr = 0;
-            //     for (i = 0; i < dataarray[1][p]; i++) {
-            //         if (data[i]['judge'] == 1) {
-            //             arr = arr + 1;
-            //         }
-            //     }
-            //     var two = arr / dataarray[1][p] * 100;
-            //     datas['datasets'][1]['data'].push(two);
-            //     console.log(two);
-            //     console.log(datas['datasets'][1]['data']);
-            // }
-            // for (p = 0; p < assumed; p++) {
-            //     arr = 0;
-            //     for (i = 0; i < dataarray[2][p]; i++) {
-            //         if (data[i]['judge'] == 1) {
-            //             arr = arr + 1;
-            //         }
-            //     }
-            //     var three = arr / dataarray[2][p] * 100;
-            //     datas['datasets'][2]['data'].push(three);
-            //     console.log(three);
-            //     console.log(datas['datasets'][2]['data']);
-            // }
-            // for (p = 0; p < assumed; p++) {
-            //     arr = 0;
-            //     for (i = 0; i < dataarray[3][p]; i++) {
-            //         if (data[i]['judge'] == 1) {
-            //             arr = arr + 1;
-            //         }
-            //     }
-            //     var four = arr / dataarray[3][p] * 100;
-            //     datas['datasets'][2]['data'].push(four);
-            //     console.log(four);
-            //     console.log(datas['datasets'][3]['data']);
-            // }
 
-            // for (p = 0; p < assumed; p++) {
-            //     arr = 0;
-            //     for (i = 0; i < dataarray[4][p]; i++) {
-            //         if (data[i]['judge'] == 1) {
-            //             arr = arr + 1;
+            // for (f = 0; f < assumed; f++) {
+            //     console.log(f + 1, "日目");
+            //     var post = 0;
+            //     for (p = 0; p < data.length; p++) {
+            //         arr = 0;
+            //         for (i = 0; i < dataarray[p][f]; i++) {
+            //             if (data[p][i]['judge'] == 1) {
+            //                 arr = arr + 1;
+            //             }
+            //             post = post + 1;
             //         }
-            //     }
-            //     var five = arr / dataarray[4][p] * 100;
-            //     datas['datasets'][4]['data'].push(five);
-            //     console.log(five);
-            //     console.log(datas['datasets'][4]['data']);
-            // }
+            //         console.log("post!!", post);
+            //         console.log("check:", arr);
+            //         console.log("hooooooooooo", dataarray[p][f]);
+            //         var one = arr / dataarray[p][f] * 100;
+            //         datas['datasets'][p]['data'].push(one);
+            //         console.log(one);
+            //         console.log(datas['datasets'][p]['data']);
+            //         datas['datasets'][p]['pointRadius'] = dataarray[p][f] / 10 + 5;
+            //         var search = uarray[f].indexOf(dataarray[p][f]);
+            //         console.log(search);
+            //         datas['datasets'][p]['order'] = search;
 
+            //     }
+            //     ex_chart = new Chart(ctx, {
+            //         type: 'line',
+            //         data: datas,
+            //         options: option
+            //     });
+            // }
 
             shift = assumed;
             // console.log(datas);
@@ -686,3 +658,15 @@ function send() {　　　 //データベースから直近◯日分のデータ
 
 
 }
+// setTimeout(go, 5000);
+// function go() {
+//     console.log("ハンバーーーーーーーーぐ");
+//     datas['datasets'][0]['data'].push(1);
+//     datas['labels'].push(4 + '日目');
+//     datas['datasets'][0]['pointRadius'] = 10;
+//     ex_chart = new Chart(ctx, {
+//         type: 'line',
+//         data: datas,
+//         options: option
+//     });
+// }

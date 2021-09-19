@@ -1,5 +1,4 @@
 <?php
-    // include 'db_config.php';
 
     if(!empty($_GET)){
         $id = $_GET['player_id'];
@@ -13,15 +12,13 @@
 try {
     $dbh = new PDO($dsn, $user, $password);  
 
-// echo "<p>DB接続に成功しました。</p>";
-
+// 指定したidのball_id、名前、画像のパスなどの値を取得
 $sql = "SELECT * FROM `users` WHERE `id` = $id";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 $result = $stmt->fetchAll();
-// var_dump($result[0]["ball_id"]);
 
-
+// 指定したid以外で、指定したball_idと同じball_idのid、名前などの値をランダムで取得
 $sql2 = "SELECT * FROM `users` WHERE NOT (`id` = $id)  AND `ball_id` = {$result[0]["ball_id"]} ORDER BY RAND() LIMIT 4";
 $stmt2 = $dbh->prepare($sql2);
 $stmt2->execute();
@@ -30,7 +27,6 @@ $result2 = $stmt2->fetchAll();
 $result_arr = array($result, $result2);
 
 } catch (Exception $e) {
-//   echo "<p>DB接続エラー</p>";
 echo $e->getMessage();
 exit();
 }

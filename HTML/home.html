@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <h1 class="line">S<span>E</span>N-KEN</h1>
+    <h1 class="line">SEN-<span>K</span>EN</h1>
     <!-- <img class='img' src="../img/volleyball.png"> -->
     <!-- <input class="pic" type="button" value="正解率分布図" onclick="select()">
     <input class="graph" type="button" value="正解率推移" onclick="chart()"> -->
@@ -29,6 +29,8 @@
             <option value=300>直近300問</option>
         </select> -->
     </form>
+
+    <!--正解率と日数のグラフを表示-->
     <form name=form2 class="form">
         <select class="new" name='pull' onchange="graph()">
             <option value=3>直近3日</option>
@@ -39,15 +41,14 @@
     </form>
 
 
-
-    <!-- <img src="../img/anzai.png" class="face"> -->
     <img id="face" src="" class="face">
-    <!-- <a class="myself"></br>名前</br>所属</br>ポジション</a> -->
     <div id="detail"></div>
     <a id="nan"></a>
     <div class="stick">
         <canvas id="myChart"></canvas>
     </div>
+
+    <!-- 正解率分布図を表示 -->
     <table class="math">
         <tr>
             <td id="td1" style="width:33%;"></td>

@@ -1,5 +1,4 @@
 <?php
-    // include 'db_config.php';
 
         if(!empty($_GET)){
         $id = $_GET['player_id'];
@@ -24,10 +23,9 @@
         $result5 = array();
         $data5 = array();
 
+// 指定したidの人が解いた問題数を指定した直近の日数分取得
 try {
-    $dbh = new PDO($dsn, $user, $password);  
-
-// echo "DB接続に成功しました。";
+$dbh = new PDO($dsn, $user, $password);  
 $sql = "SELECT date_format(`datetime`,'%Y%m%d'),count(`judge`) FROM `answer_table` WHERE `user_id` = $id GROUP BY date_format(`datetime`,'%Y%m%d') ORDER BY `ans_id` DESC LIMIT $day";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
@@ -61,7 +59,6 @@ $data5 = array_column($result5, '1');
 $data_arr = array($data, $data2, $data3, $data4, $data5);
 
 } catch (Exception $e) {
-// echo "DB接続エラー";
 echo $e->getMessage();
 exit();
 }

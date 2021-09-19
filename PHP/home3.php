@@ -1,5 +1,4 @@
 <?php
-    // include 'db_config.php';
 
         if(!empty($_GET)){
         $id = $_GET['player_id'];
@@ -16,17 +15,15 @@
         $dsn = 'mysql:dbname=sen-ken;host=localhost';
         $user = 'root';
         $password = '';
-        // $result = array();
         $result = array();
         $result2 = array();
         $result3 = array();
         $result4 = array();
         $result5 = array();
 
+        // 指定したidの人がクイズ中押したボタン番号や、その正誤判定の値を指定した直近の日数分取得
 try {
     $dbh = new PDO($dsn, $user, $password);  
-
-
 $sql = "SELECT * FROM `answer_table` WHERE `user_id` = $id ORDER BY `datetime` DESC LIMIT $sum";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
@@ -55,7 +52,6 @@ $result5 = $stmt5->fetchAll();
 $result_arr = array($result, $result2, $result3, $result4, $result5);
 
 } catch (Exception $e) {
-// echo "DB接続エラー";
 echo $e->getMessage();
 exit();
 }

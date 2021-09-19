@@ -1,5 +1,4 @@
 <?php
-    // include 'db_config.php';
 
 if(!empty($_GET)){
     $ball_id = $_GET['ball_id'];
@@ -18,18 +17,16 @@ if(!empty($_GET)){
     try {
         $dbh = new PDO($dsn, $user, $password);  
         
-        // echo "<p>DB接続に成功しました。</p>";
 
+        // データベースへ問題を解いたユーザーのid、正誤判定などの値をインサート
         $sql = "INSERT INTO `answer_table`(`ball_id`, `yolo_video_id`, `user_id`, `ans_X_coordinate`, `ans_Y_coordinate`, `button_id`, `judge`, `datetime`) VALUES ($ball_id, $video_id, $user_id, $x_coordinate,  $y_coordinate,  $button_id, $judge, NOW())";
         $dbh->exec($sql);
     } catch (Exception $e) {
-        // echo "<p>DB接続エラー</p>";
         echo $e->getMessage();
         exit();
     }
     
     header('Content-type: application/json');
     echo json_encode($result,JSON_UNESCAPED_UNICODE);
-    // var_dump($result);
 }
 ?>
