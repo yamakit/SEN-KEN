@@ -27,6 +27,11 @@ body{
     border-radius: 3%;
     padding: 0 2%;
 }
+.home:hover{
+    background-color: orange;
+    color: #FFFFFF;
+
+}
 #mv{
     min-height: 55vw;
     width: 100%;

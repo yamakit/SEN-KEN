@@ -30,6 +30,10 @@ body{
     border-radius: 3%;
     padding: 0 2%;
 }
+.home:hover{
+    background-color: orange;
+    color: #FFFFFF;
+}
 /* .resalt{
     width: 100%;
     height: 50vw;
