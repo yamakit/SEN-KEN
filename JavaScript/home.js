@@ -50,6 +50,7 @@ function sent() {　//データベースからユーザーの情報を取得
             datas['datasets'][2]['label'] = data[1][1][2];
             datas['datasets'][3]['label'] = data[1][2][2];
             datas['datasets'][4]['label'] = data[1][3][2];
+            // datas['labels'].push(data[0][0][2], data[1][0][2], data[1][1][2], data[1][2][2], data[1][3][2]);
             randnumarray = [data[1][0][0], data[1][1][0], data[1][2][0], data[1][3][0]]
             console.log(randnumarray);
             graph();
@@ -201,7 +202,7 @@ var assumed = 0;
 // }
 const ctx = document.getElementById('myChart');
 var datas = {
-    labels: [],
+    labels: ["case1", "case2", "case3", "case4", "case5"],
     datasets: [{
         label: '',
         data: [],
@@ -275,7 +276,7 @@ var datas = {
 
 var option = {
     animation: false,
-    events: [],
+    // events: [],
     // legend: {
     //     display: true,
     // },
@@ -291,15 +292,37 @@ var option = {
                 min: 0,
                 max: 100,
                 stepSize: 20,
-                userCallback: function (tick) {
-                    return tick.toString() + '%';
+                userCallback: function (ticks) {
+                    return ticks.toString() + '%';
                 }
             },
             scaleLabel: {
                 display: true,
                 labelString: '正答率'
             }
-        }]
+        }],
+    },
+    tooltips: {//グラフへカーソルを合わせた際のツールチップ詳細表示の設定
+        callbacks: {
+            label: function (tooltipItems, data) {
+                // if (tooltipItems.yLabel == "0") {
+                //     return "";
+                // }
+                console.log(graphArray, "wwwwwwwwwwwwwwwww");
+                console.log(data);
+                console.log(tooltipItems);
+                for (g = 0; g < assumed * 5; g++) {
+                    if (tooltipItems.datasetIndex == graphArray[g]["datasetIndex"] && tooltipItems.index == graphArray[g]["index"]) {
+                        var chip = graphArray[g]["正解数"];
+                        var dale = graphArray[g]["解いた数"];
+                        console.log(chip, "aaaaaaaaaaaaaaaa");
+                        console.log(dale, "hhhhhhhhhhhhhhhhhhhhhhh");
+
+                    }
+                }
+                return ["名前：" + data.datasets[tooltipItems.datasetIndex].label, "問題を解いた数：" + chip + "問", "正解した数：" + dale + "問", "正解率：" + Math.round(tooltipItems.yLabel) + "%"];
+            }
+        }
     },
     title: {
         display: true,
@@ -397,7 +420,7 @@ function graph() {   //データベースから直近◯日分のデータの数
 };
 
 
-
+var graphArray = [];
 function send() {　　　 //データベースから直近◯日分のデータの数だけデータを取得、グラフを描画、表に数字を表示
     console.log("send()が呼び出されました！！");
     $.ajax({
@@ -577,6 +600,7 @@ function send() {　　　 //データベースから直近◯日分のデータ
             // console.log(uarray);
 
 
+            graphArray.length = 0;
             console.log(data);
             for (f = 0; f < data.length; f++) {
                 console.log(f + 1, "人目");
@@ -593,9 +617,19 @@ function send() {　　　 //データベースから直近◯日分のデータ
                     console.log("check:", arr);
                     console.log("hooooooooooo", dataarray[f][p]);
                     var one = arr / dataarray[f][p] * 100;
+                    graphArray.push(
+                        {
+                            "datasetIndex": f,
+                            "index": p,
+                            "正解数": arr,
+                            "解いた数": dataarray[f][p],
+                            "正解率": one,
+                        }
+                    );
                     datas['datasets'][f]['data'].push(one);
                     console.log(one);
                     console.log(datas['datasets'][f]['data']);
+
                     // datas['datasets'][f]['pointRadius'] = dataarray[f][p] / 10 + 3;
                     // console.log("pointRadius", dataarray[f][p] / 10 + 3);
                     // var search = uarray[p].indexOf(dataarray[f][p]);
@@ -609,7 +643,7 @@ function send() {　　　 //データベースから直近◯日分のデータ
                     // });
                 }
             }
-
+            console.log(graphArray);
             // for (f = 0; f < assumed; f++) {
             //     console.log(f + 1, "日目");
             //     var post = 0;
@@ -658,15 +692,4 @@ function send() {　　　 //データベースから直近◯日分のデータ
 
 
 }
-// setTimeout(go, 5000);
-// function go() {
-//     console.log("ハンバーーーーーーーーぐ");
-//     datas['datasets'][0]['data'].push(1);
-//     datas['labels'].push(4 + '日目');
-//     datas['datasets'][0]['pointRadius'] = 10;
-//     ex_chart = new Chart(ctx, {
-//         type: 'line',
-//         data: datas,
-//         options: option
-//     });
-// }
+

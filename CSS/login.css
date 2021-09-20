@@ -9,6 +9,7 @@ body:after {
 content: "";
   /* background: #2979FF; */
 background-image: url(../img/aa.png);
+background-size: cover;
 position: fixed;
 display: block;
 z-index: 1;
