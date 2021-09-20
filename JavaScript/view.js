@@ -155,8 +155,8 @@ var datass = {
     datasets: [{
         label: '現在の動画の体の開き',
         data: [],
-        borderColor: 'blue',
-        pointBackgroundColor: 'rgba(100, 100, 255, 1)',
+        borderColor: '#0033FF80',
+        pointBackgroundColor: '#0033FF80',
         pointRadius: 7,
         lineTension: 0,
         fill: false,
@@ -185,7 +185,7 @@ var datass = {
     {
         label: '体の開き',
         data: [],
-        borderColor: 'red',
+        borderColor: '#ff000080',
         pointRadius: 0.1,
         lineTension: 0,
         fill: false,
@@ -197,7 +197,7 @@ var datass = {
 
 var option = {
     animation: false,
-    events: [],
+    // events: [],
     scales: {
         xAxes: [{
             ticks: {
@@ -247,10 +247,10 @@ var datas = {
     datasets: [{
         label: '現在の動画の顔の向き',
         data: [{}],
-        borderColor: 'red',
+        borderColor: '#ff000080',
         // order: 1,
         pointRadius: 7,
-        pointBackgroundColor: 'rgba(255, 100, 100, 1)',
+        pointBackgroundColor: '#ff000080',
         lineTension: 0,
         fill: false,
         borderWidth: 3,
@@ -280,7 +280,7 @@ var datas = {
     {
         label: '顔の向き',
         data: [],
-        borderColor: 'blue',
+        borderColor: '#0033FF80',
         // order: 3,
         pointRadius: 0.1,
         lineTension: 0,
@@ -292,7 +292,7 @@ var datas = {
 
 var options = {
     animation: false,
-    events: [],
+    // events: [],
     scales: {
         xAxes: [{
             ticks: {

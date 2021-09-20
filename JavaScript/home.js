@@ -50,7 +50,6 @@ function sent() {　//データベースからユーザーの情報を取得
             datas['datasets'][2]['label'] = data[1][1][2];
             datas['datasets'][3]['label'] = data[1][2][2];
             datas['datasets'][4]['label'] = data[1][3][2];
-            // datas['labels'].push(data[0][0][2], data[1][0][2], data[1][1][2], data[1][2][2], data[1][3][2]);
             randnumarray = [data[1][0][0], data[1][1][0], data[1][2][0], data[1][3][0]]
             console.log(randnumarray);
             graph();
@@ -202,7 +201,7 @@ var assumed = 0;
 // }
 const ctx = document.getElementById('myChart');
 var datas = {
-    labels: ["case1", "case2", "case3", "case4", "case5"],
+    labels: [],
     datasets: [{
         label: '',
         data: [],
