@@ -1,0 +1,89 @@
+body{
+    margin: 0px;
+    font-family: "HGゴシックE", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
+}
+html:before,
+html:after,
+body:before,
+body:after {
+content: "";
+  /* background: #2979FF; */
+background-image: url(../img/aa.png);
+background-size: cover;
+position: fixed;
+display: block;
+z-index: 1;
+}
+html:before {
+    height: 10vw; 
+    width: 100vw;
+    left: 0;
+    top: 0;
+    
+}
+
+body:before {
+    height: 10vw;
+    width: 100vw;
+    bottom: 0;
+    left: 0;
+}
+h1{
+    text-align: center;
+}
+.title{
+    margin-top: 25vh;
+    margin-bottom: 0vw;
+    font-size: 10vw;
+    -webkit-text-stroke: 1px #212641;
+}
+.title span{
+    color: #2979FF;
+}
+.SelectPref{
+    text-align: center;
+}
+.select{
+    display: inline-block;
+    margin: 0 auto;
+    /* width: 25vw; */
+    height: 3vw;
+    width: 34vw;
+    font-size: 20px;
+    
+}
+.button{
+    display: inline-block;
+    margin: 0 auto;
+    /* width: auto;
+    height: auto; */
+    width: 10vw;
+    height: 3vw;
+    font-size: 20px;
+    color: white;
+    background-color: #2979FF;
+    box-shadow: rgb(179, 179, 179) 0.2vw 0.2vw;
+    border: none;
+    border-radius: 0.2vw;
+}
+.button:hover{
+    background-color: orange;
+}
+.entry{
+    position: absolute;
+    right: 43vw;
+    display: flex;
+    margin: 10% auto;
+    width: 15vw;
+    height: 3vw;
+    font-size: 25px;
+    color: #FFFFFF;
+    background-color: #2979FF;
+    box-shadow: rgb(179, 179, 179) 0.2vw 0.2vw;
+    border: none;
+    border-radius: 0.2vw;
+}
+.entry:hover{
+    background-color: orange;
+    /* color: #FFFFFF; */
+}

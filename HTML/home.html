@@ -1,0 +1,73 @@
+<!-- home画面　ここからattackとindexへ -->
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <link rel="stylesheet" href="../CSS/home.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <title>SEN-KENホームページ</title>
+</head>
+
+<body>
+    <h1 class="line">SEN-<span>K</span>EN</h1>
+    <!-- <img class='img' src="../img/volleyball.png"> -->
+    <!-- <input class="pic" type="button" value="正解率分布図" onclick="select()">
+    <input class="graph" type="button" value="正解率推移" onclick="chart()"> -->
+    <div class="button">
+        <button type="button" class='quiz' onclick="receive()">予想クイズをする</button>
+        <button type="button" class='date' onclick="attack()">打ち方分析を見る</button>
+    </div>
+    <!-- <form name=form1 class="form">
+        <select class="new" name='pull' onchange="chart()">
+            <option value=10>直近10問</option>
+            <option value=50>直近50問</option>
+            <option value=100>直近100問</option>
+            <option value=300>直近300問</option>
+        </select> -->
+    </form>
+
+    <!--正解率と日数のグラフを表示-->
+    <form name=form2 class="form">
+        <select class="new" name='pull' onchange="graph()">
+            <option value=3>直近3日</option>
+            <option value=7>直近7日</option>
+            <option value=10>直近10日</option>
+            <option value=14>直近14日</option>
+        </select>
+    </form>
+
+
+    <img id="face" src="" class="face">
+    <div id="detail"></div>
+    <a id="nan"></a>
+    <div class="stick">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <!-- 正解率分布図を表示 -->
+    <table class="math">
+        <tr>
+            <td id="td1" style="width:33%;"></td>
+            <td id="td2" style="width:33%;"></td>
+            <td id="td3" style="width:33%;"></td>
+        </tr>
+        <tr>
+            <td id="td4"></td>
+            <td id="td5"></td>
+            <td id="td6"></td>
+        </tr>
+        <tr>
+            <td id="td7"></td>
+            <td id="td8"></td>
+            <td id="td9"></td>
+        </tr>
+    </table>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+    <script src="../Javascript/home.js"></script>
+</body>
+
+</html>

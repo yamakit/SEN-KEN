@@ -1,0 +1,47 @@
+body{
+    text-align: center;
+    margin:10% 0 0 0;
+    font-size: 3vw;
+    font-family: "HGゴシックE", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
+}
+.title{
+    font-size: 10vw;
+    margin: 5% 0;
+    -webkit-text-stroke: 1px #212641;
+}
+.title span{
+    color: #2979FF;
+}
+.name{
+    height: 3vw;
+    font-size: 20px;
+}
+.box {
+    height: 3vw;
+    width: 34vw;
+    font-size: 20px;
+}
+.club{
+    height: 3vw;
+}
+.Word{
+    height: 3vw;
+    font-size: 20px;
+}
+.picture {
+    height: 4vw;
+    width: 34vw;
+    font-size: 22px;
+}
+.in{
+    font-size:3vw;
+    color:#FFFFFF;
+    background:#2979FF;
+    margin: 5% 0;
+    box-shadow: rgb(124, 124, 124) 0.5vw 0.5vw;
+    border: solid 0.1vw rgb(124, 124, 124);
+    border-radius: 0.2vw;
+}
+.in:hover{
+    background-color: orange;
+}

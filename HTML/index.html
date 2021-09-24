@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <link rel="stylesheet" href="../CSS/index.css" />
+    <title>SEN-KENレシーバー向け予想クイズ</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="../Javascript/index.js"></script>
+  </head>
+
+  <body>
+    <div id="front">
+      <a id="total" class="title">ボールの予測地点を選んでください 正解率0％：0問中0問正解</a>
+      <button class="home" onclick="pup()">終わる</button>
+
+      <!-- 動画を表示 -->
+      <video id="mv" autobuffer autoplay loop muted controls poster="../img/loading.jpg">
+        <source src="" id="video" preload controls muted autoplay playinline loop />
+      </video>
+
+      <div id="selectdiv">
+        <button id="btn_veryslow">もっとスロー</button>
+        <button id="btn_slow">スロー</button>
+        <button id="btn_normal">通常</button>
+        <!-- <button id="btn_fast">早送り</button>
+                <button id="btn_veryfast">もっと早送り</button> -->
+      </div>
+      <!-- 
+        <button type="button" onclick="ura()">sss</button> -->
+
+      <!-- 選択ボタンを表示 -->
+      <form>
+        <div id="buttondiv" class="content">
+          <div class="inner">
+            <button class="btn1" id="1" type="button" onclick="getId(this); apple()">1</button>
+            <button class="btn2" id="2" type="button" onclick="getId(this); apple()">2</button>
+            <button class="btn3" id="3" type="button" onclick="getId(this); apple()">3</button>
+            <button class="btn4" id="4" type="button" onclick="getId(this); apple()">4</button>
+            <button class="btn5" id="5" type="button" onclick="getId(this); apple()">5</button>
+            <button class="btn6" id="6" type="button" onclick="getId(this); apple()">6</button>
+            <button class="btn7" id="7" type="button" onclick="getId(this); apple()">7</button>
+            <button class="btn8" id="8" type="button" onclick="getId(this); apple()">8</button>
+            <button class="btn9" id="9" type="button" onclick="getId(this); apple()">9</button>
+          </div>
+        </div>
+      </form>
+
+      <audio id="maru_sound" preload="auto">
+        <source src="../img/Quiz-Correct_Answer02-1.mp3" type="audio/mp3" />
+      </audio>
+
+      <audio id="batsu_sound" preload="auto">
+        <source src="../img/Quiz-Wrong_Buzzer02-1.mp3" type="audio/mp3" />
+      </audio>
+    </div>
+
+    <!-- 結果画面を表示 -->
+    <div id="back">
+      <a class="title">結果</a>
+      <button class="home" onclick="push()">ホーム画面へ戻る</button>
+      <div class="result01">
+        <a id="h1" class="h1">あなたは0問中0問正解しました。正解率は0％です。</a>
+      </div>
+      <div class="scroll01">
+        <p></p>
+        <div id="buttonhere"></div>
+        <div id="judgehere"></div>
+        <p></p>
+      </div>
+      <h1 class="line">比較画像</h1>
+      <h3 id="answer" class="answer"></h3>
+      <h3 id="mine" class="mine"></h3>
+
+      <div class="scroll02">
+        <img id="img_left" src="" width="" height="" />
+      </div>
+
+      <img id="img_right" src="" width="" height="" />
+      <div id="back_most">
+        <button type="button" onclick="prev()" class="left">◁</button>
+        <button type="button" onclick="next()" class="right">▷</button>
+        <label><input type="range" id="var" min="0" max="" step="1" value="0" /></label>
+      </div>
+    </div>
+  </body>
+</html>
