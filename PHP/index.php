@@ -10,8 +10,8 @@ try {
     $dbh = new PDO($dsn, $user, $password);  
 
 // 指定したball_idの動画のパス、動画の正解番号などの値を取得
-    // $sql = "SELECT * FROM picture as P,yolo_video_table as Y where P.video_id=Y.video_id AND ball_id = $ball_id ORDER BY RAND()";
-    $sql = "SELECT * FROM picture as P,yolo_video_table as Y where P.video_id=Y.video_id AND ball_id = $ball_id";
+    $sql = "SELECT * FROM picture as P,yolo_video_table as Y where P.video_id=Y.video_id AND ball_id = $ball_id ORDER BY RAND()";
+    // $sql = "SELECT * FROM picture as P,yolo_video_table as Y where P.video_id=Y.video_id AND ball_id = $ball_id";
 
 
 

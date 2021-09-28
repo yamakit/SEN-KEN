@@ -13,8 +13,8 @@ try {
     $dbh = new PDO($dsn, $user, $password);  
 
     // 指定したplayer_id、hitplaceのans_idの値を直近100問分取得
-// $sql = "SELECT `ans_id` FROM `yolo_video_table` WHERE `player_id` = $id AND `hitplace`  = $hitplace ORDER BY `video_id` DESC LIMIT 100";
-$sql = "SELECT `ans_id` FROM `yolo_video_table` WHERE `player_id` = $id AND `hitplace`  = $hitplace LIMIT 20";
+$sql = "SELECT `ans_id` FROM `yolo_video_table` WHERE `player_id` = $id AND `hitplace`  = $hitplace ORDER BY `video_id` DESC LIMIT 100";
+// $sql = "SELECT `ans_id` FROM `yolo_video_table` WHERE `player_id` = $id AND `hitplace`  = $hitplace LIMIT 20";
 
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
