@@ -1,45 +1,43 @@
 <!DOCTYPE html>
 <html lang="ja">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" href="../CSS/attack.css">
+    <link rel="stylesheet" href="../CSS/attack.css" />
     <script type="text/javascript" src="//code.createjs.com/easeljs-0.8.1.min.js"></script>
     <script type="text/javascript" src="//code.createjs.com/preloadjs-0.6.1.min.js"></script>
 
     <title>SEN-KENアタッカー向け打ち方分析</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="result">
-        <a class="title">見たいコースを選んでください</a>
-        <button class="home" onclick="history.back()">ホーム画面へ戻る</button>
-        <div class="resalt">
-            <canvas id="board" width="1600" height="1000"></canvas>
-        </div>
+      <a class="title">見たいコースを選んでください</a>
+      <button class="home" onclick="history.back()">ホーム画面へ戻る</button>
+      <div class="resalt">
+        <canvas id="board" class="frame" width="1600" height="1000"></canvas>
+      </div>
     </div>
     <!-- 背景の枠を表示 -->
     <table class="frame">
-        <tr>
-            <td id="td1"></td>
-            <td id="td2"></td>
-            <td id="td3"></td>
-        </tr>
-        <tr>
-            <td id="td4"></td>
-            <td id="td5"></td>
-            <td id="td6"></td>
-        </tr>
-        <tr>
-            <td id="td7"></td>
-            <td id="td8"></td>
-            <td id="td9"></td>
-        </tr>
+      <tr>
+        <td id="td1"></td>
+        <td id="td2"></td>
+        <td id="td3"></td>
+      </tr>
+      <tr>
+        <td id="td4"></td>
+        <td id="td5"></td>
+        <td id="td6"></td>
+      </tr>
+      <tr>
+        <td id="td7"></td>
+        <td id="td8"></td>
+        <td id="td9"></td>
+      </tr>
     </table>
     <script src="../Javascript/attack.js"></script>
-</body>
-
+  </body>
 </html>

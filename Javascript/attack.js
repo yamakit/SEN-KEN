@@ -54,7 +54,10 @@ function sent() {
     type: "GET",
     url: "../PHP/attack.php",
     dataType: "json",
-    data: { player_id: more },
+    data: {
+      player_id: more,
+      ball_id: most,
+    },
   })
     .done(function (data) {
       console.log("DONE", data);

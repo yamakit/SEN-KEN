@@ -22,9 +22,7 @@ if(!empty($_POST)){
         $ball_id = 1;
         }else if($affiliation == "バドミントン"){
         $ball_id = 2;
-        }else{
-        $ball_id = 3;
-    }
+        }
 
 $dsn = 'mysql:dbname=sen-ken;host=localhost';
 $user = 'root';
@@ -48,4 +46,5 @@ exit();
 }
 
 header("Location:../HTML/home.html?SelectPref=".$id."&".$ball_id);
+
 ?>
