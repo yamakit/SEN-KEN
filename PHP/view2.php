@@ -12,7 +12,7 @@ try {
     $dbh = new PDO($dsn, $user, $password);  
 
     // 指定した動画のパスの体の開きの値を取得
-    $sql = "SELECT `turning_body_list` FROM `turning_body_table` WHERE `video_path` = '$path'";
+    $sql = "SELECT`turning_body_list`, `turning_face_list` FROM `turning_body_table` WHERE `video_path` = '$path'";
     $stmt = $dbh->prepare($sql);
     $stmt->execute();
     $result = $stmt->fetchAll();
