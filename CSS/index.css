@@ -19,7 +19,7 @@ body {
   right: 2%;
   width: auto;
   height: auto;
-  font-size: 2vw;
+  font-size: 1.5vw;
   color: #2979ff;
   background: #ffffff;
   border: solid 0.1vw rgb(124, 124, 124);
@@ -81,7 +81,7 @@ body {
 
 .result01 {
   font-size: 3vw;
-  margin: 0% 2%;
+  margin: -1% 2%;
 }
 span {
   font-size: 6vw;
@@ -91,7 +91,7 @@ span {
 }
 .line {
   font-size: 3vw;
-  top: 12vw;
+  top: 9vw;
   position: absolute;
   width: 95%;
   left: 2%;
@@ -103,7 +103,7 @@ span {
   overflow-y: hidden;
   white-space: nowrap;
   position: absolute;
-  top: 20vw;
+  top: 16vw;
   margin: 0 1.5%;
   width: 96.5%;
 }
@@ -115,7 +115,7 @@ span {
   background: #2979ff;
   font-size: 2vw;
   width: 10vw;
-  height: 5vw;
+  height: 4vw;
   margin: 0 0.2%;
   border: none;
 }
@@ -127,12 +127,12 @@ span {
 
 #var {
   position: absolute;
-  top: 35vw;
-  right: 20%;
+  top: 27.5vw;
+  right: 23%;
 }
 img {
   position: absolute;
-  top: 37vw;
+  top: 27vw;
   min-height: 25.3vw;
   width: 45%;
   margin: 2%;
@@ -140,13 +140,13 @@ img {
 
 .answer {
   position: absolute;
-  top: 33vw;
-  left: 17%;
+  top: 26vw;
+  left: 20%;
 }
 .mine {
   position: absolute;
-  top: 35vw;
-  left: 15%;
+  top: 27vw;
+  left: 19%;
 }
 #img_right {
   right: 0;
@@ -160,7 +160,7 @@ img {
 }
 .left {
   position: absolute;
-  top: 51vw;
+  top: 40vw;
   right: 44vw;
   font-size: 2vw;
   color: #2979ff;
@@ -172,7 +172,7 @@ img {
 }
 .right {
   position: absolute;
-  top: 51vw;
+  top: 40vw;
   right: 2.4vw;
   font-size: 2vw;
   color: #2979ff;

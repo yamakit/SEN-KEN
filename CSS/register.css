@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  margin: 10% 0 0 0;
+  margin: 5% 0 0 0;
   font-size: 3vw;
   font-family: "HGゴシックE", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
 }
@@ -18,7 +18,7 @@ body {
   font-size: 20px;
 }
 .club {
-  width: 45vh;
+  width: 30vh;
   height: auto;
   font-size: 25px;
 }
