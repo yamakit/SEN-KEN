@@ -1,7 +1,7 @@
 body {
   text-align: center;
   margin: 5% 0 0 0;
-  font-size: 3vw;
+  font-size: 2vw;
   font-family: "HGゴシックE", "ヒラギノ角ゴ Pro W3", "メイリオ", sans-serif;
 }
 .title {
@@ -14,27 +14,27 @@ body {
 }
 .name {
   width: auto;
-  height: auto;
-  font-size: 20px;
+  height: 2vw;
+  font-size: 25px;
 }
 .club {
-  width: 30vh;
-  height: auto;
+  width: 37vh;
+  height: 2vw;
   font-size: 25px;
 }
 
 .Word {
   width: auto;
-  height: auto;
-  font-size: 20px;
+  height: 2vw;
+  font-size: 25px;
 }
 .picture {
   width: auto;
   height: auto;
-  font-size: 23px;
+  font-size: 30px;
 }
 .in {
-  font-size: 3vw;
+  font-size: 2vw;
   color: #ffffff;
   background: #2979ff;
   margin: 5% 0;
