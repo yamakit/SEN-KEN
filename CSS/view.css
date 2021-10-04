@@ -140,7 +140,7 @@ body {
   top: 27vw;
   right: 4%;
   width: 39vw;
-  height: 27vw;
+  height: 25vw;
   /* background-color: blueviolet; */
   z-index: -1;
 }
@@ -174,7 +174,7 @@ input:checked + .tab_class {
 }
 #face {
   position: absolute;
-  right: 2.7%;
+  right: 3.7%;
   top: 28.2vw;
   padding: 0 2%;
   font-size: 1.7vw;
