@@ -10,7 +10,7 @@ body {
   position: relative;
   display: block;
   height: 5%;
-  font-size: 2.5vw;
+  font-size: 2vw;
   color: rgb(255, 255, 255);
   /* background: #2979FF; */
   background-image: url(../img/aa.png);
@@ -22,7 +22,7 @@ body {
   right: 2%;
   width: auto;
   height: auto;
-  font-size: 2vw;
+  font-size: 1.5vw;
   color: #2979ff;
   background: #ffffff;
   border: solid 0.1vw rgb(124, 124, 124);
@@ -140,7 +140,7 @@ body {
   top: 27vw;
   right: 4%;
   width: 39vw;
-  height: 25vw;
+  height: 24.4vw;
   /* background-color: blueviolet; */
   z-index: -1;
 }
@@ -208,7 +208,7 @@ input:checked + .tab_class {
 
 .myself {
   position: absolute;
-  top: 7%;
+  top: 6%;
   font-size: 3vh;
   right: 11%;
 }
