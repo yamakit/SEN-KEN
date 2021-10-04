@@ -20,17 +20,29 @@ def keypoint_plot(*args):
     plt.close()
 
 if __name__ == '__main__':
-    # files = gb.glob('D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\*\\*01') #運用時の処理
-    folders = gb.glob('D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\04\\*')      #ローカル環境での実行用
+    #===DBからyolo_flagが1の動画のパスを取得===
+    conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='demo')
+    cur = conn.cursor(buffered=True)
+    cur.execute("SELECT video_path FROM yolo_video_table WHERE yolo_flag = 3")
+    rows = cur.fetchall()
+    folders = [] #jsonファイルへのパスを格納するリスト
+    for row in rows:
+        folders.append(row[0])
+    cur.execute("UPDATE `yolo_video_table` SET `yolo_flag` = 4 WHERE `yolo_flag` = 3")
+    cur.close
+    conn.commit()
+    conn.close()
+    
+    print(folders)
 
     #===データを取り出すjsonファイルが入っているフォルダー群を回す===
     for folder in folders:
         print(f'{folder}を処理')
-
+        folder_num = folder[-8:-4]
+        folder = folder.replace(folder[-12:],f'openpose_IMG_{folder_num}_01')
+        folder = folder.replace('/', '\\')
         files_path = folder + '\\*.json'
         files = gb.glob(files_path)
-        folder_num = folder.replace('D:\\htdocs\\SEN-KEN\\2021SEN_KEN\\volleyball\\04\\openpose_IMG_', '')
-        folder_num = folder_num.replace('_01', '')
 
         #===データフレームを用意===
         body_columns = ['FrameNo', 'Max_x', 'Min_x', 'Max_y', 'Min_y', 'MMbody', 'LsRsdis', 'MNsdis', 'Lsq', 'Rsq', 'dis_sq', 'LhMdis', 'MRhdis', 'LsNdis', 'NRsdis', 'turning_body', 'filterd_turning_body', 'LeNdis', 'NRedis', 'NoNedis', 'turning_face', 'filterd_turning_face', 'abs_turning_face', 'RhRbdis', 'LbLhdis']     #カラム名を用意
@@ -78,11 +90,6 @@ if __name__ == '__main__':
                 folder_df.loc[num, 'LsNdis'] = folder_df.loc[num, 'Lshoulder_x'] - folder_df.loc[num, 'neck_x']         #左肩 - 首元
                 folder_df.loc[num, 'NRsdis'] = folder_df.loc[num, 'neck_x'] - folder_df.loc[num, 'Rshoulder_x']         #首元 - 右肩
 
-                L_points = [[int(folder_df.loc[num, 'Lshoulder_x']), int(folder_df.loc[num, 'Lshoulder_y'])], [int(folder_df.loc[num, 'neck_x']), int(folder_df.loc[num, 'neck_y'])], [int(folder_df.loc[num, 'Midhip_x']), int(folder_df.loc[num, 'Midhip_y'])], [int(folder_df.loc[num, 'Lhip_x']), int(folder_df.loc[num, 'Lhip_y'])]]
-                R_points = [[int(folder_df.loc[num, 'Rshoulder_x']), int(folder_df.loc[num, 'Rshoulder_y'])], [int(folder_df.loc[num, 'neck_x']), int(folder_df.loc[num, 'neck_y'])], [int(folder_df.loc[num, 'Midhip_x']), int(folder_df.loc[num, 'Midhip_y'])], [int(folder_df.loc[num, 'Rhip_x']), int(folder_df.loc[num, 'Rhip_y'])]]
-                folder_df.loc[num, 'Lsq'] =  cv2.contourArea(np.array(L_points))
-                folder_df.loc[num, 'Rsq'] =  cv2.contourArea(np.array(R_points))
-                folder_df.loc[num, 'dis_sq'] = (folder_df.loc[num, 'Lsq'] / folder_df.loc[num, 'Rsq']) * 100
 
                 # if(folder_df.loc[num, 'LsNdis'] >= folder_df.loc[num, 'NRsdis']):
                 #     folder_df.loc[num, 'turning_body'] = (folder_df.loc[num, 'LsRsdis'] / folder_df.loc[num, 'MNdis']) * -100 + 200
@@ -109,23 +116,6 @@ if __name__ == '__main__':
                 folder_df.loc[num, 'LeNdis'] = folder_df.loc[num, 'Lear_x'] - folder_df.loc[num, 'nose_x']            #左耳 - 鼻
                 folder_df.loc[num, 'NRedis'] = folder_df.loc[num, 'nose_x'] - folder_df.loc[num, 'Rear_x']            #鼻 - 右耳
                 folder_df.loc[num, 'NoNedis'] = folder_df.loc[num, 'nose_x'] - folder_df.loc[num, 'neck_x'] 
-                # if(folder_df.loc[num, 'NRedis'] >= folder_df.loc[num, 'LeNdis']):
-                #     print('left')
-                #     folder_df.loc[num, 'turning_face'] = ((folder_df.loc[num, 'LeNdis'] + folder_df.loc[num, 'NRedis']) / (folder_df.loc[num, 'NRedis']*2)) * -100 + 200
-                # else:
-                #     print('right')
-                #     folder_df.loc[num, 'turning_face'] = ((folder_df.loc[num, 'LeNdis'] + folder_df.loc[num, 'NRedis']) / (folder_df.loc[num, 'LeNdis']*2)) * 100
-
-                # print(folder_df.loc[num, 'NoNedis'])
-                # if(-5 < folder_df.loc[num, 'NoNedis'] and folder_df.loc[num, 'NoNedis'] < 5):
-                #     folder_df.loc[num, 'turning_face'] = 100
-                # else:
-                #     if(folder_df.loc[num, 'NoNedis'] >= 0):
-                #         # print('left')
-                #         folder_df.loc[num, 'turning_face'] = ((folder_df.loc[num, 'LeNdis'] + folder_df.loc[num, 'NRedis']) / (folder_df.loc[num, 'NRedis']*2)) * -100 + 200
-                #     else:
-                #         # print('right')
-                #         folder_df.loc[num, 'turning_face'] = ((folder_df.loc[num, 'LeNdis'] + folder_df.loc[num, 'NRedis']) / (folder_df.loc[num, 'LeNdis']*2)) * 100
 
                 folder_df.loc[num, 'turning_face'] = folder_df.loc[num, 'NoNedis']
                 if(-50 <= folder_df.loc[num, 'NoNedis'] and folder_df.loc[num, 'NoNedis'] <= 50):
@@ -133,20 +123,8 @@ if __name__ == '__main__':
                 else:
                     folder_df.loc[num, 'abs_turning_face'] = 0
 
-                # if(folder_df.loc[num, 'turning_face'] < 0):
-                #     folder_df.loc[num, 'filterd_turning_face'] = 0
-                # if(folder_df.loc[num, 'turning_face'] > 200):
-                #     folder_df.loc[num, 'filterd_turning_face'] = 200
-
-                # print(str(num) + ' '  + str(folder_df.loc[num, 'turning_face']) + ' L:' + str(folder_df.loc[num, 'LeNdis']) + ' R:' + str(folder_df.loc[num, 'NRedis']))
-                # print(str(num) + ' '  + str(folder_df.loc[num, 'turning_body']) + ' 肩幅:' + str(folder_df.loc[num, 'LsRsdis']) + ' 高さ:' + str(folder_df.loc[num, 'MNdis']))
-                # folder_df.loc[num, 'turning_face'] = folder_df.loc[num, 'LNdis'] - folder_df.loc[num, 'NRdis']
-                # print(folder_df.loc[num, 'Max_x'],folder_df.loc[num, 'Min_x'],folder_df.loc[num, 'Max_y'],folder_df.loc[num, 'Min_y'])
-                # print(folder_df.loc[num, 'Lsq'], folder_df.loc[num, 'Rsq'])
-
         folder_df['abs_turning_face'].abs()
         max_turning_face = folder_df['abs_turning_face'].max()
-        # print(max_turning_face)
         for num,file in enumerate(files):
             folder_df.loc[num, 'filterd_turning_face'] = (folder_df.loc[num, 'turning_face'] / max_turning_face * 100) + 100
 
@@ -212,120 +190,19 @@ if __name__ == '__main__':
         # print(folder)
         plt.show()
 
-        #<<<データ収集用の一時的な処理(要削除)>>>
-        # conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='kari')
-        # cur = conn.cursor(buffered=True)
-        # print(folder_num)
-        # stmt = f"SELECT ans_id,frame1 FROM fa WHERE path LIKE '%{folder_num}%'"
-        # cur.execute(stmt)
-        # rows = cur.fetchall()
-        # ans_id = 0 #jsonファイルへのパスを格納するリスト
-        # frame1 = 0
-        # for row in rows:
-        #     ans_id = row[0]
-        #     frame1 = row[1]
-        # print(ans_id, frame1)
-        # cur.close
-        # conn.commit()
-        # conn.close()
-
-        # ftf = folder_df.loc[frame1, 'filterd_turning_face']
-        # print(ftf)
-        # if(int(folder_num) <= 584):
-        #     p = f"C:\\Users\\jagal\\Desktop\\graphs\\memo\\PlCl{ans_id}.txt"
-        #     if(not(os.path.isfile(p))):
-        #         print('new file was created')
-        #         txt = open(p, 'w')
-        #         txt.write(str(ftf) + '\n')
-        #         txt.close()  
-        #     else:
-        #         print('there was file')
-        #         txt = open(p, 'a')
-        #         txt.write(str(ftf) + '\n')
-        #         txt.close()
-        # elif(585 <= int(folder_num) and int(folder_num) <= 597):
-        #     p = f"C:\\Users\\jagal\\Desktop\\graphs\\memo\\PmCl{ans_id}.txt"
-        #     if(not(os.path.isfile(p))):
-        #         print('new file was created')
-        #         txt = open(p, 'w')
-        #         txt.write(str(ftf) + '\n')
-        #         txt.close()  
-        #     else:
-        #         print('there was file')
-        #         txt = open(p, 'a')
-        #         txt.write(str(ftf) + '\n')
-        #         txt.close()
-        # elif(598 <= int(folder_num) and int(folder_num) <= 627):
-        #     p = f"C:\\Users\\jagal\\Desktop\\graphs\\memo\\PmCm{ans_id}.txt"
-        #     if(not(os.path.isfile(p))):
-        #         print('new file was created')
-        #         txt = open(p, 'w')
-        #         txt.write(str(ftf) + '\n')
-        #         txt.close()  
-        #     else:
-        #         print('there was file')
-        #         txt = open(p, 'a')
-        #         txt.write(str(ftf) + '\n')
-        #         txt.close()
-        # elif(722 <= int(folder_num) and int(folder_num) <= 742):
-        #     p = f"C:\\Users\\jagal\\Desktop\\graphs\\memo\\PlCm{ans_id}.txt"
-        #     if(not(os.path.isfile(p))):
-        #         print('new file was created')
-        #         txt = open(p, 'w')
-        #         txt.write(str(ftf) + '\n')
-        #         txt.close()  
-        #     else:
-        #         print('there was file')
-        #         txt = open(p, 'a')
-        #         txt.write(str(ftf) + '\n')
-        #         txt.close()
-        # elif(743 <= int(folder_num) and int(folder_num) <= 764):
-        #     p = f"C:\\Users\\jagal\\Desktop\\graphs\\memo\\PmCr{ans_id}.txt"
-        #     if(not(os.path.isfile(p))):
-        #         print('new file was created')
-        #         txt = open(p, 'w')
-        #         txt.write(str(ftf) + '\n')
-        #         txt.close()  
-        #     else:
-        #         print('there was file')
-        #         txt = open(p, 'a')
-        #         txt.write(str(ftf) + '\n')
-        #         txt.close()
-        # elif(770 <= int(folder_num) and int(folder_num) <= 785):
-        #     p = f"C:\\Users\\jagal\\Desktop\\graphs\\memo\\PrCr{ans_id}.txt"
-        #     if(not(os.path.isfile(p))):
-        #         print('new file was created')
-        #         txt = open(p, 'w')
-        #         txt.write(str(ftf) + '\n')
-        #         txt.close()  
-        #     else:
-        #         print('there was file')
-        #         txt = open(p, 'a')
-        #         txt.write(str(ftf) + '\n')
-        #         txt.close()
-        #<<<ここまで>>>
-
-        # #===データベースに送信===
-        # # コネクションの作成
-        # conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
-        # # DB操作用にカーソルを作成
-        # cur = conn.cursor(buffered=True)
-        # body_json = folder_df['filterd_turning_face'].to_json()
-        # face_json = folder_df['filterd_turning_body'].to_json()
-        # # found_path = folder.replace('\\04\\', '\\*\\')
-        # found_path = folder.replace('\\04\\', '\\01\\')
-        # video_num = found_path[-7:-3]
-        # found_path = found_path.replace(found_path[-20:], 'IMG_' + video_num + '.mov')
-        # # found_path = found_path.replace(found_path[-20:-1], '*' + video_num + '*.mov')
-        # # found_path = gb.glob(found_path)
-        # # folder_path = found_path[0].replace('\\', '/')
-        # found_path = found_path.replace('\\', '/')
-        # folder_path = found_path.replace('D:/htdocs/SEN-KEN/', '../')
-        # stmt = f"INSERT INTO `turning_body_table`(`turning_body_list`, `turning_face_list`, `video_path`) VALUES ('{body_json}', '{face_json}', '{folder_path}')"
-        # print(stmt)
-        # cur.execute(stmt)
-        # cur.close()
-        # conn.commit()
-        # conn.close()
+        #===データベースに送信===
+        # コネクションの作成
+        conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='SEN-KEN')
+        # DB操作用にカーソルを作成
+        cur = conn.cursor(buffered=True)
+        body_json = folder_df['filterd_turning_face'].to_json()
+        face_json = folder_df['filterd_turning_body'].to_json()
+        folder = folder.replace('\\', '/')
+        stmt = f"INSERT INTO `turning_body_table`(`turning_body_list`, `turning_face_list`, `video_path`) VALUES ('{body_json}', '{face_json}', '{folder}')"
+        print(stmt)
+        cur.execute(stmt)
+        cur.close()
+        conn.commit()
+        conn.close()
         print('done!')
     print('all completed!')
