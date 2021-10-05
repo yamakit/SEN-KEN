@@ -23,20 +23,21 @@ if __name__ == '__main__':
     #===DBからyolo_flagが1の動画のパスを取得===
     conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='demo')
     cur = conn.cursor(buffered=True)
-    cur.execute("SELECT video_path FROM yolo_video_table WHERE yolo_flag = 3")
+    cur.execute("SELECT video_path,video_id FROM yolo_video_table WHERE yolo_flag = 3")
     rows = cur.fetchall()
-    folders = [] #jsonファイルへのパスを格納するリスト
+    datas = [] #jsonファイルへのパスを格納するリスト
     for row in rows:
-        folders.append(row[0])
-    cur.execute("UPDATE `yolo_video_table` SET `yolo_flag` = 4 WHERE `yolo_flag` = 3")
+        datas.append([row[0],row[1]])
     cur.close
     conn.commit()
     conn.close()
     
-    print(folders)
+    print(datas[:][0])
 
     #===データを取り出すjsonファイルが入っているフォルダー群を回す===
-    for folder in folders:
+    for data in datas:
+        folder = data[0]
+        video_id = data[1]
         print(f'{folder}を処理')
         folder_num = folder[-8:-4]
         folder = folder.replace(folder[-12:],f'openpose_IMG_{folder_num}_01')
@@ -201,6 +202,7 @@ if __name__ == '__main__':
         stmt = f"INSERT INTO `turning_body_table`(`turning_body_list`, `turning_face_list`, `video_path`) VALUES ('{body_json}', '{face_json}', '{folder}')"
         print(stmt)
         cur.execute(stmt)
+        cur.execute(f"UPDATE `yolo_video_table` SET `yolo_flag`=4 WHERE `video_id`={video_id}")
         cur.close()
         conn.commit()
         conn.close()
