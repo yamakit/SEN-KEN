@@ -3,7 +3,7 @@ import os
 
 conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='sen-ken')
 cur = conn.cursor(buffered=True)
-cur.execute("SELECT video_path,frame1,video_id FROM yolo_video_table WHERE 1")
+cur.execute("SELECT video_path,frame1,video_id FROM yolo_video_table WHERE yolo_flag=4")
 rows = cur.fetchall()
 path_lists = [] #目的の画像の連番とそれが入っているフォルダーのパスのリスト群
 
@@ -31,6 +31,7 @@ for path_list in path_lists:
         conn = mydb.connect(host='localhost',port='3306',user='root',password='',database='sen-ken')
         cur = conn.cursor(buffered=True)
         cur.execute(f"INSERT INTO `picture`(`video_id`,`frame1`, `picture_path`) VALUES ({video_id}, {frame1},'{image_path}')")
+        cur.execute(f"UPDATE `yolo_video_table` SET `yolo_flag`=4 WHERE `video_id`={video_id}")
         cur.close
         conn.commit()
         conn.close()
