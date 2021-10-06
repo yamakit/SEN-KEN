@@ -39,9 +39,15 @@ if __name__ == '__main__':
         folder = data[0]
         video_id = data[1]
         print(f'{folder}を処理')
-        folder_num = folder[-8:-4]
-        folder = folder.replace(folder[-12:],f'openpose_IMG_{folder_num}_01')
+        folder_name = ''
+        for str_n in range(len(folder)-1, 0, -1):
+            if(folder[str_n] == '/'):
+                folder_name = folder[str_n+1:-4]
+                print(folder[str_n+1:-4])
+                break
+        folder = folder.replace(f'{folder_name}.MOV',f'openpose_{folder_name}_01')
         folder = folder.replace('/', '\\')
+        print(folder)
         files_path = folder + '\\*.json'
         files = gb.glob(files_path)
 
@@ -70,10 +76,10 @@ if __name__ == '__main__':
                     folder_df.loc[num, column_names] = coor_list[index*3+1]
 
                 # if(num == 0):
-                #     if not(os.path.exists(f'C:/Users/jagal/Desktop/graphs/keypoints/{folder_num}')):
-                #         os.makedirs(f'C:/Users/jagal/Desktop/graphs/keypoints/{folder_num}')
+                #     if not(os.path.exists(f'C:/Users/jagal/Desktop/graphs/keypoints/{folder_name}')):
+                #         os.makedirs(f'C:/Users/jagal/Desktop/graphs/keypoints/{folder_name}')
                 #     p = Pool()
-                # p.apply(keypoint_plot, [coor_list, folder_num, num])
+                # p.apply(keypoint_plot, [coor_list, folder_name, num])
                 # if(num % 100 == 0):
                 #     p.close()
                 #     p = Pool()
