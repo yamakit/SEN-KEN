@@ -8,26 +8,26 @@ pythonの各ファイルの機能
 - ### analysis.py  
 　DBからYOLOv3を掛けていない動画を取得し、動画に対してYOLOv３を掛けてボールの座標をjsonファイルで出力します。  
 
-- ### insert.py
+- ### insert.py  
   analysis.pyで出力されたファイルから、スパイクのフレームを検出し、それに関する情報をDBに挿入します。 
 
-- ### openpose.py
+- ### openpose.py  
   DBからopenposeを掛けていない動画を取得し、動画に対してopenposeを掛けてボールの座標をjsonファイルで出力します。  
 
-- ### body_width.py  
+- ### body_width.py    
   openpose.pyで出力されたファイルから、体の開きと顔の向きを計算し、DBに挿入します。  
 
-- ### pick_frame1img.py
+- ### pick_frame1img.py  
    DBから、ボールが打たれた瞬間のフレームを取得し、そのフレームの画像のパスをDBに挿入します。  
 
-- ### upload_badminton.py
+- ### upload_badminton.py  
   upload.pyのバドミントン用です。  
   
-- ### analysis_badminton.py
+- ### analysis_badminton.py  
   analysis.pyのバドミントン用です。  
   
-- ### insert_badminton.py
+- ### insert_badminton.py  
   upload.pyのバドミントン用です。  
   
-- ### openpose_badminton.py
+- ### openpose_badminton.py  
   openpose.pyのバドミントン用です。  
